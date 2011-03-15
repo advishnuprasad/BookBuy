@@ -1,0 +1,26 @@
+<%= javascript_tag :defer => 'defer' do -%>
+	$('#current_branch').html('<%= user_session['current_branch'].name %>');
+<% end -%>
+
+<div class='notice'>
+	You are a staff of <b><%= Branch.branch_name_from_subdomain(current_user.subdomain) %>.</b>
+	If this is not correct, call tech support.
+	<br/>
+	You are currently logged into <%= user_session['current_branch'].name %>. 
+	<% if  @associate_branches.length > 1 -%>
+		<hr/>
+		Click on any of the following branches to change your current branch.
+		<br/>
+		<ol>
+			<% @associate_branches.each do |b| -%>
+				<li><%= link_to b.name, dashboard_path(:current_branch => b.id), :confirm => "Are you sure you want to change the branch to #{b.name}?" %></li>
+			<% end -%>
+		</ol>
+	<% end -%>		
+</div>
+
+<% if current_user.frontoffice? -%>
+<div class='alert'>
+	You logged in with <%= current_user.email %>, instead use the id that was created for you.
+</div>
+<% end -%>

@@ -1,0 +1,78 @@
+<div class="span-16	">
+	<div class="span-15 last">
+		<%= image_tag "network.jpg", :size => "626x486", :alt => "Network", :usemap => '#NetworkMap' %>
+		<map name="NetworkMap">			
+		  <area shape="rect" coords="568,143,591,186" href="/auth/wf" />
+						  <area shape="rect" coords="154,208,184,273" href="/auth/wf" />
+							<area shape="rect" coords="76,50,91,86" href="/auth/wf" />
+							<area shape="rect" coords="44,104,63,148" href="/auth/wf" />
+							<area shape="rect" coords="507,237,547,307" href="/auth/wf" />
+							<area shape="rect" coords="151,22,165,59" href="/auth/wf" />
+			<area shape="rect" coords="209,266,242,340" href="/auth/jpn" />
+							<area shape="rect" coords="17,296,47,369" href="/auth/jpn" />
+							<area shape="rect" coords="170,48,186,92" href="/auth/jpn" />
+							<area shape="rect" coords="429,215,457,280" href="/auth/jpn" />
+			<area shape="rect" coords="524,145,552,204" href="/auth/bll" />
+							<area shape="rect" coords="195,78,215,127" href="/auth/bll" />
+							<area shape="rect" coords="463,125,492,185" href="/auth/bll" />
+							<area shape="rect" coords="398,155,423,216" href="/auth/bll" />
+			<area shape="rect" coords="328,248,356,311" href="/auth/in" />
+			<area shape="rect" coords="244,123,272,182" href="/auth/kn" />
+							<area shape="rect" coords="111,37,130,77" href="/auth/kn" />
+			<area shape="rect" coords="259,357,301,437" href="/auth/hsr" />
+			<area shape="rect" coords="99,116,127,174" href="/auth/ft" />
+			<area shape="rect" coords="363,310,398,390" href="/auth/kor" />
+							<area shape="rect" coords="466,303,508,385" href="/auth/kor" />
+			<area shape="rect" coords="135,340,173,418" href="/auth/jn" />
+			<area shape="rect" coords="316,68,334,114" href="/auth/ne" />		
+		  <area shape="rect" coords="355,123,382,181" href="/auth/rmv" />
+		  <area shape="rect" coords="354,66,368,99" href="/auth/dmb" />
+			<area shape="rect" coords="396,60,416,103" href="/auth/aun" />
+			<area shape="rect" coords="188,152,213,213" href="/auth/ecil" />
+			<area shape="rect" coords="84,230,119,304" href="/auth/mlm" />
+      <area shape="rect" coords="57,187,78,243" href="/auth/rrn" />
+			<area shape="rect" coords="245,70,267,108" href="/auth/vij" />
+			<area shape="rect" coords="13,209,37,270" href="/auth/vjn" />			
+			<area shape="rect" coords="517,57,537,109" href="/auth/skn" />
+			<area shape="rect" coords="425,47,445,85" href="/auth/wnr" />
+
+			<area shape="circle" coords="308,214,43" href="/auth/strata" />
+		</map>
+	</div>
+</div>
+<div class="box span-7 last">
+	<h3> Sign In Instructions </h3>
+	<h4> Franchisee's </h4>
+	<ol>
+		<li>Click on your branch location in the map, and you will be redirected to google for login.</li>
+		<li>Use your business gmail account to login </li>
+		<li>For example, if you are from the indiranagar branch , click on indiranagar on the map and use your email id,
+			  like frontoffice@in.justbooksclc.com when the google sign up page comes up.</li>
+	</ol>
+	<h4> Strata Employees </h4>
+	<ol>
+		<li>Click on the earth (center) and use your strata.co.in </li>
+	</ol>
+	<hr/>
+	<div style="display:none">
+  	<h4>Administrator Sign In.</h4>
+		<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+			  <p><%= f.label :username %>
+			  <%= f.text_field :username, :size => 20 %></p>
+
+			  <p><%= f.label :password %>
+			  <%= f.password_field :password, :size => 20 %></p>
+
+			  <% if devise_mapping.rememberable? -%>
+			    <p><%= f.check_box :remember_me %> <%= f.label :remember_me %></p>
+			  <% end -%>
+				<p><%= flash[:alert] %></p>
+			  <p><%= f.submit "Sign in" %></p>
+		
+				<%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
+				  <%= link_to "Forgot your password?", new_password_path(resource_name) %>
+				<% end -%>
+		<% end %>
+	</div>
+	
+</div>

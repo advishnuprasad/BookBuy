@@ -1,0 +1,285 @@
+.masthead {
+  background: url(../images/imgMasthead.jpg);
+  margin:0px;
+  height:92px; 
+  background-color:#B51F24;
+  background-repeat:no-repeat;
+  background-position:right;
+}
+
+#logo {
+	position:relative;
+	top:20px;
+	left:20px;
+}
+
+.round {
+  -moz-border-radius:    10px;
+  -webkit-border-radius: 10px;
+  border-radius:         10px;
+}
+
+a.signup_button {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  text-align: center;
+  width: 150px;
+  color: #fff;
+  background: #B51F24;
+  font-size: 150%;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.redbox {
+	background-color:#00CCFF;
+}
+
+input.readonly {
+	border:none;
+}
+
+.spacer {
+	background-color:#B51F24;
+	height:2px;
+	margin-top:20px;
+	margin-bottom:20px;
+}
+
+.comment { width: 370px; height: 15px; }
+
+.stockchart {
+	height:80px;
+	width:450px;
+	border-width:2px;
+	border-color:black;
+	border-style:dotted;
+}
+
+.statchart {
+	height:250px;
+	width:620px;
+	border-width:1px;
+	border-color:black;
+	border-style:dotted;
+}
+
+.tooltip {
+	background-color:lightblue;
+	border-width:1px;
+	border-color:black;	
+	border-style:solid;	
+}
+
+th .current {
+  padding-right: 12px;
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+th .asc {
+  background-image: url(../images/up_arrow.gif);
+}
+
+th .desc {
+  background-image: url(../images/down_arrow.gif);
+}
+
+.field_error {
+	border:solid red;
+}
+
+.planbox {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+	display:block;
+  width: 200px;
+  color: #fff;
+  background: #B51F24;
+  padding: 10px;
+}
+
+.planbox-title {
+	text-decoration: underline;
+	color:black;
+	text-align:center;
+	font-size:150%;
+	font-weight:bold;
+	display:block;
+}
+
+.planbox-rupee-symbol {
+	font-weight:normal;
+	font-size:20px;
+	width:10px;
+	position:absolute;
+	padding-left:10px;
+	padding-top:10px;
+}
+
+.planbox-rupee {
+	text-align:center;
+	font-size:50px;
+	margin-left:22px;	
+}
+
+.planbox-paise {
+	font-weight:normal;
+	font-size:15px;
+	width:10px;
+	position:absolute;
+	padding-top:10px;
+}
+
+.planbox-freemonths {
+	font-size:15px;
+}
+
+.planbox-fees {
+	text-align:left;
+}
+
+.plan-buttonpanel {
+	display:block;
+  width: 368px;
+	margin-bottom:20px;
+  background: lightgrey;
+	margin-left:48px;
+}
+
+.plan-button {
+	font-weight:bold;
+  text-align: center;
+	display:inline-block;
+  width: 100px;
+	padding: 10px;
+  color: #fff;
+}
+
+.plan-button-current {
+  background: #B51F24;
+  -moz-border-radius:    10px;
+  -webkit-border-radius: 10px;
+  border-radius:         10px;
+}
+
+.plan-category {
+	font-weight:bold;
+	font-size:120%;
+}
+
+div.heading {
+	padding:0.4em;
+	margin-bottom:0.4em;
+	border:2px solid black;
+	border-top-style:none;
+	border-right-style:none;
+	border-left-style:solid;
+	border-bottom-style:solid;
+	font-size:110%;
+  color: #fff;
+  background: #B51E24;
+	
+}
+
+input.simple {
+	border-top-style:none;
+	border-right-style:none;
+	border-left-style:none;
+	border-bottom-style:solid;
+	margin:0px;
+	padding:0px;
+	padding-top:4px;
+	font-size:16px;
+}
+
+.menu-button {
+	width:81px;
+}
+
+.menu-icon {
+	width:100%;
+	margin-left:7px;
+}
+
+.menu-text {
+	text-align:center;
+	width:100%;
+}
+
+.menu-color {
+	background: #B51E24;
+	border: 5px ridge #B51E24;
+	color: #fff;
+}
+
+table.form tbody tr:nth-child(even) td, tbody tr.even td {background:#fff;}
+table.form tbody td {font-size:120%;font-weight:normal;}
+
+.first-row {
+	padding:5px 0 5px 5px;
+	background: url(../images/library_bg.jpg);
+	font-size:12px;
+}
+
+/* Devise CSS*/
+.authentications {
+ margin-bottom: 30px;
+}
+
+.authentication {
+ width: 130px;
+ float: left;
+ background-color: #EEE;
+ border: solid 1px #999;
+ padding: 5px 10px;
+ -moz-border-radius: 8px;
+ -webkit-border-radius: 8px;
+ position: relative;
+ margin-right: 10px;
+}
+
+.authentication .remove {
+ text-decoration: none;
+ position: absolute;
+ top: 3px;
+ right: 3px;
+ color: #333;
+ padding: 2px 4px;
+ font-size: 10px;
+}
+
+.authentication .remove:hover {
+ color: #CCC;
+ background-color: #777;
+ -moz-border-radius: 6px;
+ -webkit-border-radius: 6px;
+}
+
+.authentication img {
+ float: left;
+ margin-right: 10px;
+}
+
+.authentication .provider {
+ font-weight: bold;
+}
+
+.authentication .uid {
+ color: #666;
+ font-size: 11px;
+}
+
+.auth_provider img {
+ display: block;
+}
+
+.auth_provider {
+ float: left;
+ text-decoration: none;
+ margin-right: 20px;
+ text-align: center;
+ margin-bottom: 10px;
+}

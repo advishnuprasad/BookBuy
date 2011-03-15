@@ -1,4 +1,15 @@
 BookBuy::Application.routes.draw do
+  match '/dashboard' => 'dashboard#show'
+
+  match '/auth/:provider/callback' => 'authentications#create'
+  devise_for :users, :path => 'accounts', :controllers => {:registrations => 'registrations'}
+
+  match '/auth/failure' => 'Dashboard#show'
+  resources :authentications, :branches
+
+  # after all the routing
+  root :to => "Dashboard#show"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
