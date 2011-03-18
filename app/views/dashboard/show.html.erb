@@ -2,6 +2,7 @@
 	$('#current_branch').html('<%= user_session['current_branch'].name %>');
 <% end -%>
 
+<!--
 <div class='notice'>
 	You are a staff of <b><%= Branch.branch_name_from_subdomain(current_user.subdomain) %>.</b>
 	If this is not correct, call tech support.
@@ -18,9 +19,16 @@
 		</ol>
 	<% end -%>		
 </div>
+-->
+
+<div id='left-nav' style="width:10%">
+  <div><%= link_to "Worklists", worklists_path %></div>  
+</div>
+<div id='center' style="width:90%">
+</div>
 
 <% if current_user.frontoffice? -%>
-<div class='alert'>
-	You logged in with <%= current_user.email %>, instead use the id that was created for you.
-</div>
+  <div class='alert'>
+	  You logged in with <%= current_user.email %>, instead use the id that was created for you.
+  </div>
 <% end -%>

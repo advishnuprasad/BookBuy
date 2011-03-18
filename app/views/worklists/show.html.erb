@@ -1,0 +1,67 @@
+<% content_for(:head) do %>
+  <%= javascript_include_tag 'worklists/show' %>
+<% end %>
+
+<% if !@worklist.nil? %>
+  <%= form_tag( { :autocomplete => :off } ) do -%>
+    <span style="display: none;" id="worklist-id"><%= @worklist.id %></span>
+    <%= link_to_function "Update Items","saveItems(); return false;", :id=>'saveItemsLink' %>
+    <div id="grid">
+      <div id="gridbox" class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+        <div id="gridview" class="ui-jqgrid-view">
+          <div class="clear"></div>
+          
+          <!--Table Header -->
+          <div id="gridheader" class="ui-state-default ui-jqgrid-hdiv" style="width: 956px;">
+            <div class="ui-jqgrid-hbox" style="width: 956px;">
+              <table class="ui-jqgrid-htable" cellspacing="0" cellpadding="0" border="0" role="grid">
+                <thead>
+                  <tr class="ui-jqgrid-labels" role="rowheader">
+                    <th id="col_TitleID" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 10%;">ID</th>
+                    <th id="col_Title" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 23%;">Title</th>
+                    <th id="col_Author" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 16%;">Author</th>
+                    <th id="col_Publisher" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 20%;">Publisher</th>
+                    <th id="col_ISBN" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 10%;">ISBN</th>
+                    <th id="col_Supplier" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 10%;">Supplier</th>
+                    <th id="col_Avl" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 8%;">Avl</th>
+                    <th id="col_AvlQty" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 7%;">Qty</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            
+            <!--Table body -->
+            <div class="ui-jqgrid-bdiv" style="height: auto; width: 956px;">
+              <div style="position: relative;">
+                <table id="items" class="ui-jqgrid-btable" cellspacing="0" cellpadding="0" border="0" role="grid" style="width: 956px;">
+                  <tbody>
+                    <% @worklist.workitems.each do |workitem| %>
+                      <tr class="ui-widget-content jqgrow ui-row-ltr" role="row">
+                        <td aria-describedby="col_ISBN" role="gridcell" style="width: 5%;"><%= workitem.referenceitem.id %></td>
+                        <td aria-describedby="col_Title" role="gridcell" style="width: 25%;"><%= workitem.referenceitem.enrichedtitle.title %></td>
+                        <td aria-describedby="col_Author" role="gridcell" style="width: 15%;"><%= workitem.referenceitem.enrichedtitle.author.name %></td>
+                        <td aria-describedby="col_Publisher" role="gridcell" style="width: 20%;"><%= workitem.referenceitem.enrichedtitle.publisher.name %></td>
+                        <td aria-describedby="col_Category" role="gridcell" style="width: 7%;"><%= workitem.referenceitem.isbn %></td>
+                        <td aria-describedby="col_Supplier" role="gridcell" style="width: 15%;">
+                          <%= select_tag('supplier_id', options_from_collection_for_select(workitem.referenceitem.enrichedtitle.publisher.suppliers.map, :id, :name)) %>
+                        </td>
+                        <td aria-describedby="col_Avl" role="gridcell" style="width: 7%;">
+                          <%= select_tag "avl_status", options_for_select([ "Avl", "Not Avl"], "Avl") %>
+                        </td>
+                        <td aria-describedby="col_AvlQty" role="gridcell" style="width: 7%;"><%= tag(:input, 
+                                            {:id => workitem.referenceitem.id, :size => 2, :type => 'text', :dataquantity => workitem.referenceitem.avl_quantity, 
+                                            :value => workitem.referenceitem.avl_quantity }, false, false)  %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end -%>
+<% end %>
+

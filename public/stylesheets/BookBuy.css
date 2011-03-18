@@ -1,0 +1,32 @@
+body {
+    font-family: Arial,sans-serif;
+    font-size: 10px;
+}
+
+table {
+    table-layout:fixed;
+    font-family: Arial,sans-serif; font-size: 1.1em;
+}
+
+/* Pagination */
+.pagination {
+  background: #F1F1F1;
+  border: 1px solid #E5E5E5;
+  text-align: center;
+  padding: 0.5em; 
+  -moz-border-radius: 6px 6px 6px 6px;
+  width: 600px;
+  margin: 0 auto;
+  }
+  .pagination a, .pagination span, .pagination em {
+    padding: .2em .3em; }
+  .pagination span.disabled {
+    color: #AAA; }
+  .pagination em {
+    font-weight: bold;
+    background: transparent url("/images/circle.gif") no-repeat 50% 50%; }
+  .pagination a {
+    text-decoration: none;
+    color: black; }
+    .pagination a:hover, .pagination a:focus {
+      text-decoration: underline; }

@@ -19,23 +19,6 @@
   border-radius:         10px;
 }
 
-a.signup_button {
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-  text-align: center;
-  width: 150px;
-  color: #fff;
-  background: #B51F24;
-  font-size: 150%;
-  font-weight: bold;
-  padding: 10px;
-}
-
-.redbox {
-	background-color:#00CCFF;
-}
-
 input.readonly {
 	border:none;
 }
@@ -47,22 +30,9 @@ input.readonly {
 	margin-bottom:20px;
 }
 
-.comment { width: 370px; height: 15px; }
-
-.stockchart {
-	height:80px;
-	width:450px;
-	border-width:2px;
-	border-color:black;
-	border-style:dotted;
-}
-
-.statchart {
-	height:250px;
-	width:620px;
-	border-width:1px;
-	border-color:black;
-	border-style:dotted;
+.comment { 
+ width: 370px; 
+ height: 15px; 
 }
 
 .tooltip {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110315110342) do
+ActiveRecord::Schema.define(:version => 20110316132019) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id",    :precision => 38, :scale => 0
@@ -20,10 +20,103 @@ ActiveRecord::Schema.define(:version => 20110315110342) do
     t.datetime "updated_at"
   end
 
+  create_table "authors", :id => false, :force => true do |t|
+    t.integer "id",   :limit => 10,  :precision => 10, :scale => 0
+    t.string  "name", :limit => 101
+  end
+
+  create_table "enrichedtitle_versions", :force => true do |t|
+    t.integer  "enrichedtitle_id", :precision => 38, :scale => 0
+    t.integer  "version",          :precision => 38, :scale => 0
+    t.integer  "title_id",         :precision => 38, :scale => 0
+    t.string   "title"
+    t.integer  "author_id",        :precision => 38, :scale => 0
+    t.integer  "publisher_id",     :precision => 38, :scale => 0
+    t.string   "isbn"
+    t.string   "language"
+    t.string   "category"
+    t.string   "subcategory"
+    t.string   "isbn10"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "enrichedtitle_versions", ["enrichedtitle_id"], :name => "i_enr_ver_enr_id"
+
+  create_table "enrichedtitles", :force => true do |t|
+    t.integer  "title_id",     :precision => 38, :scale => 0
+    t.string   "title"
+    t.integer  "author_id",    :precision => 38, :scale => 0
+    t.integer  "publisher_id", :precision => 38, :scale => 0
+    t.string   "isbn"
+    t.string   "language"
+    t.string   "category"
+    t.string   "subcategory"
+    t.string   "isbn10"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "version",      :precision => 38, :scale => 0
+  end
+
+  create_table "procurementitems", :force => true do |t|
+    t.string   "source"
+    t.integer  "source_id",        :precision => 38, :scale => 0
+    t.integer  "enrichedtitle_id", :precision => 38, :scale => 0
+    t.string   "isbn"
+    t.string   "status"
+    t.string   "po_number"
+    t.string   "book_number"
+    t.string   "cancel_reason"
+    t.integer  "deferred_by",      :precision => 38, :scale => 0
+    t.datetime "last_action_date"
+    t.integer  "supplier_id",      :precision => 38, :scale => 0
+    t.string   "avl_status"
+    t.integer  "avl_quantity",     :precision => 38, :scale => 0
+    t.datetime "expiry_date"
+    t.integer  "member_id",        :precision => 38, :scale => 0
+    t.string   "card_id"
+    t.integer  "branch_id",        :precision => 38, :scale => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "publishers", :id => false, :force => true do |t|
+    t.integer "id",      :limit => nil, :null => false
+    t.string  "name",    :limit => 100
+    t.string  "country", :limit => 100
+  end
+
+  create_table "publishersuppliermappings", :force => true do |t|
+    t.integer  "publisher_id", :precision => 38, :scale => 0
+    t.integer  "supplier_id",  :precision => 38, :scale => 0
+    t.integer  "priority",     :precision => 38, :scale => 0
+    t.decimal  "discount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "publisherxrefs", :force => true do |t|
+    t.integer  "isbnpublishercode", :precision => 38, :scale => 0
+    t.integer  "publisher_id",      :precision => 38, :scale => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "suppliers", :id => false, :force => true do |t|
+    t.integer "id",           :limit => nil, :null => false
+    t.string  "name",         :limit => 100
+    t.string  "contact",      :limit => 100
+    t.string  "phone",        :limit => 100
+    t.string  "city",         :limit => 100
+    t.decimal "type"
+    t.decimal "discount"
+    t.decimal "creditperiod"
+  end
+
   create_table "users", :force => true do |t|
     t.string   "email",                                                              :default => "", :null => false
-    t.string   "encrypted_password",   :limit => 128,                                :default => "", :null => false
-    t.string   "password_salt",                                                      :default => "", :null => false
+    t.string   "encrypted_password",   :limit => 128,                                :default => ""
+    t.string   "password_salt",                                                      :default => ""
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"
@@ -39,5 +132,25 @@ ActiveRecord::Schema.define(:version => 20110315110342) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "i_users_reset_password_token", :unique => true
+
+  create_table "workitems", :force => true do |t|
+    t.integer  "worklist_id", :precision => 38, :scale => 0
+    t.string   "item_type"
+    t.integer  "ref_id",      :precision => 38, :scale => 0
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "worklists", :force => true do |t|
+    t.string   "description"
+    t.string   "status"
+    t.datetime "open_date"
+    t.datetime "close_date"
+    t.string   "created_by"
+    t.string   "list_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

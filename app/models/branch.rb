@@ -1,3 +1,20 @@
+# == Schema Information
+# Schema version: 20110316070023
+#
+# Table name: branches
+#
+#  id          :integer         primary key
+#  name        :string(298)
+#  address     :string(1000)
+#  city        :string(50)
+#  phone       :string(255)
+#  email       :string(100)
+#  category    :string(1)       not null
+#  parent_id   :integer
+#  parent_name :string(255)
+#  card_id     :string(16)
+#
+
 class Branch < ActiveRecord::Base
   has_many :satellites, :foreign_key => "parent_id", :class_name => "Branch"
   

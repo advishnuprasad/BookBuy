@@ -1,6 +1,10 @@
 BookBuy::Application.routes.draw do
+  resources :worklists
+
   match '/dashboard' => 'dashboard#show'
 
+  match 'worklist_save_items',    :to => 'worklists#save_items'
+  
   match '/auth/:provider/callback' => 'authentications#create'
   devise_for :users, :path => 'accounts', :controllers => {:registrations => 'registrations'}
 
