@@ -9,6 +9,6 @@
 #
 
 class Publisher < ActiveRecord::Base
-  has_many :publishersuppliermappings
-  has_many :suppliers, :through => :publishersuppliermappings
+  has_many :supplierdiscounts
+  has_many :suppliers, :through => :supplierdiscounts
 end

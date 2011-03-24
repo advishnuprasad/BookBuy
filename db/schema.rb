@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110316132019) do
+ActiveRecord::Schema.define(:version => 20110324063706) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id",    :precision => 38, :scale => 0
@@ -86,18 +86,17 @@ ActiveRecord::Schema.define(:version => 20110316132019) do
     t.string  "country", :limit => 100
   end
 
-  create_table "publishersuppliermappings", :force => true do |t|
-    t.integer  "publisher_id", :precision => 38, :scale => 0
-    t.integer  "supplier_id",  :precision => 38, :scale => 0
-    t.integer  "priority",     :precision => 38, :scale => 0
-    t.decimal  "discount"
+  create_table "publisherxrefs", :force => true do |t|
+    t.integer  "isbnpublishercode", :precision => 38, :scale => 0
+    t.integer  "publisher_id",      :precision => 38, :scale => 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "publisherxrefs", :force => true do |t|
-    t.integer  "isbnpublishercode", :precision => 38, :scale => 0
-    t.integer  "publisher_id",      :precision => 38, :scale => 0
+  create_table "supplierdiscounts", :force => true do |t|
+    t.integer  "publisher_id", :precision => 38, :scale => 0
+    t.integer  "supplier_id",  :precision => 38, :scale => 0
+    t.decimal  "discount"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

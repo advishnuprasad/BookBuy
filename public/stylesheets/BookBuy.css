@@ -30,3 +30,15 @@ table {
     color: black; }
     .pagination a:hover, .pagination a:focus {
       text-decoration: underline; }
+      
+select {
+    font-size: 9px
+}
+
+.select_supplier {
+    width: 100px;
+}
+
+.select_avl {
+    width: 50px;
+}

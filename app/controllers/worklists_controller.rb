@@ -18,7 +18,11 @@ class WorklistsController < ApplicationController
     puts data.to_s
     data.each {|key, value|
       procurementitem = Procurementitem.find(value["id"])
-      if !procurementitem.update_attributes(:avl_quantity => value["quantity"])
+      procurementitem.avl_quantity = value["quantity"] unless value["quantity"].nil?
+      procurementitem.avl_status = value["avl_status"] unless value["avl_status"].nil?
+      procurementitem.supplier_id = value["supplier_id"] unless value["supplier_id"].nil?
+      
+      if !procurementitem.save
         result = false
       end
     }

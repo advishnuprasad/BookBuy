@@ -14,6 +14,6 @@
 #
 
 class Supplier < ActiveRecord::Base
-  has_many :publishersuppliermappings
-  has_many :publishers, :through => :publishersuppliermapping
+  has_many :supplierdiscounts
+  has_many :publishers, :through => :supplierdiscounts
 end
