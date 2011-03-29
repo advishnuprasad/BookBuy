@@ -7,6 +7,9 @@ class WorklistsController < ApplicationController
   
   def show
     @worklist = Worklist.find(params[:id])
+    if @worklist.description == "Procurement Items with No Supplier Data"
+      render 'items_with_no_supplier_data'
+    end
   end
   
   def save_items
