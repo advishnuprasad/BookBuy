@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110324063706) do
+ActiveRecord::Schema.define(:version => 20110330093909) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id",    :precision => 38, :scale => 0
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(:version => 20110324063706) do
     t.string   "isbn10"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "verified"
   end
 
   add_index "enrichedtitle_versions", ["enrichedtitle_id"], :name => "i_enr_ver_enr_id"
@@ -56,6 +57,7 @@ ActiveRecord::Schema.define(:version => 20110324063706) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "version",      :precision => 38, :scale => 0
+    t.string   "verified"
   end
 
   create_table "procurementitems", :force => true do |t|
@@ -102,12 +104,12 @@ ActiveRecord::Schema.define(:version => 20110324063706) do
   end
 
   create_table "suppliers", :id => false, :force => true do |t|
-    t.integer "id",           :limit => nil, :null => false
-    t.string  "name",         :limit => 100
-    t.string  "contact",      :limit => 100
-    t.string  "phone",        :limit => 100
-    t.string  "city",         :limit => 100
-    t.decimal "type"
+    t.integer "id",             :limit => nil, :null => false
+    t.string  "name",           :limit => 100
+    t.string  "contact",        :limit => 100
+    t.string  "phone",          :limit => 100
+    t.string  "city",           :limit => 100
+    t.decimal "typeofshipping"
     t.decimal "discount"
     t.decimal "creditperiod"
   end

@@ -1,15 +1,15 @@
 # == Schema Information
-# Schema version: 20110316070023
+# Schema version: 20110329115540
 #
 # Table name: workitems
 #
-#  id                 :integer(38)     not null, primary key
-#  worklist_id        :integer(38)
-#  item_type          :string(255)
-#  procurementitem_id :integer(38)
-#  status             :string(255)
-#  created_at         :datetime
-#  updated_at         :datetime
+#  id          :integer(38)     not null, primary key
+#  worklist_id :integer(38)
+#  item_type   :string(255)
+#  ref_id      :integer(38)
+#  status      :string(255)
+#  created_at  :datetime
+#  updated_at  :datetime
 #
 
 class Workitem < ActiveRecord::Base

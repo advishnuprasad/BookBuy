@@ -3,7 +3,9 @@ BookBuy::Application.routes.draw do
 
   match '/dashboard' => 'dashboard#show'
 
-  match 'worklist_save_items',    :to => 'worklists#save_items'
+  match 'worklist_save_items_with_no_supplier_data'         => 'worklists#save_items_with_no_supplier_data'
+  match 'worklist_save_items_with_details_not_enriched'     => 'worklists#save_items_with_details_not_enriched'
+  match 'worklist_save_items_with_po_not_generated'         => 'worklists#save_items_with_po_not_generated'
   
   match '/auth/:provider/callback' => 'authentications#create'
   devise_for :users, :path => 'accounts', :controllers => {:registrations => 'registrations'}

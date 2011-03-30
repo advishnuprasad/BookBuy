@@ -13,7 +13,7 @@ function saveItems() {
     dataValue["id"] = getWorklistID();
     
     alert(dataValue.toSource());
-    jQuery.post('/worklist_save_items_with_no_supplier_data',dataValue);
+    jQuery.post('/worklist_save_items',dataValue);
     clearChangedCells();
 }
 

@@ -1,0 +1,58 @@
+<% content_for(:head) do %>
+  <%= javascript_include_tag 'worklists/items_with_details_not_enriched' %>
+<% end %>
+
+<% if !@worklist.nil? %>
+  <%= form_tag( { :autocomplete => :off } ) do -%>
+    <span style="display: none;" id="worklist-id"><%= @worklist.id %></span>
+    <%= link_to_function "Update Items","saveItems(); return false;", :id=>'saveItemsLink' %>
+    <div id="grid">
+      <div id="gridbox" class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+        <div id="gridview" class="ui-jqgrid-view">
+          <div class="clear"></div>
+          
+          <!--Table Header -->
+          <div id="gridheader" class="ui-state-default ui-jqgrid-hdiv" style="width: 956px;">
+            <div class="ui-jqgrid-hbox" style="width: 956px;">
+              <table class="ui-jqgrid-htable" cellspacing="0" cellpadding="0" border="0" role="grid">
+                <thead>
+                  <tr class="ui-jqgrid-labels" role="rowheader">
+                    <th id="col_TitleID" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 10%;">ID</th>
+                    <th id="col_Title" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 30%;">Title</th>
+                    <th id="col_Author" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 16%;">Author</th>
+                    <th id="col_Publisher" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 20%;">Publisher</th>
+                    <th id="col_ISBN" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 15%;">ISBN</th>
+                    <th id="col_Verified" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 5%;">Verified</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            
+            <!--Table body -->
+            <div class="ui-jqgrid-bdiv" style="height: auto; width: 956px;">
+              <div style="position: relative;">
+                <table id="items" class="ui-jqgrid-btable" cellspacing="0" cellpadding="0" border="0" role="grid" style="width: 956px;">
+                  <tbody>
+                    <% @worklist.workitems.each do |workitem| %>
+                      <tr class="ui-widget-content jqgrow ui-row-ltr" role="row">
+                        <td aria-describedby="col_TitleID" role="gridcell" style="width: 5%;"><%= workitem.referenceitem.id %></td>
+                        <td aria-describedby="col_Title" role="gridcell" style="width: 35%;"><%= tag(:input, {:dataid => workitem.referenceitem.id, :type => 'text', :datatitle => workitem.referenceitem.enrichedtitle.title, :value => workitem.referenceitem.enrichedtitle.title }, false, false)  %></td>
+                        <td aria-describedby="col_Author" role="gridcell" style="width: 15%;"><%= tag(:input, {:dataid => workitem.referenceitem.id, :type => 'text', :dataauthor => workitem.referenceitem.enrichedtitle.author.name, :value => workitem.referenceitem.enrichedtitle.author.name }, false, false) %></td>
+                        <td aria-describedby="col_Publisher" role="gridcell" style="width: 20%;"><%= tag(:input, {:dataid => workitem.referenceitem.id, :type => 'text', :datatitle => workitem.referenceitem.enrichedtitle.publisher.name, :value => workitem.referenceitem.enrichedtitle.publisher.name }, false, false) %></td>
+                        <td aria-describedby="col_ISBN" role="gridcell" style="width: 20%;"><%= tag(:input, {:dataid => workitem.referenceitem.id, :type => 'text', :datatitle => workitem.referenceitem.isbn, :value => workitem.referenceitem.isbn }, false, false) %></td>
+                        <td aria-describedby="col_Verified" role="gridcell" style="width: 5%;">
+                          <%= check_box_tag "verfied", workitem.referenceitem.enrichedtitle.verified , workitem.referenceitem.enrichedtitle.verified == 'Y' ? true : false, {:dataid => workitem.referenceitem.id, :dataverified => workitem.referenceitem.enrichedtitle.verified.nil? ? 'N' : workitem.referenceitem.enrichedtitle.verified } %>
+                        </td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end -%>
+<% end %>
+

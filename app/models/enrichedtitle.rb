@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110316070023
+# Schema version: 20110330092840
 #
 # Table name: enrichedtitles
 #
@@ -16,6 +16,7 @@
 #  created_at   :datetime
 #  updated_at   :datetime
 #  version      :integer(38)
+#  verified     :string(255)
 #
 
 class Enrichedtitle < ActiveRecord::Base
