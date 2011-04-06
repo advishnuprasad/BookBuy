@@ -10,7 +10,8 @@ module Isbnutil
     end
     
     def self.parse(isbn, args)
-      return Isbn.new(isbn, args)
+      me = Isbn.new(isbn, args)
+      return me.isValid ? me : nil
     end
     
     def asIsbn10

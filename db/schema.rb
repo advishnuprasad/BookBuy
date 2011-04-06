@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110330093909) do
+ActiveRecord::Schema.define(:version => 20110404112924) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id",    :precision => 38, :scale => 0
@@ -20,17 +20,11 @@ ActiveRecord::Schema.define(:version => 20110330093909) do
     t.datetime "updated_at"
   end
 
-  create_table "authors", :id => false, :force => true do |t|
-    t.integer "id",   :limit => 10,  :precision => 10, :scale => 0
-    t.string  "name", :limit => 101
-  end
-
   create_table "enrichedtitle_versions", :force => true do |t|
     t.integer  "enrichedtitle_id", :precision => 38, :scale => 0
     t.integer  "version",          :precision => 38, :scale => 0
     t.integer  "title_id",         :precision => 38, :scale => 0
     t.string   "title"
-    t.integer  "author_id",        :precision => 38, :scale => 0
     t.integer  "publisher_id",     :precision => 38, :scale => 0
     t.string   "isbn"
     t.string   "language"
@@ -40,6 +34,8 @@ ActiveRecord::Schema.define(:version => 20110330093909) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "verified"
+    t.string   "author"
+    t.string   "isbnvalid"
   end
 
   add_index "enrichedtitle_versions", ["enrichedtitle_id"], :name => "i_enr_ver_enr_id"
@@ -47,7 +43,6 @@ ActiveRecord::Schema.define(:version => 20110330093909) do
   create_table "enrichedtitles", :force => true do |t|
     t.integer  "title_id",     :precision => 38, :scale => 0
     t.string   "title"
-    t.integer  "author_id",    :precision => 38, :scale => 0
     t.integer  "publisher_id", :precision => 38, :scale => 0
     t.string   "isbn"
     t.string   "language"
@@ -58,6 +53,8 @@ ActiveRecord::Schema.define(:version => 20110330093909) do
     t.datetime "updated_at"
     t.integer  "version",      :precision => 38, :scale => 0
     t.string   "verified"
+    t.string   "author"
+    t.string   "isbnvalid"
   end
 
   create_table "procurementitems", :force => true do |t|
@@ -82,11 +79,14 @@ ActiveRecord::Schema.define(:version => 20110330093909) do
     t.datetime "updated_at"
   end
 
-  create_table "publishers", :id => false, :force => true do |t|
-    t.integer "id",      :limit => nil, :null => false
-    t.string  "name",    :limit => 100
-    t.string  "country", :limit => 100
+  create_table "publishers", :force => true do |t|
+    t.string   "code"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
+
+  add_index "publishers", ["code"], :name => "index_publishers_on_code", :unique => true
 
   create_table "publisherxrefs", :force => true do |t|
     t.integer  "isbnpublishercode", :precision => 38, :scale => 0

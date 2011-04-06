@@ -3,6 +3,7 @@ BookBuy::Application.routes.draw do
 
   match '/dashboard' => 'dashboard#show'
 
+  match 'worklist_save_items_with_invalid_isbn'             => 'worklists#save_items_with_invalid_isbn'
   match 'worklist_save_items_with_no_supplier_data'         => 'worklists#save_items_with_no_supplier_data'
   match 'worklist_save_items_with_details_not_enriched'     => 'worklists#save_items_with_details_not_enriched'
   match 'worklist_save_items_with_po_not_generated'         => 'worklists#save_items_with_po_not_generated'

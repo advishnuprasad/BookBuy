@@ -1,14 +1,18 @@
 # == Schema Information
-# Schema version: 20110316070023
+# Schema version: 20110404112924
 #
 # Table name: publishers
 #
-#  id      :integer         not null, primary key
-#  name    :string(100)
-#  country :string(100)
+#  id         :integer(38)     not null, primary key
+#  code       :string(255)
+#  name       :string(255)
+#  created_at :datetime
+#  updated_at :datetime
 #
 
 class Publisher < ActiveRecord::Base
+  named_scope :with_names, :conditions => ["name IS NOT NULL"]
+  
   has_many :supplierdiscounts
   has_many :suppliers, :through => :supplierdiscounts
 end

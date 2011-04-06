@@ -36,12 +36,18 @@
                     <% @worklist.workitems.each do |workitem| %>
                       <tr class="ui-widget-content jqgrow ui-row-ltr" role="row">
                         <td aria-describedby="col_TitleID" role="gridcell" style="width: 5%;"><%= workitem.referenceitem.id %></td>
-                        <td aria-describedby="col_Title" role="gridcell" style="width: 35%;"><%= tag(:input, {:dataid => workitem.referenceitem.id, :type => 'text', :datatitle => workitem.referenceitem.enrichedtitle.title, :value => workitem.referenceitem.enrichedtitle.title }, false, false)  %></td>
-                        <td aria-describedby="col_Author" role="gridcell" style="width: 15%;"><%= tag(:input, {:dataid => workitem.referenceitem.id, :type => 'text', :dataauthor => workitem.referenceitem.enrichedtitle.author.name, :value => workitem.referenceitem.enrichedtitle.author.name }, false, false) %></td>
-                        <td aria-describedby="col_Publisher" role="gridcell" style="width: 20%;"><%= tag(:input, {:dataid => workitem.referenceitem.id, :type => 'text', :datatitle => workitem.referenceitem.enrichedtitle.publisher.name, :value => workitem.referenceitem.enrichedtitle.publisher.name }, false, false) %></td>
-                        <td aria-describedby="col_ISBN" role="gridcell" style="width: 20%;"><%= tag(:input, {:dataid => workitem.referenceitem.id, :type => 'text', :datatitle => workitem.referenceitem.isbn, :value => workitem.referenceitem.isbn }, false, false) %></td>
+                        <td aria-describedby="col_Title" role="gridcell" style="width: 35%;"><%= tag(:input, {:class => 'input_title', :dataid => workitem.referenceitem.id, :type => 'text', :size => 35, :datatitle => format_for_html(workitem.referenceitem.enrichedtitle.title), :value => format_for_html(workitem.referenceitem.enrichedtitle.title) }, false, false)  %></td>
+                        <td aria-describedby="col_Author" role="gridcell" style="width: 15%;"><%= tag(:input, {:class => 'input_author', :dataid => workitem.referenceitem.id, :type => 'text', :size => 15, :dataauthor => workitem.referenceitem.enrichedtitle.author, :value => workitem.referenceitem.enrichedtitle.author }, false, false) %></td>
+                        <td aria-describedby="col_Publisher" role="gridcell" style="width: 20%;">
+                          <% if workitem.referenceitem.enrichedtitle.publisher.name.nil?%>
+                            <%= tag(:input, {:class => 'input_publisher', :dataid => workitem.referenceitem.id, :type => 'text', :size => 15, :datapublisher => workitem.referenceitem.enrichedtitle.publisher.name, :value => workitem.referenceitem.enrichedtitle.publisher.code }, false, false) %>
+                          <% else %>
+                            <%= select_tag "publishers", options_from_collection_for_select(Publisher.with_names.all, 'id', 'name', workitem.referenceitem.enrichedtitle.publisher_id), {:class => 'publisher'} %>
+                          <% end %>
+                        </td>
+                        <td aria-describedby="col_ISBN" role="gridcell" style="width: 20%;"><%= workitem.referenceitem.isbn %></td>
                         <td aria-describedby="col_Verified" role="gridcell" style="width: 5%;">
-                          <%= check_box_tag "verfied", workitem.referenceitem.enrichedtitle.verified , workitem.referenceitem.enrichedtitle.verified == 'Y' ? true : false, {:dataid => workitem.referenceitem.id, :dataverified => workitem.referenceitem.enrichedtitle.verified.nil? ? 'N' : workitem.referenceitem.enrichedtitle.verified } %>
+                          <%= check_box_tag "verified", workitem.referenceitem.enrichedtitle.verified , workitem.referenceitem.enrichedtitle.verified == 'Y' ? true : false, {:class => 'input_verified', :dataid => workitem.referenceitem.id, :dataverified => workitem.referenceitem.enrichedtitle.verified.nil? ? 'N' : workitem.referenceitem.enrichedtitle.verified } %>
                         </td>
                       </tr>
                     <% end %>

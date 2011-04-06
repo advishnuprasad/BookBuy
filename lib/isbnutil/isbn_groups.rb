@@ -2,10 +2,6 @@ require 'enumeration.rb'
 
 module Isbnutil
   class IsbnGroups < Enumeration
-    self.add_item "1", {
-      "name" => "English speaking area",
-      "ranges" => [["00", "19"], ["200", "699"], ["7000", "8499"], ["85000", "89999"], ["900000", "949999"], ["9500000", "9999999"]]
-    }
     self.add_item "0", {
       "name" => "English speaking area",
       "ranges" => [["00", "19"], ["200", "699"], ["7000", "8499"], ["85000", "89999"], ["900000", "949999"], ["9500000", "9999999"]]
