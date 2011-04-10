@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110404112924
+# Schema version: 20110407131609
 #
 # Table name: enrichedtitles
 #
@@ -18,6 +18,8 @@
 #  verified     :string(255)
 #  author       :string(255)
 #  isbnvalid    :string(255)
+#  listprice    :decimal(, )
+#  currency     :string(255)
 #
 
 require 'isbnutil/isbn.rb'
@@ -31,34 +33,53 @@ class Enrichedtitle < ActiveRecord::Base
   
   def self.scan
     Enrichedtitle.unscanned.each do |title|
-      #ISBN validity
       if title.isbn.nil?
         title.isbnvalid = 'N'
+        title.save
       else
-        isbn = Isbnutil::Isbn.parse(title.isbn, nil)
-        if isbn
-          title.isbnvalid = 'Y'
-          
-          #Publisher entry
-          if !isbn.publisher.nil?
-            pub = Publisher.find_by_code(isbn.group + '-' + isbn.publisher)
-            if pub.nil?
-              pub = Publisher.new
-              pub.code = isbn.group + '-' + isbn.publisher
-              puts pub.code
-              pub.save
-            end
-            title.publisher_id = pub.id
-          end
-        else
-          title.isbnvalid = 'N'
-        end
-      end
-      
-      if !title.save
-        puts title.errors
+        validate(title.id, title.isbn)
       end
     end
     return nil
+  end
+  
+  def self.validate(id, isbn)
+    title = Enrichedtitle.find(id)
+    unless title.nil?
+      #ISBN validity
+      isbn = Isbnutil::Isbn.parse(title.isbn, nil)
+      if isbn
+        title.isbnvalid = 'Y'
+        
+        #Publisher entry
+        unless isbn.publisher.nil?
+          pub = Publisher.find_by_code(isbn.group + '-' + isbn.publisher)
+          if pub.nil?
+            pub = Publisher.new
+            pub.code = isbn.group + '-' + isbn.publisher
+            pub.save
+          end
+          title.publisher_id = pub.id
+        end
+        
+        #ISBN 13 generation
+        if isbn.isIsbn10
+          title.isbn10 = isbn.asIsbn10.gsub(/-/,'')
+          title.isbn = isbn.asIsbn13.gsub(/-/,'')
+        end
+      else
+        title.isbnvalid = 'N'
+      end
+      
+      puts "title.changed? - " + title.changed?
+      if title.changed?
+        if title.save
+          return true
+        else
+          puts "Errors - " + title.errors
+          return false
+        end
+      end
+    end
   end
 end

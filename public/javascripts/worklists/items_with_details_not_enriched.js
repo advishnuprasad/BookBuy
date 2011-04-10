@@ -35,7 +35,6 @@ $("#items .input_verified").live("change",function(event) {
             changedCells[$(this).attr('dataid')]["id"] = $(this).attr('dataid');
             changedCells[$(this).attr('dataid')]["verified"] = val;
         }
-        alert(changedCells.toSource());
     }
     else
         if(changedCells[$(this).attr('dataid')])
@@ -52,7 +51,6 @@ $("#items .input_author").live("change",function(event) {
             changedCells[$(this).attr('dataid')]["id"] = $(this).attr('dataid');
             changedCells[$(this).attr('dataid')]["author"] = this.value;
         }
-        alert(changedCells.toSource());
     }
     else
         if(changedCells[$(this).attr('dataid')])
@@ -69,7 +67,6 @@ $("#items .input_publisher").live("change",function(event) {
             changedCells[$(this).attr('dataid')]["id"] = $(this).attr('dataid');
             changedCells[$(this).attr('dataid')]["publisher"] = this.value;
         }
-        alert(changedCells.toSource());
     }
     else
         if(changedCells[$(this).attr('dataid')])
@@ -86,9 +83,24 @@ $("#items .input_title").live("change",function(event) {
             changedCells[$(this).attr('dataid')]["id"] = $(this).attr('dataid');
             changedCells[$(this).attr('dataid')]["title"] = this.value;
         }
-        alert(changedCells.toSource());
     }
     else
         if(changedCells[$(this).attr('dataid')])
             delete changedCells[$(this).attr('dataid')]["title"];
+});
+
+$("#items .input_price").live("change",function(event) {
+    if($(this).attr('dataprice') != this.value) {
+        if(changedCells[$(this).attr('dataid')]) {
+            changedCells[$(this).attr('dataid')]["price"] = this.value;
+        }
+        else {
+            changedCells[$(this).attr('dataid')] = {}
+            changedCells[$(this).attr('dataid')]["id"] = $(this).attr('dataid');
+            changedCells[$(this).attr('dataid')]["price"] = this.value;
+        }
+    }
+    else
+        if(changedCells[$(this).attr('dataid')])
+            delete changedCells[$(this).attr('dataid')]["price"];
 });

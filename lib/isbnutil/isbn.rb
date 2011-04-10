@@ -88,6 +88,7 @@ module Isbnutil
       
       def splitToArray(isbn, groups)
         detail = _getGroupRecord(isbn, groups)
+
         if detail.nil?
           return nil
         end
@@ -115,7 +116,7 @@ module Isbnutil
       def _getGroupRecord(isbn, groups)
         groups.each do |group|
           if isbn.match('^' + group + '(.+)')
-            return {"group" => group, "record" => groups[group.to_i], "rest" => $1}
+            return {"group" => group, "record" => groups[groups.find_index(group)], "rest" => $1}
           end
         end
       end

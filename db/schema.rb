@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110404112924) do
+ActiveRecord::Schema.define(:version => 20110410134111) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id",    :precision => 38, :scale => 0
@@ -18,6 +18,18 @@ ActiveRecord::Schema.define(:version => 20110404112924) do
     t.string   "uid"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "corelist", :primary_key => "isbn", :force => true do |t|
+    t.string  "title"
+    t.string  "author"
+    t.string  "publisher"
+    t.decimal "publishercode"
+    t.decimal "price"
+    t.string  "currency",      :limit => 30
+    t.string  "category"
+    t.string  "subcategory"
+    t.decimal "qty"
   end
 
   create_table "enrichedtitle_versions", :force => true do |t|
@@ -36,6 +48,8 @@ ActiveRecord::Schema.define(:version => 20110404112924) do
     t.string   "verified"
     t.string   "author"
     t.string   "isbnvalid"
+    t.decimal  "listprice"
+    t.string   "currency"
   end
 
   add_index "enrichedtitle_versions", ["enrichedtitle_id"], :name => "i_enr_ver_enr_id"
@@ -55,6 +69,42 @@ ActiveRecord::Schema.define(:version => 20110404112924) do
     t.string   "verified"
     t.string   "author"
     t.string   "isbnvalid"
+    t.decimal  "listprice"
+    t.string   "currency"
+  end
+
+  create_table "enrichedtitles_bkp", :id => false, :force => true do |t|
+    t.integer  "id",           :precision => 38, :scale => 0, :null => false
+    t.integer  "title_id",     :precision => 38, :scale => 0
+    t.string   "title"
+    t.integer  "publisher_id", :precision => 38, :scale => 0
+    t.string   "isbn"
+    t.string   "language"
+    t.string   "category"
+    t.string   "subcategory"
+    t.string   "isbn10"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "version",      :precision => 38, :scale => 0
+    t.string   "verified"
+    t.string   "author"
+    t.string   "isbnvalid"
+    t.decimal  "listprice"
+    t.string   "currency"
+  end
+
+  create_table "pos", :force => true do |t|
+    t.string   "number"
+    t.integer  "supplier_id", :precision => 38, :scale => 0
+    t.integer  "branch_id",   :precision => 38, :scale => 0
+    t.datetime "raised_on"
+    t.integer  "titles_cnt",  :precision => 38, :scale => 0
+    t.integer  "copies_cnt",  :precision => 38, :scale => 0
+    t.string   "status"
+    t.string   "user"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.decimal  "discount"
   end
 
   create_table "procurementitems", :force => true do |t|
@@ -69,21 +119,22 @@ ActiveRecord::Schema.define(:version => 20110404112924) do
     t.integer  "deferred_by",      :precision => 38, :scale => 0
     t.datetime "last_action_date"
     t.integer  "supplier_id",      :precision => 38, :scale => 0
-    t.string   "avl_status"
-    t.integer  "avl_quantity",     :precision => 38, :scale => 0
     t.datetime "expiry_date"
     t.integer  "member_id",        :precision => 38, :scale => 0
     t.string   "card_id"
     t.integer  "branch_id",        :precision => 38, :scale => 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "quantity",         :precision => 38, :scale => 0
   end
 
   create_table "publishers", :force => true do |t|
     t.string   "code"
-    t.string   "name"
+    t.string   "imprintname"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "group_id",      :precision => 38, :scale => 0
+    t.string   "publishername"
   end
 
   add_index "publishers", ["code"], :name => "index_publishers_on_code", :unique => true

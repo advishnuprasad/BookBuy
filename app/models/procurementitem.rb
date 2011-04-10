@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110316070023
+# Schema version: 20110408050020
 #
 # Table name: procurementitems
 #
@@ -15,14 +15,13 @@
 #  deferred_by      :integer(38)
 #  last_action_date :datetime
 #  supplier_id      :integer(38)
-#  avl_status       :string(255)
-#  avl_quantity     :integer(38)
 #  expiry_date      :datetime
 #  member_id        :integer(38)
 #  card_id          :string(255)
 #  branch_id        :integer(38)
 #  created_at       :datetime
 #  updated_at       :datetime
+#  quantity         :integer(38)
 #
 
 class Procurementitem < ActiveRecord::Base

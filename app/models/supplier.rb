@@ -14,6 +14,7 @@
 #
 
 class Supplier < ActiveRecord::Base
+  attr_accessible :publisher_ids
   has_many :supplierdiscounts
   has_many :publishers, :through => :supplierdiscounts
 end

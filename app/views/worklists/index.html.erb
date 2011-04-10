@@ -8,8 +8,9 @@
           <tr>
             <td style="width: 10%;"><%= link_to worklist.id, worklist_path(worklist.id) %></td>            
             <td style="width: 40%;"><%= worklist.description %></td>
-            <td style="width: 20%;"><%= worklist.status %></td>
-            <td style="width: 30%;"><%= worklist.created_at.strftime('%d-%b-%Y') %></td>
+            <td style="width: 30%;"><%= worklist.workitems.count %> Items</td>
+            <td style="width: 10%;"><%= worklist.status %></td>
+            <td style="width: 10%;"><%= worklist.created_at.strftime('%d-%b-%Y') %></td>
           </tr>
         </table>
       </div>
