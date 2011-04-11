@@ -13,7 +13,6 @@ gem 'rufus-scheduler'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 #oracle
-gem 'ruby-oci8'
 gem 'activerecord-oracle_enhanced-adapter'
 
 group :development do
