@@ -41,7 +41,6 @@ class Procurementitem < ActiveRecord::Base
     
     worklist = Worklist.find(worklist_id)
     worklist.workitems.each do |item|
-      #Branch???
       po_items[item.supplier_id] = po_items[item.supplier_id].push(item.referenceitem.id)
     end
     
@@ -60,9 +59,11 @@ class Procurementitem < ActiveRecord::Base
       Procurementitem.update_all({ :po_number => po.number },{ :id => po_items[supplier_id]})
       
       #Commit PO in Intermediate mode
-      po.status = 'U'
+      po.status = 'G'
       #po.user = <>
-      po.save
+      unless po.save
+        puts po.errors
+      end
     end
   end
 end

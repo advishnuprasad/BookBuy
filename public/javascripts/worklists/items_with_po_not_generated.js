@@ -12,8 +12,7 @@ function saveItems() {
     dataValue["data"] = changedCellsHash;
     dataValue["id"] = getWorklistID();
     
-    alert(dataValue.toSource());
-    jQuery.post('/worklist_save_items_with_no_supplier_data',dataValue);
+    jQuery.post('/worklist_save_items_with_po_not_generated',dataValue);
     clearChangedCells();
 }
 
@@ -39,7 +38,6 @@ $("#items input").live("change",function(event) {
     else
         if(changedCells[this.id])
             delete changedCells[this.id]["quantity"];
-    alert(changedCells.toSource());
 });
 
 $("#items .select_supplier").live("change",function(event) {
@@ -52,7 +50,6 @@ $("#items .select_supplier").live("change",function(event) {
             changedCells[$(this).attr('datasuppid')]["id"] = $(this).attr('datasuppid');
             changedCells[$(this).attr('datasuppid')]["supplier_id"] = this.value;
         }
-        alert(changedCells.toSource());
     }
     else
         if(changedCells[$(this).attr('datasuppid')])

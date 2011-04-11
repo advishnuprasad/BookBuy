@@ -202,7 +202,7 @@ SELECT publisherid, PONUMBER, COUNT(*)
         GROUP BY publisherid, PONUMBER
         HAVING COUNT(*) > 1
         
-SELECT a.* FROM procurementitems A, enrichedtitles b
+SELECT count(*) FROM procurementitems A, enrichedtitles b
       WHERE
       A.enrichedtitle_id = b.ID
       AND
