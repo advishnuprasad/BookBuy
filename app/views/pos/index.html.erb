@@ -1,2 +1,21 @@
-<h1>Pos#index</h1>
-<p>Find me in app/views/pos/index.html.erb</p>
+<div>Purchase Orders</div>
+<div>
+  <% if @pos %>
+    <%= will_paginate :prev_label => '<< Previous', :next_label => 'Next >>', :class => 'pagination'%>
+      <% @pos.each do |po| %>
+        <div class="ui-widget-content ui-corner-all list-item-row">
+          <table style="width: 100%;">
+            <tr>
+              <td style="width: 10%;"><%= link_to po.id, po_path(worklist.id) %></td>            
+              <td style="width: 40%;"><%= po.supplier.name %></td>
+              <td style="width: 30%;"><%= po.branch_id %></td>
+              <td style="width: 10%;"><%= po.status %></td>
+              <td style="width: 10%;"><%= po.created_at.strftime('%d-%b-%Y') %></td>
+            </tr>
+          </table>
+        </div>
+      <% end %>
+    <%= will_paginate %>
+  <% end %>
+</div>
+

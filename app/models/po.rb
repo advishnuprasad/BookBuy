@@ -18,4 +18,20 @@
 #
 
 class Po < ActiveRecord::Base
+  belongs_to :supplier
+  has_many :procurementitems, :inverse_of => "po"
+  
+  #Type Codes
+    #New Branch
+    #Member IBT
+    #Branch IBT
+    
+  def initialize(type)
+    #Initialization should fix the new PO Number
+  end
+  
+  def self.generatePONumber
+    #Fix unique type codes for different kinds of POs as Constants
+    #Format can be <Code>-<YYYYMMDDMM>-<NNNN>
+  end
 end

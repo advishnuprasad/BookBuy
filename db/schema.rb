@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110410134111) do
+ActiveRecord::Schema.define(:version => 20110411064425) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id",    :precision => 38, :scale => 0
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(:version => 20110410134111) do
     t.string  "category"
     t.string  "subcategory"
     t.decimal "qty"
+    t.decimal "branchid"
   end
 
   create_table "enrichedtitle_versions", :force => true do |t|
@@ -50,6 +51,7 @@ ActiveRecord::Schema.define(:version => 20110410134111) do
     t.string   "isbnvalid"
     t.decimal  "listprice"
     t.string   "currency"
+    t.string   "enriched"
   end
 
   add_index "enrichedtitle_versions", ["enrichedtitle_id"], :name => "i_enr_ver_enr_id"
@@ -71,6 +73,7 @@ ActiveRecord::Schema.define(:version => 20110410134111) do
     t.string   "isbnvalid"
     t.decimal  "listprice"
     t.string   "currency"
+    t.string   "enriched"
   end
 
   create_table "enrichedtitles_bkp", :id => false, :force => true do |t|

@@ -36,6 +36,10 @@ select {
     font-size: 9px
 }
 
+.select_supplier {
+    width: 100px
+}
+
 input {
     font-size: 9px
 }

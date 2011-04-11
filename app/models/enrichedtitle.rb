@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110407131609
+# Schema version: 20110411064425
 #
 # Table name: enrichedtitles
 #
@@ -20,6 +20,7 @@
 #  isbnvalid    :string(255)
 #  listprice    :decimal(, )
 #  currency     :string(255)
+#  enriched     :string(255)
 #
 
 require 'isbnutil/isbn.rb'
@@ -32,7 +33,7 @@ class Enrichedtitle < ActiveRecord::Base
   named_scope :unscanned, :conditions => ["isbnvalid IS NULL"]
   
   def self.scan
-    Enrichedtitle.unscanned.each do |title|
+    Enrichedtitle.unscanned.limit(1000).each do |title|
       if title.isbn.nil?
         title.isbnvalid = 'N'
         title.save
@@ -71,7 +72,6 @@ class Enrichedtitle < ActiveRecord::Base
         title.isbnvalid = 'N'
       end
       
-      puts "title.changed? - " + title.changed?
       if title.changed?
         if title.save
           return true
@@ -82,4 +82,5 @@ class Enrichedtitle < ActiveRecord::Base
       end
     end
   end
+  
 end

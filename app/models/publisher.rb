@@ -13,7 +13,7 @@
 #
 
 class Publisher < ActiveRecord::Base
-  named_scope :with_names, :conditions => ["name IS NOT NULL"]
+  named_scope :with_names, :conditions => ["publishername IS NOT NULL"]
   
   has_many :supplierdiscounts
   has_many :suppliers, :through => :supplierdiscounts

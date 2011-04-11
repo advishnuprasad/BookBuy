@@ -2,6 +2,6 @@ require 'rufus/scheduler'
 
 scheduler = Rufus::Scheduler.start_new
 
-scheduler.cron("5 * * * * *") do
+scheduler.every("1m") do
   Enrichedtitle.scan
 end 

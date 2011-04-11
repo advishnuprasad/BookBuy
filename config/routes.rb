@@ -1,15 +1,8 @@
 BookBuy::Application.routes.draw do
-  get "pos/index"
-
-  get "pos/show"
-
-  get "pos/new"
-
-  get "pos/create"
-
   resources :worklists
   resources :publishers
   resources :suppliers
+  resources :pos
 
   match '/dashboard' => 'dashboard#show'
 

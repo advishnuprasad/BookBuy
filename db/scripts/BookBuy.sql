@@ -64,7 +64,9 @@ delete from enrichedtitles;
 delete from enrichedtitle_versions;
 delete from worklists;
 DELETE FROM workitems;
-delete from publishers;
+DELETE FROM publishers;
+delete from suppliers;
+delete from supplierdiscounts;
 commit;
 
 --Counts
@@ -73,7 +75,9 @@ SELECT COUNT(*) from enrichedtitles;
 SELECT COUNT(*) FROM ENRICHEDTITLE_VERSIONS;
 SELECT count(*) FROM worklists;
 SELECT count(*) FROM workitems;
-select count(*) from publishers;
+SELECT count(*) FROM publishers;
+SELECT count(*) FROM suppliers;
+SELECT count(*) FROM supplierdiscounts;
 
 /* Procurement Items */
 SELECT * FROM procurementitems
@@ -87,20 +91,24 @@ SELECT b.title, b.isbn, c.name "Author", d.name "Publisher" FROM procurementitem
   b.publisher_id not in (select publisher_id from supplierdiscounts)
 select * from procurementitems where avl_quantity is not null
 SELECT count(*) FROM procurementitems
-select * from procurementitems where id in (SELECT ref_id FROM workitems WHERE  worklist_id = 10084)
+SELECT * FROM procurementitems WHERE ID IN (SELECT ref_id FROM workitems WHERE  worklist_id = 10084)
+SELECT supplier_id, name, count(*) FROM procurementitems A, suppliers b 
+WHERE A.supplier_id = b.ID
+group by supplier_id, name
 DELETE from procurementitems
 
 /* Enriched Titles */
 SELECT * FROM enrichedtitles
 SELECT * FROM enrichedtitles WHERE isbnvalid='Y'
-select * from enrichedtitles where id=10720
+select * from enrichedtitles where id=147802
 SELECT * FROM enrichedtitles WHERE author_id NOT IN (SELECT ID FROM authors)
 select * from enrichedtitles where publisher_id not in (select id from publishers)
 SELECT * FROM enrichedtitles WHERE title_id=134411
 SELECT * FROM enrichedtitles WHERE isbn LIKE '%55277%'
-SELECT * FROM enrichedtitles WHERE title_id IS NOT NULL
+SELECT isbn,title_id FROM enrichedtitles WHERE title_id IS NOT NULL
 update enrichedtitles set isbnvalid=null where isbnvalid='N'
-select count(*) from enrichedtitles
+SELECT count(*) FROM enrichedtitles
+select count(*) from enrichedtitles where title_id is null
 select count(*) from enriched_title_versions
 DELETE FROM enriched_titles
 update enrichedtitles set isbnvalid = null
@@ -127,7 +135,10 @@ select "PUBLISHERS".* from "PUBLISHERS" where ("PUBLISHERS"."ID" = 3117) and row
 /* SupplierDiscounts */
 SELECT * FROM SupplierDiscounts
 SELECT count(*) FROM SupplierDiscounts
-SELECT publisher_id, supplier_id, discount FROM SupplierDiscounts order by publisher_id, supplier_id
+SELECT publisher_id, supplier_id, discount FROM SupplierDiscounts ORDER BY publisher_id, supplier_id
+SELECT a.publisher_id, c.code, c.publishername, a.supplier_id, b.name, a.discount FROM SupplierDiscounts A, suppliers b, publishers c
+WHERE A.supplier_id = b.ID
+and a.publisher_id = c.id
 SELECT * FROM SupplierDiscounts WHERE publisher_id=690
 select * from SupplierDiscounts where supplier_id=1
 
