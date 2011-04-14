@@ -145,6 +145,7 @@ GEM
       activesupport (~> 3.0)
       railties (~> 3.0)
       rspec (~> 2.5.0)
+    ruby-oci8 (2.0.4)
     ruby-openid (2.1.8)
     ruby-openid-apps-discovery (1.2.0)
       ruby-openid (>= 2.1.7)
@@ -179,8 +180,8 @@ DEPENDENCIES
   rails (= 3.0.3)
   rspec
   rspec-rails
+  ruby-oci8
   rufus-scheduler
   spork (= 0.8.4)
   webrat (= 0.7.1)
   will_paginate (~> 3.0.pre2)
-

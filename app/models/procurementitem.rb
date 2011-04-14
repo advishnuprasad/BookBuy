@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110408050020
+# Schema version: 20110410134111
 #
 # Table name: procurementitems
 #
@@ -18,7 +18,7 @@
 #  expiry_date      :datetime
 #  member_id        :integer(38)
 #  card_id          :string(255)
-#  branch_id        :integer(38)
+#  branch_id        :integer(38)     not null
 #  created_at       :datetime
 #  updated_at       :datetime
 #  quantity         :integer(38)
@@ -35,19 +35,22 @@ class Procurementitem < ActiveRecord::Base
   
   #Assumptions
   # Branch ID is the same
-  def self.generatePOsForWorklist(worklist_id)
-    #Construct a Hash to hold items, per supplier
-    po_items = {}
-    
+  def self.generatePOFromWorklist(worklist_id)
     worklist = Worklist.find(worklist_id)
+    
+    po = Po.new
+    
     worklist.workitems.each do |item|
       po_items[item.supplier_id] = po_items[item.supplier_id].push(item.referenceitem.id)
+    end
+    
+    worklist.each do |worklist|
     end
     
     #Loop through Hash items
     po_items.each do|supplier_id, items|
       #Create PO Master entry - Generate new PO Number
-      po = Po.new
+      
       po.number = Po.generatePONumber
       po.supplier_id = supplier_id
       #po.branch_id = <>

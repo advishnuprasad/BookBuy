@@ -1,9 +1,10 @@
 # == Schema Information
-# Schema version: 20110316070023
+# Schema version: 20110410134111
 #
 # Table name: users
 #
 #  id                   :integer(38)     not null, primary key
+#  username             :string(255)
 #  email                :string(255)     default(""), not null
 #  encrypted_password   :string(128)     default("")
 #  password_salt        :string(255)     default("")
@@ -17,7 +18,6 @@
 #  last_sign_in_ip      :string(255)
 #  created_at           :datetime
 #  updated_at           :datetime
-#  username             :string(255)
 #
 
 class User < ActiveRecord::Base

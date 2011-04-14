@@ -3,17 +3,17 @@
 development:
  adapter: oracle_enhanced
  database: XE
- username: bookbuy
- password: bookbuy
+ username: ams
+ password: ams
  
 test:
  adapter: oracle_enhanced
  database: XE
- username: bookbuy
- password: bookbuy
+ username: ams
+ password: ams
 
 production:
  adapter: oracle_enhanced
  database: XE
- username: bookbuy
- password: bookbuy
+ username: ams
+ password: ams
