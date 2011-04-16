@@ -1,0 +1,29 @@
+<% if @bookreceipt %>
+  <% if @bookreceipt.errors.any? %>
+    <div id="error_explanation">
+      <h3><%= pluralize(@bookreceipt.errors.count, "error") %> 
+          prohibited this user from being saved:</h3>
+      <p>There were problems with the following fields:</p>
+      <ul>
+      <% @bookreceipt.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<% end %>
+
+<% if @titlereceipt %>
+  <% if @titlereceipt.errors.any? %>
+    <div id="error_explanation">
+      <h3><%= pluralize(@titlereceipt.errors.count, "error") %> 
+          prohibited this user from being saved:</h3>
+      <p>There were problems with the following fields:</p>
+      <ul>
+      <% @titlereceipt.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<% end %>

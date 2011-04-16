@@ -34,7 +34,11 @@
 
 class Po < ActiveRecord::Base
   belongs_to :supplier
+  belongs_to :branch
   has_many :procurementitems, :inverse_of => "po"
+  has_many :invoices
+  
+  scope :open, where(:status => 'O')
   
   #Type Codes
     #New Branch

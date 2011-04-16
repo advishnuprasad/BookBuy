@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110410134111
+# Schema version: 20110416124717
 #
 # Table name: procurementitems
 #
@@ -10,7 +10,6 @@
 #  isbn             :string(255)
 #  status           :string(255)
 #  po_number        :string(255)
-#  book_number      :string(255)
 #  cancel_reason    :string(255)
 #  deferred_by      :integer(38)
 #  last_action_date :datetime

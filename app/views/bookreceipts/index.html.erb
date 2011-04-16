@@ -1,0 +1,22 @@
+<div>
+  <div>
+    <% if @bookreceipts %>
+      <%= will_paginate :prev_label => '<< Previous', :next_label => 'Next >>', :class => 'pagination'%>
+        <% @bookreceipts.each do |bookreceipt| %>
+          <div class="ui-widget-content ui-corner-all list-item-row">
+            <table style="width: 100%;">
+              <tr>
+                <td style="width: 10%;"><%= link_to bookreceipt.id, edit_bookreceipt_path(bookreceipt.id) %></td>
+                <td style="width: 10%;"><%= bookreceipt.book_no %></td>
+                <td style="width: 10%;"><%= bookreceipt.isbn %></td>
+                <td style="width: 20%;"><%= bookreceipt.po_no %></td>
+                <td style="width: 10%;"><%= bookreceipt.invoice_no %></td>
+                <td style="width: 10%;"><%= bookreceipt.created_at.strftime('%d-%b-%Y') %></td>
+              </tr>
+            </table>
+          </div>
+        <% end %>
+      <%= will_paginate %>
+    <% end %>
+  </div>
+</div>

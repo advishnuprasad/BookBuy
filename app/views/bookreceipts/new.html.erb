@@ -1,0 +1,19 @@
+<%= render 'shared/error_messages' %>
+<%= form_for @bookreceipt do |f| -%>
+  <p>
+    PO: <%= f.text_field :po_no %>
+  </p>
+  <p>
+    Invoice: <%= f.text_field :invoice_no %>
+  </p>
+  <p>
+    ISBN: <%= f.text_field :isbn %>
+  </p>
+  <p>
+    Book No.: <%= f.text_field :book_no %>
+  </p>
+  <p>
+    <%= f.submit "Save" %>
+    <%= f.submit "Cancel" %>
+  </p>
+<% end %>

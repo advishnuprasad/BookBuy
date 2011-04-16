@@ -6,9 +6,9 @@
         <div class="ui-widget-content ui-corner-all list-item-row">
           <table style="width: 100%;">
             <tr>
-              <td style="width: 10%;"><%= link_to po.id, po_path(worklist.id) %></td>            
-              <td style="width: 40%;"><%= po.supplier.name %></td>
-              <td style="width: 30%;"><%= po.branch_id %></td>
+              <td style="width: 20%;"><%= link_to po.code, edit_po_path(po.id) %></td>            
+              <td style="width: 20%;"><%= po.supplier.name %></td>
+              <td style="width: 20%;"><%= po.branch_id %></td>
               <td style="width: 10%;"><%= po.status %></td>
               <td style="width: 10%;"><%= po.created_at.strftime('%d-%b-%Y') %></td>
             </tr>

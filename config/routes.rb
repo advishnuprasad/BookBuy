@@ -1,8 +1,12 @@
 BookBuy::Application.routes.draw do
+
   resources :worklists
   resources :publishers
   resources :suppliers
   resources :pos
+  resources :invoices
+  resources :bookreceipts
+  resources :titlereceipts
 
   match '/dashboard' => 'dashboard#show'
 

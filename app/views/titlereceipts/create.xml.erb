@@ -1,0 +1,13 @@
+<titlereceipt>
+  <po_no><%= @titlereceipt.po_no %></po_no>
+  <invoice_no><%= @titlereceipt.invoice_no %></invoice_no>
+  <isbn><%= @titlereceipt.isbn %></isbn>
+  <box_no><%= @titlereceipt.box_no %></box_no>
+  <% if @titlereceipt.errors %>
+    <errors>
+      <% @titlereceipt.errors.full_messages.each do |msg| %>
+        <message><%= msg %></message>
+      <% end %>
+    </errors>
+  <% end %>
+</titlereceipt>

@@ -1,0 +1,23 @@
+<div>Invoices</div>
+<div>
+  <% if @invoices %>
+    <%= will_paginate :prev_label => '<< Previous', :next_label => 'Next >>', :class => 'pagination'%>
+      <% @invoices.each do |invoice| %>
+        <div class="ui-widget-content ui-corner-all list-item-row">
+          <table style="width: 100%;">
+            <tr>
+              <td style="width: 15%;"><%= link_to invoice.invoice_no, invoice_path(invoice.id) %></td>            
+              <td style="width: 15%;"><%= invoice.po.code %></td>
+              <td style="width: 20%;"><%= invoice.po.supplier.name %></td>
+              <td style="width: 10%;"><%= invoice.quantity %></td>
+              <td style="width: 10%;"><%= invoice.amount %></td>
+              <td style="width: 10%;"><%= invoice.boxes_cnt %></td>
+              <td style="width: 10%;"><%= invoice.created_at.strftime('%d-%b-%Y') %></td>
+            </tr>
+          </table>
+        </div>
+      <% end %>
+    <%= will_paginate %>
+  <% end %>
+</div>
+
