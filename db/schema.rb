@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110417061158) do
+ActiveRecord::Schema.define(:version => 20110417114610) do
 
   create_table "bookreceipts", :force => true do |t|
     t.string   "book_no"
@@ -146,17 +146,17 @@ ActiveRecord::Schema.define(:version => 20110417061158) do
 
   create_table "pos", :force => true do |t|
     t.string   "code"
-    t.integer  "supplier_id",                 :precision => 38, :scale => 0
-    t.integer  "branch_id",                   :precision => 38, :scale => 0
+    t.integer  "supplier_id",                   :precision => 38, :scale => 0
+    t.integer  "branch_id",                     :precision => 38, :scale => 0
     t.datetime "raised_on"
-    t.integer  "titles_cnt",                  :precision => 38, :scale => 0
-    t.integer  "copies_cnt",                  :precision => 38, :scale => 0
+    t.integer  "titles_cnt",                    :precision => 38, :scale => 0
+    t.integer  "copies_cnt",                    :precision => 38, :scale => 0
     t.string   "status"
     t.string   "user"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "discount",                    :precision => 38, :scale => 0
-    t.integer  "publisher_id", :limit => nil
+    t.integer  "discount",                      :precision => 38, :scale => 0
+    t.integer  "publisher_id",   :limit => nil
     t.string   "typeofpo"
     t.decimal  "convrate"
     t.decimal  "grossamt"
@@ -171,6 +171,7 @@ ActiveRecord::Schema.define(:version => 20110417061158) do
     t.datetime "payby3"
     t.decimal  "payableamt3"
     t.string   "narration"
+    t.integer  "invoices_count",                :precision => 38, :scale => 0
   end
 
   create_table "procurementitemes_bkp2", :id => false, :force => true do |t|

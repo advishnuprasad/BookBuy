@@ -1,35 +1,36 @@
 # == Schema Information
-# Schema version: 20110410134111
+# Schema version: 20110417114610
 #
 # Table name: pos
 #
-#  id           :integer(38)     not null, primary key
-#  code         :string(255)
-#  supplier_id  :integer(38)
-#  branch_id    :integer(38)
-#  raised_on    :datetime
-#  titles_cnt   :integer(38)
-#  copies_cnt   :integer(38)
-#  status       :string(255)
-#  user         :string(255)
-#  created_at   :datetime
-#  updated_at   :datetime
-#  discount     :integer(38)
-#  publisher_id :integer
-#  typeofpo     :string(255)
-#  convrate     :decimal(, )
-#  grossamt     :decimal(, )
-#  netamt       :decimal(, )
-#  orgunit      :decimal(, )
-#  suborgunit   :decimal(, )
-#  expensehead  :decimal(, )
-#  payby1       :datetime
-#  payableamt1  :decimal(, )
-#  payby2       :datetime
-#  payableamt2  :decimal(, )
-#  payby3       :datetime
-#  payableamt3  :decimal(, )
-#  narration    :string(255)
+#  id             :integer(38)     not null, primary key
+#  code           :string(255)
+#  supplier_id    :integer(38)
+#  branch_id      :integer(38)
+#  raised_on      :datetime
+#  titles_cnt     :integer(38)
+#  copies_cnt     :integer(38)
+#  status         :string(255)
+#  user           :string(255)
+#  created_at     :datetime
+#  updated_at     :datetime
+#  discount       :integer(38)
+#  publisher_id   :integer
+#  typeofpo       :string(255)
+#  convrate       :decimal(, )
+#  grossamt       :decimal(, )
+#  netamt         :decimal(, )
+#  orgunit        :decimal(, )
+#  suborgunit     :decimal(, )
+#  expensehead    :decimal(, )
+#  payby1         :datetime
+#  payableamt1    :decimal(, )
+#  payby2         :datetime
+#  payableamt2    :decimal(, )
+#  payby3         :datetime
+#  payableamt3    :decimal(, )
+#  narration      :string(255)
+#  invoices_count :integer(38)
 #
 
 class Po < ActiveRecord::Base
@@ -38,7 +39,8 @@ class Po < ActiveRecord::Base
   has_many :procurementitems, :inverse_of => "po"
   has_many :invoices
   
-  scope :open, where(:status => 'O')
+  scope :open_pos, where(:status => 'O')
+  scope :pos_with_invoices, where("invoices_count > ?",0)
   
   #Type Codes
     #New Branch

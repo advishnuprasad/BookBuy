@@ -1,0 +1,9 @@
+<%= form_for @crate, :url => { :action => "new_with_po" } do |f| %>
+  <p>
+    PO No: <%= f.collection_select(:po_no, Po.pos_with_invoices, :code, :code, {:include_blank => 'Select PO No.'} ) %>
+  </p>
+  <p>
+    <%= f.submit "Fetch Invoices" %>
+    <%= f.submit "Cancel" %>
+  </p>
+<% end %>

@@ -18,7 +18,7 @@ require 'barby'
 require 'barby/outputter/png_outputter'
 
 class Invoice < ActiveRecord::Base
-  belongs_to :po
+  belongs_to :po, :counter_cache => true
   after_create :generate_barcodes
   
   def formatted_po_name

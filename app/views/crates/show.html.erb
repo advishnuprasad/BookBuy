@@ -1,0 +1,23 @@
+<script type="text/javascript">
+  function setPrinterDiv(id){
+    document.getElementById(id).style.display = 'block';
+
+    $('#barcode').printElement({
+      overrideElementCSS:['print.css', { href:'print.css', media:'print'}],
+      leaveOpen:true,
+      printMode:'popup'
+    });
+}
+</script>
+<div class='span-10'>
+  <p>PO No.:<%= @crate.po_no %></p>
+  <p>Invoice No.:<%= @crate.invoice_no %></p>
+  <p>Crate No.:<%= @crate.id %> </p>
+  <p>Total Count:<%= @crate.total_cnt %></p>
+</div>
+<div class='span-10' id='barcode'>
+  <p>PO: <%= image_tag(@crate.formatted_po_file_name + ".png") %> </p>
+  <p>Invoice: <%= image_tag(@crate.formatted_invoice_name + ".png") %> </p>
+  <p>Crate: <%= image_tag(@crate.formatted_crate_file_name + ".png") %> </p>
+</div>
+<%= button_to_function 'Print Barcodes', "setPrinterDiv('barcode')" %> 

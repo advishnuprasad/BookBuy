@@ -1,0 +1,2 @@
+module CratesHelper
+end

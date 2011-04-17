@@ -1,5 +1,6 @@
 module InvoicesHelper
-  def fetch_open_pos
-    Po.open
+  def invoices_of(po_no)
+    po = Po.find(po_no)
+    return po.invoices
   end
 end

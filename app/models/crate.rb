@@ -16,14 +16,43 @@ class Crate < ActiveRecord::Base
   
   has_many :boxes
   
-  def self.fill_crates
-    #Find boxes which have not been assigned
-    boxes = Box.unassigned
-    
-    #Find total count of books in un-assigned boxes by PO-Invoice
-    boxes.each do |box|
-    end
-    
-    #Create entries for Crate and update crate_id in Boxes
+  after_create :generate_barcodes
+  
+  def formatted_po_name
+    po_no[0..po_no.index('/',5)-1]
   end
+  
+  def formatted_po_file_name
+    po_no[0..po_no.index('/',5)-1].gsub(/\//,'_')
+  end
+  
+  def formatted_invoice_name
+    invoice_no.gsub(/\//,'_')
+  end
+  
+  def formatted_crate_file_name
+    'CR_' + id.to_s
+  end
+  
+  private 
+
+    def generate_barcodes
+      postr = formatted_po_name
+      pofilename = formatted_po_file_name
+      invstr = formatted_invoice_name
+      
+      pobarcode = Barby::Code128B.new(postr)
+      invbarcode = Barby::Code128B.new(invoice_no)
+      cratebarcode = Barby::Code128B.new(id)
+
+      File.open('public/images/' + pofilename + '.png', 'wb') do |f|
+        f.write pobarcode.to_png
+      end
+      File.open('public/images/' + invstr + '.png', 'wb') do |f|
+        f.write invbarcode.to_png
+      end
+      File.open('public/images/' + formatted_crate_file_name + '.png', 'wb') do |f|
+        f.write cratebarcode.to_png
+      end
+    end
 end
