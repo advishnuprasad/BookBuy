@@ -1,10 +1,24 @@
-<div>
+<script type="text/javascript">
+  function setPrinterDiv(id){
+    document.getElementById(id).style.display = 'block';
+
+    $('#barcode').printElement({
+      overrideElementCSS:['print.css', { href:'print.css', media:'print'}],
+      leaveOpen:true,
+      printMode:'popup'
+    });
+}
+</script>
+<div class='span-10'>
   <p>Invoice No.:<%= @invoice.invoice_no %></p>
   <p>PO No.:<%= @invoice.po.code %></p>
   <p>Date of Receipt:<%= @invoice.date_of_receipt.strftime('%d-%b-%Y') %></p>
   <p>Quantity:<%= @invoice.quantity %></p>
   <p>Amount:<%= @invoice.amount %></p>  
   <p>Boxes:<%= @invoice.boxes_cnt %></p>
+</div>
+<div class='span-10' id='barcode'>
   <p><%= image_tag(@invoice.formatted_po_file_name + ".png") %> </p>
   <p><%= image_tag(@invoice.formatted_invoice_name + ".png") %> </p>
 </div>
+<%= button_to_function 'Print Barcodes', "setPrinterDiv('barcode')" %> 
