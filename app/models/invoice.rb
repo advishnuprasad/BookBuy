@@ -43,10 +43,10 @@ class Invoice < ActiveRecord::Base
       pobarcode = Barby::Code128B.new(postr)
       invbarcode = Barby::Code128B.new(invoice_no)
 
-      File.open('public/images/pos/' + pofilename + '.png', 'wb') do |f|
+      File.open('public/images/' + pofilename + '.png', 'wb') do |f|
         f.write pobarcode.to_png
       end
-      File.open('public/images/pos/' + invstr + '.png', 'wb') do |f|
+      File.open('public/images/' + invstr + '.png', 'wb') do |f|
         f.write invbarcode.to_png
       end
     end
