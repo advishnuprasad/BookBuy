@@ -5,4 +5,6 @@
   <p>Quantity:<%= @invoice.quantity %></p>
   <p>Amount:<%= @invoice.amount %></p>  
   <p>Boxes:<%= @invoice.boxes_cnt %></p>
+  <p><%= image_tag("pos/" + @invoice.formatted_po_file_name + ".png") %> </p>
+  <p><%= image_tag("pos/" + @invoice.formatted_invoice_name + ".png") %> </p>
 </div>

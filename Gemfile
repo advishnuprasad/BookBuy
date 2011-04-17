@@ -1,6 +1,13 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.0.3'
+
+#Barcode printers/readers
+gem 'hoe', '2.8.0'
+gem 'barcode'
+gem 'barby'
+gem 'png', '1.1.0'
+
 gem 'autotest'
 gem 'autotest-rails'
 gem 'acts_as_versioned'
@@ -8,12 +15,6 @@ gem 'devise'
 gem 'omniauth'
 gem 'will_paginate', '~> 3.0.pre2'
 gem 'rufus-scheduler'
-
-#Barcode printers/readers
-#gem 'hoe', '2.8.0'
-#gem 'barcode'
-#gem 'barby'
-#gem 'png', '1.1.0'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
