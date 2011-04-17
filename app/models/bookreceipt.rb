@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110414104357
+# Schema version: 20110417061158
 #
 # Table name: bookreceipts
 #
@@ -11,6 +11,7 @@
 #  title_id   :integer(38)
 #  created_at :datetime
 #  updated_at :datetime
+#  crate_id   :integer(38)
 #
 
 class Bookreceipt < ActiveRecord::Base
@@ -21,11 +22,13 @@ class Bookreceipt < ActiveRecord::Base
   validates :invoice_no,        :presence => true
   validates :isbn,              :presence => true
   validates :book_no,           :presence => true
+  validates :crate_id,          :presence => true
   
   validate :po_no_should_exist
   validate :invoice_no_should_exist
   validate :isbn_should_be_part_of_po
   validate :book_no_should_not_have_been_used
+  validate :crate_no_should_exist
   
   def po_no_should_exist
     unless po_no.blank?
@@ -59,6 +62,15 @@ class Bookreceipt < ActiveRecord::Base
       book = Bookreceipt.find_by_book_no(book_no)
       unless book.nil?
         errors.add(:book_no, " has already been used!")
+      end
+    end
+  end
+  
+  def crate_no_should_exist
+    unless crate_id.blank?
+      crate = Crate.find(crate_id)
+      if crate.nil?
+        errors.add(:crate_id, " is invalid!");
       end
     end
   end

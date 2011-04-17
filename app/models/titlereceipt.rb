@@ -14,10 +14,12 @@
 
 class Titlereceipt < ActiveRecord::Base
   before_validation :select_full_po_no
+  before_create :upsert_box_total_cnt
   
   validates :po_no,             :presence => true
   validates :invoice_no,        :presence => true
   validates :isbn,              :presence => true
+  validates :box_no,            :presence => true
   
   validate :po_no_should_exist
   validate :invoice_no_should_exist
@@ -56,6 +58,27 @@ class Titlereceipt < ActiveRecord::Base
       if po_no.length == 9
         po_item = Po.where("code LIKE :po_no", {:po_no => "#{po_no}%"})
         self.po_no = po_item[0].code
+      end
+    end
+    
+    def upsert_box_total_cnt
+      unless box_no.blank?
+        box = Box.find_by_box_no(box_no)
+        if box
+          #Box Exists - Update total count
+          #TODO - Put increment method within Box model
+          box.total_cnt = box.total_cnt + 1
+          box.save
+        else
+          #New Box - Create a new record
+          #TODO - Directly pass params to Box New
+          box = Box.new
+          box.po_no = po_no
+          box.invoice_no = invoice_no
+          box.box_no = box_no
+          box.total_cnt = 1
+          box.save
+        end
       end
     end
 end

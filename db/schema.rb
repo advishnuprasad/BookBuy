@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110416133936) do
+ActiveRecord::Schema.define(:version => 20110417061158) do
 
   create_table "bookreceipts", :force => true do |t|
     t.string   "book_no"
@@ -20,6 +20,17 @@ ActiveRecord::Schema.define(:version => 20110416133936) do
     t.integer  "title_id",   :precision => 38, :scale => 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "crate_id",   :precision => 38, :scale => 0
+  end
+
+  create_table "boxes", :force => true do |t|
+    t.integer  "box_no",     :precision => 38, :scale => 0
+    t.string   "po_no"
+    t.string   "invoice_no"
+    t.integer  "total_cnt",  :precision => 38, :scale => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "crate_id",   :precision => 38, :scale => 0
   end
 
   create_table "corelist", :force => true do |t|
@@ -48,6 +59,14 @@ ActiveRecord::Schema.define(:version => 20110416133936) do
     t.string  "subcategory"
     t.integer "qty",                         :precision => 38, :scale => 0
     t.decimal "branchid"
+  end
+
+  create_table "crates", :force => true do |t|
+    t.string   "po_no"
+    t.string   "invoice_no"
+    t.integer  "total_cnt",  :precision => 38, :scale => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "enrichedtitle_versions", :force => true do |t|
