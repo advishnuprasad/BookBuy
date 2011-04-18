@@ -1,4 +1,6 @@
-<div>Invoices</div>
+<div><h2>Invoices</h2></div>
+<div><h4><%= link_to "New Invoice", new_invoice_path %></h4></div>
+<br/><br/>
 <div>
   <% if @invoices %>
     <%= will_paginate :prev_label => '<< Previous', :next_label => 'Next >>', :class => 'pagination'%>

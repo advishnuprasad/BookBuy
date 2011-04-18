@@ -15,7 +15,6 @@ class TitlereceiptsController < ApplicationController
     @titlereceipt = Titlereceipt.new(params[:titlereceipt])
     respond_to do |format|
       if @titlereceipt.save
-        puts 'Successfully saved!'
         flash[:success] = "Title Receipt captured successfully!"
         format.html { redirect_to titlereceipts_path}
         format.xml

@@ -18,7 +18,9 @@
   <p>Boxes:<%= @invoice.boxes_cnt %></p>
 </div>
 <div class='span-10' id='barcode'>
-  <p>PO: <%= image_tag(@invoice.formatted_po_file_name + ".png") %> </p>
-  <p>Invoice: <%= image_tag(@invoice.formatted_invoice_name + ".png") %> </p>
+  <p><%= image_tag(@invoice.formatted_po_file_name + ".png") %> </p>
+  <p>PO: <%= @invoice.po.code %></p>
+  <p><%= image_tag(@invoice.formatted_invoice_name + ".png") %> </p>
+  <p>Invoice: <%= @invoice.invoice_no %></p>
 </div>
 <%= button_to_function 'Print Barcodes', "setPrinterDiv('barcode')" %> 
