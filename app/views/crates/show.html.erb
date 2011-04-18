@@ -18,12 +18,14 @@
     <h3>Boxes:</h3>
     <% if @crate.boxes %>
       <div class="ui-widget-content ui-corner-all list-item-row">
-        <table style="width: 25%;">
+        <table style="width: 100%;">
           <% @crate.boxes.each do |box| %>
             <tr>
-              <td style="width: 50%;"><%= box.id %></td>
-              <td style="width: 50%;"><%= box.box_no %></td>
-              <td style="width: 50%;"><%= box.total_cnt %></td>
+              <td style="width: 10%;"><%= box.id %></td>
+              <td style="width: 20%;"><%= box.po_no %></td>
+              <td style="width: 20%;"><%= box.invoice_no %></td>
+              <td style="width: 10%;"><%= box.box_no %></td>
+              <td style="width: 10%;"><%= box.total_cnt %></td>
             </tr>
           <% end %>
         </table>
