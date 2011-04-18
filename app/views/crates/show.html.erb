@@ -14,6 +14,22 @@
   <p>Invoice No.:<%= @crate.invoice_no %></p>
   <p>Crate No.:<%= @crate.id %> </p>
   <p>Total Count:<%= @crate.total_cnt %></p>
+  <br/><br/><br/>
+  <div>
+    <h3>Boxes:</h3>
+    <% if @crate.boxes %>
+      <div class="ui-widget-content ui-corner-all list-item-row">
+        <table style="width: 25%;">
+          <% @crate.boxes.each do |box| %>
+            <tr>
+              <td style="width: 50%;"><%= box.box_no %></td>
+              <td style="width: 50%;"><%= box.total_cnt %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>    
+    <% end %>
+  </div>
 </div>
 <div class='span-10' id='barcode'>
   <p>PO: <%= image_tag(@crate.formatted_po_file_name + ".png") %> </p>
