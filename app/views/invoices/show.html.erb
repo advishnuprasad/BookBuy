@@ -9,7 +9,13 @@
     });
 }
 </script>
-<div><h4><div><%= link_to "Back", invoices_path %></div></h4><div>
+<div>
+  <h4>
+    <span><%= link_to "Back", invoices_path %></span>
+    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <span><%= link_to "Regenerate Barcodes", regenerate_invoice_path %></span>
+  </h4>
+<div>
 <div class='span-10'>
   <p>Invoice No.:<%= @invoice.invoice_no %></p>
   <p>PO No.:<%= @invoice.po.code %></p>

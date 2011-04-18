@@ -57,13 +57,16 @@ class Titlereceipt < ActiveRecord::Base
     def select_full_po_no
       if po_no.length == 9
         po_item = Po.where("code LIKE :po_no", {:po_no => "#{po_no}%"})
-        self.po_no = po_item[0].code
+        puts po_item.to_s
+        if po_item
+          self.po_no = po_item[0].code
+        end
       end
     end
     
     def upsert_box_total_cnt
       unless box_no.blank?
-        box = Box.find_by_box_no(box_no)
+        box = Box.find_by_box_no_and_po_no_and_invoice_no(box_no, po_no, invoice_no)
         if box
           #Box Exists - Update total count
           #TODO - Put increment method within Box model

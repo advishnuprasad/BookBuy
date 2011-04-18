@@ -9,9 +9,8 @@
     });
 }
 </script>
+<div><h4><div><%= link_to "Fill Crate", fill_crate_path %></div></h4><div>
 <div class='span-10'>
-  <p>PO No.:<%= @crate.po_no %></p>
-  <p>Invoice No.:<%= @crate.invoice_no %></p>
   <p>Crate No.:<%= @crate.id %> </p>
   <p>Total Count:<%= @crate.total_cnt %></p>
   <br/><br/><br/>
@@ -22,6 +21,7 @@
         <table style="width: 25%;">
           <% @crate.boxes.each do |box| %>
             <tr>
+              <td style="width: 50%;"><%= box.id %></td>
               <td style="width: 50%;"><%= box.box_no %></td>
               <td style="width: 50%;"><%= box.total_cnt %></td>
             </tr>
@@ -32,10 +32,6 @@
   </div>
 </div>
 <div class='span-10' id='barcode'>
-  <p><%= image_tag(@crate.formatted_po_file_name + ".png") %> </p>
-  <p>PO: <%= @crate.po_no %></p>
-  <p><%= image_tag(@crate.formatted_invoice_name + ".png") %> </p>
-  <p>Invoice: <%= @crate.invoice_no %></p>
   <p><%= image_tag(@crate.formatted_crate_file_name + ".png") %> </p>
   <p>Crate: <%= @crate.id %></p>
 </div>

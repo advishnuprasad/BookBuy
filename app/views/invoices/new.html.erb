@@ -1,24 +1,9 @@
-<%= form_for @invoice do |f| %>
+<%= form_tag('/invoices/new_with_supplier') do -%>
   <p>
-    Invoice No: <%= f.text_field :invoice_no %>
+    Suppliers: <%= select_tag "supplier_id", options_from_collection_for_select(Supplier.where(:id => Po.open_pos.collect {|po| po.supplier_id} ), "id", "name") %>
   </p>
   <p>
-    PO No: <%= f.collection_select(:po_id, fetch_open_pos, :id, :code, {:include_blank => 'Select PO No.'} ) %>
-  </p>
-  <p>
-    Date of Receipt: <%= f.date_select :date_of_receipt, :order => [:day, :month, :year] %>
-  </p>
-  <p>
-    Quantity: <%= f.text_field :quantity %>
-  </p>
-  <p>
-    Amount: <%= f.text_field :amount %>
-  </p>
-  <p>
-    Boxes: <%= f.text_field :boxes_cnt %>
-  </p>
-  <p>
-    <%= f.submit "Save" %>
-    <%= f.submit "Cancel" %>
+    <%= submit_tag "Fetch POs" %>
+    <%= submit_tag "Cancel" %>
   </p>
 <% end %>

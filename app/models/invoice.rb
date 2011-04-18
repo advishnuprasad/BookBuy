@@ -33,6 +33,10 @@ class Invoice < ActiveRecord::Base
     invoice_no.gsub(/\//,'_')
   end
   
+  def regenerate
+    generate_barcodes
+  end
+  
   private 
 
     def generate_barcodes

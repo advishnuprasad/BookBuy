@@ -11,12 +11,6 @@ class CratesController < ApplicationController
     @crate = Crate.new
   end
   
-  def new_with_po
-    @crate = Crate.new
-    @po = Po.find_by_code(params[:crate][:po_no])
-    @crate.po_no = @po.code
-  end
-
   def create
     @crate = Crate.new(params[:crate])
     @crate.total_cnt = 0
@@ -29,4 +23,8 @@ class CratesController < ApplicationController
     end
   end
 
+  def fill
+    Box.fill_crate(params[:id])
+    redirect_to crate_path
+  end
 end

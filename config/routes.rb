@@ -4,10 +4,14 @@ BookBuy::Application.routes.draw do
   resources :publishers
   resources :suppliers
   resources :pos
-  resources :invoices
+  resources :invoices do
+    get 'regenerate', :on => :member
+  end
   resources :bookreceipts
   resources :titlereceipts
-  resources :crates
+  resources :crates do
+    get 'fill', :on => :member
+  end
 
   match '/dashboard' => 'dashboard#show'
 
@@ -21,7 +25,7 @@ BookBuy::Application.routes.draw do
   match '/auth/failure' => 'Dashboard#show'
   resources :authentications, :branches
 
-  match '/crates/new_with_po'                                      => 'crates#new_with_po'
+  match '/invoices/new_with_supplier'                              => 'invoices#new_with_supplier'
   
   # after all the routing
   root :to => "Dashboard#show"

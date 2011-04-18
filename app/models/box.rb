@@ -22,12 +22,12 @@ class Box < ActiveRecord::Base
     where("crate_id IS NULL AND po_no = ? and invoice_no = ?", po_no, invoice_no)
   }
   
-  def self.fill_crates(po_no, invoice_no, crate_id)
+  def self.fill_crate(crate_id)
     current_cnt = 0
     added_boxes = Array.new
     
     #Find total count of books in un-assigned boxes by PO-Invoice
-    Box.unassigned_in_po_and_invoice(po_no, invoice_no).each do |box|
+    Box.unassigned.each do |box|
       if current_cnt + box.total_cnt < Crate::CAPACITY
         current_cnt = current_cnt + box.total_cnt
         added_boxes.push(box)

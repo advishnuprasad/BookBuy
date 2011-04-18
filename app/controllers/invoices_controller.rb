@@ -10,6 +10,12 @@ class InvoicesController < ApplicationController
   def new
     @invoice = Invoice.new
   end
+  
+  def new_with_supplier
+    @invoice = Invoice.new
+    @pos = Po.open_pos.find_by_supplier_id(params[:supplier_id])
+    @supplier = Supplier.find(params[:supplier_id])
+  end
 
   def create
     @invoice = Invoice.new(params[:invoice])
@@ -22,11 +28,9 @@ class InvoicesController < ApplicationController
     end
   end
 
-  def edit
+  def regenerate
     @invoice = Invoice.find(params[:id])
+    @invoice.regenerate
+    redirect_to invoice_path
   end
-
-  def update
-  end
-
 end

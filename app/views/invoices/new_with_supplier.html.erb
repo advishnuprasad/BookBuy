@@ -1,0 +1,30 @@
+<div><h4><div><%= link_to "Back", new_invoice_path %></div></h4><div>
+<div>
+  <p>
+    Supplier: <%= @supplier.name %>
+  </p>
+</div>
+<%= form_for @invoice do |f| %>
+  <p>
+    PO No: <%= f.collection_select(:po_id, Po.pos_for_supplier(@supplier.id), :id, :code, {:include_blank => 'Select PO No.'} ) %>
+  </p>
+  <p>
+    Invoice No: <%= f.text_field :invoice_no %>
+  </p>
+  <p>
+    Date of Receipt: <%= f.date_select :date_of_receipt, :order => [:day, :month, :year] %>
+  </p>
+  <p>
+    Quantity: <%= f.text_field :quantity %>
+  </p>
+  <p>
+    Amount: <%= f.text_field :amount %>
+  </p>
+  <p>
+    Boxes: <%= f.text_field :boxes_cnt %>
+  </p>
+  <p>
+    <%= f.submit "Create" %>
+    <%= f.submit "Cancel" %>
+  </p>
+<% end %>
