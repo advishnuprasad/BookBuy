@@ -22,6 +22,8 @@ BookBuy::Application.routes.draw do
   match 'worklist_save_items_with_details_not_enriched'     => 'worklists#save_items_with_details_not_enriched'
   match 'worklist_save_items_with_po_not_generated'         => 'worklists#save_items_with_po_not_generated'
   
+  match 'bookreceipts/fetch' => 'bookreceipts#fetch', :method => :post
+  
   match '/auth/:provider/callback' => 'authentications#create'
   devise_for :users, :path => 'accounts', :controllers => {:registrations => 'registrations'}
 

@@ -1,0 +1,16 @@
+<bookreceipt>
+  <po_no><%= @bookreceipt.po_no %></po_no>
+  <invoice_no><%= @bookreceipt.invoice_no %></invoice_no>
+  <crate_id><%= @bookreceipt.crate_id %></crate_id>
+  <isbn><%= @bookreceipt.isbn %></isbn>
+  <book_no><%= @bookreceipt.book_no %></book_no>
+  <branch><%= branch_for_book_no(@bookreceipt.book_no) %></branch>
+  <title><%= title_for_isbn(@bookreceipt.isbn) %></title>
+  <% if @bookreceipt.errors %>
+    <errors>
+      <% @bookreceipt.errors.full_messages.each do |msg| %>
+        <message><%= msg %></message>
+      <% end %>
+    </errors>
+  <% end %>
+</bookreceipt>

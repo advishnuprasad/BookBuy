@@ -6,6 +6,21 @@ class BookreceiptsController < ApplicationController
   def show
     @bookreceipt = Bookreceipt.find(params[:id])
   end
+  
+  def fetch
+    @bookreceipt = Bookreceipt.find_by_book_no(params[:book][:book_no])
+    respond_to do |format|
+      if @bookreceipt
+        flash[:success] = "Fetched Successfully!"
+        format.html { redirect_to bookreceipt_path}
+        format.xml
+      else
+        flash[:error] = "Book not Found!"
+        format.html { render :index }
+        format.xml { render :nothing => true, :status => :not_found }
+      end
+    end
+  end
 
   def new
     @bookreceipt = Bookreceipt.new
@@ -14,6 +29,7 @@ class BookreceiptsController < ApplicationController
   def create
     @bookreceipt = Bookreceipt.new(params[:bookreceipt])
     respond_to do |format|
+      
       if @bookreceipt.save
         puts 'Successfully saved!'
         flash[:success] = "Cataloged Successfully!"
