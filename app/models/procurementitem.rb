@@ -31,8 +31,9 @@ class Procurementitem < ActiveRecord::Base
   
   scope :mapped, joins(:enrichedtitle).where("enrichedtitles.title_id IS NOT NULL")
   scope :yet_to_order, where("po_number IS NULL")
-  scope :to_be_procured, lambda { |isbn|
+  scope :to_be_procured, lambda { |isbn, po_nos|
       where("isbn = :isbn AND procured_cnt < quantity AND po_number IS NOT NULL",:isbn => isbn).
+      where(:po_number => po_nos).
       order("id").
       limit(1)
     }

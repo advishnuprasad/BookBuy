@@ -21,7 +21,8 @@ class Titlereceipt < ActiveRecord::Base
       where("po_no = :po_no AND isbn = :isbn", {:po_no => po_no, :isbn => isbn}).
       order("created_at").
       limit(1)
-    }
+    }  
+  scope :not_cataloged, where("book_no IS NULL")
   
   validates :po_no,             :presence => true
   validates :invoice_no,        :presence => true

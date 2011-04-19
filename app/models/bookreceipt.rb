@@ -80,7 +80,8 @@ class Bookreceipt < ActiveRecord::Base
   
   def find_order_item
     unless isbn.blank?
-      Procurementitem.to_be_procured(isbn).each do |item|
+      po_nos = Crate.find(crate_id).boxes.collect {|box| box.po_no}
+      Procurementitem.to_be_procured(isbn, po_nos).each do |item|
         Titlereceipt.of_po(item.po_number, isbn).each do |titlereceipt|
           self.po_no = titlereceipt.po_no
           self.invoice_no = titlereceipt.invoice_no
@@ -116,7 +117,7 @@ class Bookreceipt < ActiveRecord::Base
     end
     
     def update_book_no_in_titlereceipt
-      title = Titlereceipt.find_by_po_no_and_invoice_no_and_isbn(po_no, invoice_no, isbn)
+      title = Titlereceipt.not_cataloged.find_by_po_no_and_invoice_no_and_isbn(po_no, invoice_no, isbn)
       if title
         title.book_no = book_no
         title.save

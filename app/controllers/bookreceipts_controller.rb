@@ -20,9 +20,15 @@ class BookreceiptsController < ApplicationController
         format.html { redirect_to bookreceipts_path}
         format.xml
       else
-        flash[:error] = "Cataloging failure!"
-        format.html { render :new }
-        format.xml { render :nothing => true, :status => :precondition_failed }
+        if @bookreceipt.po_no.blank?
+          flash[:error] = "Cataloging failure!"
+          format.html { render :new }
+          format.xml { render :nothing => true, :status => :precondition_failed }
+        else
+          flash[:error] = "Cataloging failure!"
+          format.html { render :new }
+          format.xml { render :nothing => true, :status => :conflict }
+        end
       end
     end
   end
