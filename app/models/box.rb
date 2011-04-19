@@ -16,11 +16,13 @@
 class Box < ActiveRecord::Base
   belongs_to :crate
   
-  scope :unassigned, where("crate_id IS NULL")
-  
+  scope :unassigned, where("crate_id IS NULL")  
   scope :unassigned_in_po_and_invoice, lambda { |po_no, invoice_no|
     where("crate_id IS NULL AND po_no = ? and invoice_no = ?", po_no, invoice_no)
-  }
+    }  
+  scope :is_assigned, lambda { |crate_id|
+    where("crate_id = :crate_id", :crate_id => crate_id)
+    }
   
   def self.fill_crate(crate_id)
     current_cnt = 0

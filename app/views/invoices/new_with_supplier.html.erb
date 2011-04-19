@@ -12,13 +12,16 @@
     Invoice No: <%= f.text_field :invoice_no %>
   </p>
   <p>
-    Date of Receipt: <%= f.date_select :date_of_receipt, :order => [:day, :month, :year] %>
+    Invoice Date: <%= f.date_select :date_of_invoice, :order => [:day, :month, :year] %>
   </p>
   <p>
     Quantity: <%= f.text_field :quantity %>
   </p>
   <p>
     Amount: <%= f.text_field :amount %>
+  </p>
+  <p>
+    Date of Receipt: <%= f.date_select :date_of_receipt, :order => [:day, :month, :year] %>
   </p>
   <p>
     Boxes: <%= f.text_field :boxes_cnt %>

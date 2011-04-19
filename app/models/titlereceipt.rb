@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110416091241
+# Schema version: 20110419045025
 #
 # Table name: titlereceipts
 #
@@ -10,11 +10,18 @@
 #  box_no     :integer(38)
 #  created_at :datetime
 #  updated_at :datetime
+#  book_no    :string(255)
 #
 
 class Titlereceipt < ActiveRecord::Base
   before_validation :select_full_po_no
   before_create :upsert_box_total_cnt
+  
+  scope :of_po, lambda { |po_no, isbn|
+      where("po_no = :po_no AND isbn = :isbn", {:po_no => po_no, :isbn => isbn}).
+      order("created_at").
+      limit(1)
+    }
   
   validates :po_no,             :presence => true
   validates :invoice_no,        :presence => true

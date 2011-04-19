@@ -25,6 +25,17 @@ class Crate < ActiveRecord::Base
     'CR_' + id.to_s
   end
   
+  def fill
+    boxes = Box.is_assigned(id)
+    if boxes.count == 0
+      Box.fill_crate(id)
+    end
+  end
+  
+  def regenerate
+    generate_barcodes
+  end
+  
   private 
 
     def generate_barcodes

@@ -24,7 +24,14 @@ class CratesController < ApplicationController
   end
 
   def fill
-    Box.fill_crate(params[:id])
+    @crate = Crate.find(params[:id])
+    @crate.fill
+    redirect_to crate_path
+  end
+  
+  def regenerate
+    @crate = Crate.find(params[:id])
+    @crate.regenerate
     redirect_to crate_path
   end
 end

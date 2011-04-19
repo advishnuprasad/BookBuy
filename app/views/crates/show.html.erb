@@ -9,8 +9,19 @@
     });
 }
 </script>
-<div><h4><div><%= link_to "Fill Crate", fill_crate_path %></div></h4><div>
-<div class='span-10'>
+<div>
+  <h4>
+    <span><%= link_to "Back", crates_path %></span>
+    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <% if @crate.boxes.count == 0 %>
+      <span><%= link_to "Fill Crate", fill_crate_path %></span>
+      <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <% end %>
+    <span><%= link_to "Regenerate Barcodes", regenerate_crate_path %></span>
+  </h4>
+<div>
+
+<div class='span-13'>
   <p>Crate No.:<%= @crate.id %> </p>
   <p>Total Count:<%= @crate.total_cnt %></p>
   <br/><br/><br/>

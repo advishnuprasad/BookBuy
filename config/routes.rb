@@ -10,7 +10,10 @@ BookBuy::Application.routes.draw do
   resources :bookreceipts
   resources :titlereceipts
   resources :crates do
-    get 'fill', :on => :member
+    member do
+      get 'fill'
+      get 'regenerate'
+    end
   end
 
   match '/dashboard' => 'dashboard#show'

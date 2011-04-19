@@ -14,7 +14,7 @@
               <td style="width: 10%;"><%= invoice.quantity %></td>
               <td style="width: 10%;"><%= invoice.amount %></td>
               <td style="width: 10%;"><%= invoice.boxes_cnt %></td>
-              <td style="width: 10%;"><%= invoice.created_at.strftime('%d-%b-%Y') %></td>
+              <td style="width: 10%;"><%= invoice.date_of_invoice.strftime('%d-%b-%Y') unless invoice.date_of_invoice.nil? %></td>
             </tr>
           </table>
         </div>

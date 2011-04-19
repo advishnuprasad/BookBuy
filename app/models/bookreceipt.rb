@@ -15,8 +15,11 @@
 #
 
 class Bookreceipt < ActiveRecord::Base
-  before_validation :select_full_po_no
-  before_create :set_title_id
+  before_validation             :find_order_item
+  before_validation             :select_full_po_no
+  before_create                 :set_title_id
+  after_create                  :update_procurement_item_cnt
+  after_create                  :update_book_no_in_titlereceipt
   
   validates :po_no,             :presence => true
   validates :invoice_no,        :presence => true
@@ -75,12 +78,25 @@ class Bookreceipt < ActiveRecord::Base
     end
   end
   
+  def find_order_item
+    unless isbn.blank?
+      Procurementitem.to_be_procured(isbn).each do |item|
+        Titlereceipt.of_po(item.po_number, isbn).each do |titlereceipt|
+          self.po_no = titlereceipt.po_no
+          self.invoice_no = titlereceipt.invoice_no
+        end
+      end
+    end
+  end
+  
   private
     
     def select_full_po_no
-      if po_no.length == 9
-        po_item = Po.where("code LIKE :po_no", {:po_no => "#{po_no}%"})
-        self.po_no = po_item[0].code
+      unless po_no.blank?
+        if po_no.length == 9
+          po_item = Po.where("code LIKE :po_no", {:po_no => "#{po_no}%"})
+          self.po_no = po_item[0].code
+        end
       end
     end
     
@@ -88,6 +104,22 @@ class Bookreceipt < ActiveRecord::Base
       item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
       if item
         self.title_id = item.enrichedtitle.title_id
+      end
+    end
+    
+    def update_procurement_item_cnt
+      item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
+      if item
+        item.procured_cnt = item.procured_cnt + 1
+        item.save
+      end
+    end
+    
+    def update_book_no_in_titlereceipt
+      title = Titlereceipt.find_by_po_no_and_invoice_no_and_isbn(po_no, invoice_no, isbn)
+      if title
+        title.book_no = book_no
+        title.save
       end
     end
 end
