@@ -33,6 +33,7 @@
           <% @crate.boxes.each do |box| %>
             <tr>
               <td style="width: 10%;"><%= box.id %></td>
+              <td style="width: 30%;"><%= box.get_supplier_name %></td>
               <td style="width: 20%;"><%= box.po_no %></td>
               <td style="width: 20%;"><%= box.invoice_no %></td>
               <td style="width: 10%;"><%= box.box_no %></td>
