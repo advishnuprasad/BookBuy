@@ -4,7 +4,9 @@
   <crate_id><%= @bookreceipt.crate_id %></crate_id>
   <isbn><%= @bookreceipt.isbn %></isbn>
   <book_no><%= @bookreceipt.book_no %></book_no>
-  <branch><%= branch_for_book_no(@bookreceipt.book_no) %></branch>
+  <branchid><%= branch_for_book_no(@bookreceipt.book_no).id %></branchid>
+  <branch><%= branch_for_book_no(@bookreceipt.book_no).name %></branch>
+  <city><%= branch_for_book_no(@bookreceipt.book_no).city %></city>
   <title><%= title_for_isbn(@bookreceipt.isbn) %></title>
   <% if @bookreceipt.errors %>
     <errors>

@@ -20,16 +20,23 @@
     <span><%= link_to "Regenerate Barcodes", regenerate_crate_path %></span>
   </h4>
 <div>
-
-<div class='span-13'>
-  <p>Crate No.:<%= @crate.id %> </p>
-  <p>Total Count:<%= @crate.total_cnt %></p>
-  <br/><br/><br/>
+<div class='span-20' id='barcode'>
+  <div>Crate: <b><%= @crate.id %></b></div>
+  <div>Total Books:<b><%= @crate.total_cnt %></b></div>
+  <div><%= image_tag(@crate.formatted_crate_file_name + ".png") %> </div>  
   <div>
-    <h3>Boxes:</h3>
+    <h4>Boxes:</h4>
     <% if @crate.boxes %>
       <div class="ui-widget-content ui-corner-all list-item-row">
         <table style="width: 100%;">
+          <tr>
+            <th style="width: 7%;">Box ID</th>
+            <th style="width: 20%;">Supplier</th>
+            <th style="width: 15%;">PO No.</th>
+            <th style="width: 15%;">Invoice No.</th>
+            <th style="width: 10%;">Box No.</th>
+            <th style="width: 10%;">Books in Box</th>
+          </tr>
           <% @crate.boxes.each do |box| %>
             <tr>
               <td style="width: 10%;"><%= box.id %></td>
@@ -44,9 +51,5 @@
       </div>    
     <% end %>
   </div>
-</div>
-<div class='span-10' id='barcode'>
-  <p><%= image_tag(@crate.formatted_crate_file_name + ".png") %> </p>
-  <p>Crate: <%= @crate.id %></p>
 </div>
 <%= button_to_function 'Print Barcodes', "setPrinterDiv('barcode')" %> 

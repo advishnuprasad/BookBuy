@@ -32,6 +32,7 @@ class Titlereceipt < ActiveRecord::Base
   validate :po_no_should_exist
   validate :invoice_no_should_exist
   validate :isbn_should_be_part_of_po
+  validate :excess_quantity
   
   def po_no_should_exist
     unless po_no.blank?
@@ -44,7 +45,8 @@ class Titlereceipt < ActiveRecord::Base
   
   def invoice_no_should_exist
     unless invoice_no.blank?
-      invoice = Invoice.find_by_invoice_no(invoice_no)
+      po = Po.find_by_code(po_no)
+      invoice = Invoice.find_by_invoice_no_and_po_id(invoice_no, po.id)
       if invoice.nil?
         errors.add(:invoice_no, " is invalid!")
       end
@@ -57,6 +59,15 @@ class Titlereceipt < ActiveRecord::Base
       if item.nil?
         errors.add(:isbn, " is invalid!");
       end
+    end
+  end
+  
+  def excess_quantity
+    order_qty = Procurementitem.find_by_po_number_and_isbn(po_no, isbn).quantity
+    scan_cnt = Titlereceipt.of_po(po_no, isbn).count
+    puts "Order Qty - " + order_qty.to_s + " : Scanned - " + scan_cnt.to_s
+    if scan_cnt == order_qty
+      errors.add(:po_no, "'s order quantity has already been received!")
     end
   end
   
