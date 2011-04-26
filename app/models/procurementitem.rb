@@ -34,8 +34,7 @@ class Procurementitem < ActiveRecord::Base
   scope :to_be_procured, lambda { |isbn, po_nos|
       where("isbn = :isbn AND procured_cnt < quantity AND po_number IS NOT NULL",:isbn => isbn).
       where(:po_number => po_nos).
-      order("id").
-      limit(1)
+      order("id")
     }
     
   #Assumptions

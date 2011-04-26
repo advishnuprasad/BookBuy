@@ -42,7 +42,11 @@ class Po < ActiveRecord::Base
   scope :open_pos, where(:status => 'O')
   scope :pos_with_invoices, where("invoices_count > ?",0)
   scope :pos_for_supplier, lambda { |supplier_id|
-    where(:supplier_id => supplier_id)
+      where(:supplier_id => supplier_id)
+    }
+  scope :like, lambda { |q|
+      open_pos.
+      where("LOWER(code) LIKE :q",{:q => "#{q}%"})
     }
   
   #Type Codes

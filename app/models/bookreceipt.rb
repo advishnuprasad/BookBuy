@@ -27,10 +27,10 @@ class Bookreceipt < ActiveRecord::Base
   validates :book_no,           :presence => true
   validates :crate_id,          :presence => true
   
+  validate :book_no_should_not_have_been_used
   validate :po_no_should_exist
   validate :invoice_no_should_exist
   validate :isbn_should_be_part_of_po
-  validate :book_no_should_not_have_been_used
   validate :crate_no_should_exist
   
   def po_no_should_exist
@@ -85,6 +85,7 @@ class Bookreceipt < ActiveRecord::Base
         Titlereceipt.of_po(item.po_number, isbn).each do |titlereceipt|
           self.po_no = titlereceipt.po_no
           self.invoice_no = titlereceipt.invoice_no
+          break
         end
       end
     end

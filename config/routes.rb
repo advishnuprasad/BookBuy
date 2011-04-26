@@ -6,6 +6,7 @@ BookBuy::Application.routes.draw do
   resources :pos
   resources :invoices do
     get 'regenerate', :on => :member
+    get 'autocomplete', :on => :collection
   end
   resources :bookreceipts
   resources :titlereceipts
@@ -30,7 +31,8 @@ BookBuy::Application.routes.draw do
   match '/auth/failure' => 'Dashboard#show'
   resources :authentications, :branches
 
-  match '/invoices/new_with_supplier'                              => 'invoices#new_with_supplier'
+  match '/invoices/new_with_supplier'                       => 'invoices#new_with_supplier'
+  #match '/invoices/autocomplete'                            => 'invoices#autocomplete'
   
   # after all the routing
   root :to => "Dashboard#show"

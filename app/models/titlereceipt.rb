@@ -19,8 +19,7 @@ class Titlereceipt < ActiveRecord::Base
   
   scope :of_po, lambda { |po_no, isbn|
       where("po_no = :po_no AND isbn = :isbn", {:po_no => po_no, :isbn => isbn}).
-      order("created_at").
-      limit(1)
+      order("created_at")
     }  
   scope :not_cataloged, where("book_no IS NULL")
   
@@ -65,7 +64,6 @@ class Titlereceipt < ActiveRecord::Base
   def excess_quantity
     order_qty = Procurementitem.find_by_po_number_and_isbn(po_no, isbn).quantity
     scan_cnt = Titlereceipt.of_po(po_no, isbn).count
-    puts "Order Qty - " + order_qty.to_s + " : Scanned - " + scan_cnt.to_s
     if scan_cnt == order_qty
       errors.add(:po_no, "'s order quantity has already been received!")
     end

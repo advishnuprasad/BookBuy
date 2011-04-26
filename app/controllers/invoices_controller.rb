@@ -33,4 +33,11 @@ class InvoicesController < ApplicationController
     @invoice.regenerate
     redirect_to invoice_path
   end
+  
+  def autocomplete
+    respond_to do |format|
+      po_nos = Po.like(params[:q]).collect {|po| po.code}.join(' ')
+      format.json { render :json => po_nos.to_json }
+    end
+  end
 end

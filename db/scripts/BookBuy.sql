@@ -382,3 +382,6 @@ create table suppliers_bkp as select * from suppliers
 
 DELETE FROM pos WHERE code LIKE 'NENT%'
 update procurementitems set po_number = null where po_number LIKE 'NENT%'
+
+SELECT * FROM publishers WHERE lower(publishername) LIKE '%research%'
+select * from publisherprofile@jbclclink  WHERE lower(publishername) LIKE '%tree%'
