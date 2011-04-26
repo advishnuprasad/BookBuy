@@ -62,10 +62,16 @@ class Titlereceipt < ActiveRecord::Base
   end
   
   def excess_quantity
-    order_qty = Procurementitem.find_by_po_number_and_isbn(po_no, isbn).quantity
-    scan_cnt = Titlereceipt.of_po(po_no, isbn).count
-    if scan_cnt == order_qty
-      errors.add(:po_no, "'s order quantity has already been received!")
+    po = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
+    if po
+      order_qty = Procurementitem.find_by_po_number_and_isbn(po_no, isbn).quantity
+      titlereceipt = Titlereceipt.of_po(po_no, isbn)
+      if titlereceipt
+        scan_cnt = Titlereceipt.of_po(po_no, isbn).count
+        if scan_cnt == order_qty
+          errors.add(:po_no, "'s order quantity has already been received!")
+        end
+      end
     end
   end
   
