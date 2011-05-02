@@ -31,6 +31,13 @@
 <div id='center' style="width:90%">
 </div>
 
+<br/></br>
+<div class="span-24" id = "new_store_inventory">
+  <div class="span-24" >
+    <%= render :partial => '/statistics/new_store_inventory' %>
+  </div>
+</div>
+    
 <% if current_user.frontoffice? -%>
   <div class='alert'>
 	  You logged in with <%= current_user.email %>, instead use the id that was created for you.
