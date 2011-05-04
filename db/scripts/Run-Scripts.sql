@@ -1,29 +1,31 @@
 BEGIN
-  EXPAND_NEWARRIVALS_ITEMS(4);
+  EXPAND_NEWARRIVALS_ITEMS(8);
 END;
 
 SELECT * FROM newarrivals_expanded
-select count(*) from CORELIST where key_id = 4
-select count(*) from newarrivals_expanded where key_id = 4
+SELECT count(*) FROM CORELIST WHERE key_id = 4
+select count(*) from newarrivals_expanded where key_id = 7
 
 BEGIN
   DATA_PULL.PR_PULL_CORELIST_ITEMS(5);
 END;
 
 BEGIN
-  DATA_PULL.PR_PULL_NEWARRIVAL_ITEMS(4);
+  DATA_PULL.PR_PULL_NEWARRIVAL_ITEMS(8);
 END;
 
-SELECT COUNT(*) FROM PROCUREMENTITEMS --36377 / 37285 / 40532
+SELECT COUNT(*) FROM PROCUREMENTITEMS --36377 / 37285 / 40532 / 40968 / 41329
+select 41329 - 40968 from dual
 SELECT count(*) FROM PROCUREMENTITEMS WHERE po_number IS NULL
 SELECT * FROM PROCUREMENTITEMS WHERE po_number IS NULL
 SELECT COUNT(*) FROM ENRICHEDTITLES WHERE ISBNVALID ='N'
-SELECT * FROM ENRICHEDTITLES WHERE ISBNVALID IS NULL
+SELECT COUNT(*)  FROM ENRICHEDTITLES WHERE ISBNVALID IS NULL
 SELECT * FROM ISBN_VALIDITY_IN_LIST
-SELECT * FROM ISBNS_OF_A_LIST
+update enrichedtitles set isbnvalid=null where isbnvalid is null
+SELECT * FROM ISBNS_OF_A_LI
 
 BEGIN
-  ENRICH_TITLES_FROM_JBDATA;
+  PULL_SUPPLIER(512);
 END;
 
 SELECT COUNT(*) FROM enrichedtitles where nvl(enriched,'N') = 'N'
@@ -42,10 +44,10 @@ delete FROM WORKLISTS -- 237 / 472
 delete FROM WORKITEMS -- 493 / 1401
 
 BEGIN
-  GENERATE_POS('NSTR');
+  GENERATE_POS('NENT', 8);
 END;
 
-SELECT count(*) FROM pos -- 508
+SELECT count(*) FROM pos -- 508 / 542 / 569 / 733
 SELECT * FROM PROCUREMENTITEMS WHERE PO_NUMBER IS NULL
 
 BEGIN
@@ -62,7 +64,7 @@ select * from pos order by rowid desc
 
 BEGIN
   FOR i IN (
-    SELECT CODE FROM pos where branch_id=43
+    SELECT CODE FROM pos where to_char(created_at,'DD-MON-RR') = '04-MAY-11' and code like 'NENT%' AND ID > 11953
     )
   loop
     extract_pos(i.code);
