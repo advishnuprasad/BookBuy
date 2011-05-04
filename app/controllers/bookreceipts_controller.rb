@@ -48,4 +48,16 @@ class BookreceiptsController < ApplicationController
       end
     end
   end
+  
+  # DELETE /bookreceipts/1
+  # DELETE /bookreceipts/1.xml
+  def destroy
+    @bookreceipt = Bookreceipt.find(params[:id])
+    @bookreceipt.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(bookreceipts_url) }
+      format.xml  { head :ok }
+    end
+  end
 end

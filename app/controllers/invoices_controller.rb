@@ -40,4 +40,21 @@ class InvoicesController < ApplicationController
       format.json { render :json => po_nos.to_json }
     end
   end
+  
+  def fetch_by_invoice_no
+    po = Po.like(params[:po_no].to_s.gsub(/_/,'/'))
+    if po[0]
+      @invoice = Invoice.find_by_po_id_and_invoice_no(po[0].id, params[:invoice_no].to_s.gsub(/_/,'/'))
+    end
+    respond_to do |format|
+      unless @invoice.nil?
+        format.html # show.html.erb
+        format.xml  { render :xml => @invoice }
+      else
+        flash[:error] = "Could not find invoice!"
+        format.html { render :index }
+        format.xml { render :nothing => true, :status => :not_found }
+      end
+    end
+  end
 end

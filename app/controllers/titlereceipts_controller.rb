@@ -32,4 +32,16 @@ class TitlereceiptsController < ApplicationController
       end
     end
   end
+  
+  # DELETE /titlereceipts/1
+  # DELETE /titlereceipts/1.xml
+  def destroy
+    @titlereceipt = Titlereceipt.find(params[:id])
+    @titlereceipt.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(titlereceipts_url) }
+      format.xml  { head :ok }
+    end
+  end
 end

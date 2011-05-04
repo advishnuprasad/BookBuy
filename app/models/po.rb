@@ -46,7 +46,7 @@ class Po < ActiveRecord::Base
     }
   scope :like, lambda { |q|
       open_pos.
-      where("LOWER(code) LIKE :q",{:q => "#{q}%"})
+      where("LOWER(code) LIKE LOWER(:q)",{:q => "#{q}%"})
     }
   
   #Type Codes
