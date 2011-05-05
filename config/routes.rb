@@ -26,6 +26,7 @@ BookBuy::Application.routes.draw do
   match 'bookreceipts/fetch' => 'bookreceipts#fetch', :method => :post
   match 'pos/fetch_by_po_no/:po_no' => 'pos#fetch_by_po_no'
   match 'invoices/fetch_by_invoice_no/:po_no/:invoice_no' => 'invoices#fetch_by_invoice_no'
+  match 'crates/fetch_by_crate_no/:crate_no' => 'crates#fetch_by_crate_no'
   
   match '/auth/:provider/callback' => 'authentications#create'
   devise_for :users, :path => 'accounts', :controllers => {:registrations => 'registrations'}

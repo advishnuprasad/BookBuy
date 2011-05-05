@@ -34,4 +34,18 @@ class CratesController < ApplicationController
     @crate.regenerate
     redirect_to crate_path
   end
+  
+  def fetch_by_crate_no
+    @crate = Crate.find(params[:crate_no])
+    respond_to do |format|
+      if @crate
+        format.html # show.html.erb
+        format.xml  { render :xml => @crate }
+      else
+        flash[:error] = "Could not find Crate!"
+        format.html { render :index }
+        format.xml { render :nothing => true, :status => :not_found }
+      end
+    end
+  end
 end
