@@ -6,15 +6,29 @@ SELECT * FROM newarrivals_expanded
 SELECT count(*) FROM CORELIST WHERE key_id = 4
 select count(*) from newarrivals_expanded where key_id = 9
 
+DECLARE
+  I NUMBER := 38446;
 BEGIN
-  DATA_PULL.PR_PULL_CORELIST_ITEMS(5);
+  FOR rec IN (
+    SELECT * FROM CORELIST WHERE KEY_ID=11
+  )
+  loop
+    INSERT INTO CORELIST (ID, KEY_ID, ISBN, TITLE, AUTHOR, PUBLISHER, PUBLISHERCODE, PRICE, CURRENCY, CATEGORY, SUBCATEGORY, QTY, BRANCHID)
+    VALUES (I, 12, REC.ISBN, REC.TITLE, REC.AUTHOR, REC.PUBLISHER, REC.PUBLISHERCODE, REC.PRICE, REC.CURRENCY, REC.CATEGORY, REC.SUBCATEGORY, REC.QTY, 42);
+    
+    I := I + 1;
+  END loop;
+END;
+
+BEGIN
+  DATA_PULL.PR_PULL_CORELIST_ITEMS(12);
 END;
 
 BEGIN
   DATA_PULL.PR_PULL_NEWARRIVAL_ITEMS(9);
 END;
 
-SELECT COUNT(*) FROM PROCUREMENTITEMS --  41329 / 41357
+SELECT COUNT(*) FROM PROCUREMENTITEMS --  41329 / 41357 / 51245
 SELECT count(*) FROM PROCUREMENTITEMS WHERE po_number IS NULL
 SELECT * FROM PROCUREMENTITEMS WHERE po_number IS NULL
 SELECT COUNT(*) FROM ENRICHEDTITLES WHERE ISBNVALID ='N'
@@ -27,7 +41,8 @@ BEGIN
   ENRICH_TITLES_FROM_JBDATA;
 END;
 
-SELECT COUNT(*) FROM enrichedtitles where nvl(enriched,'N') = 'N'
+SELECT COUNT(*) FROM enrichedtitles WHERE nvl(enriched,'N') = 'N'
+select * from procurementitems where supplier_id not in (select id from suppliers)
 
 BEGIN
   PULL_SUPPLIER(512);
@@ -47,10 +62,10 @@ delete FROM WORKLISTS -- 237 / 472
 delete FROM WORKITEMS -- 493 / 1401
 
 BEGIN
-  GENERATE_POS('NENT', 9);
+  GENERATE_POS('NSTR', 12);
 END;
 
-SELECT count(*) FROM pos -- 508 / 542 / 569 / 733 / 759
+SELECT count(*) FROM pos -- 508 / 542 / 569 / 733 / 759 / 911
 SELECT * FROM PROCUREMENTITEMS WHERE PO_NUMBER IS NULL
 
 BEGIN
@@ -70,7 +85,7 @@ order by id desc
 
 BEGIN
   FOR i IN (
-    SELECT CODE FROM pos where to_char(created_at,'DD-MON-RR') = '04-MAY-11' and code like 'NENT%' and id > 12117
+    SELECT CODE FROM pos where to_char(created_at,'DD-MON-RR') = '06-MAY-11' and code like 'NSTR%'
     )
   loop
     extract_pos(i.code);

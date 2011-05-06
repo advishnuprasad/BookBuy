@@ -27,6 +27,27 @@ class InvoicesController < ApplicationController
       render :new
     end
   end
+  
+  # GET /invoices/1/edit
+  def edit
+    @invoice = Invoice.find(params[:id])
+  end
+  
+  # PUT /invoices/1
+  # PUT /invoices/1.xml
+  def update
+    @invoice = Invoice.find(params[:id])
+
+    respond_to do |format|
+      if @invoice.update_attributes(params[:invoice])
+        format.html { redirect_to(@invoice, :notice => 'Invoice was successfully updated.') }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @invoice.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
 
   def regenerate
     @invoice = Invoice.find(params[:id])

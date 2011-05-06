@@ -10,10 +10,10 @@
 }
 </script>
 <div>
-  <h4>
-    <span><%= link_to "Back", invoices_path %></span>
-    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    <span><%= link_to "Regenerate Barcodes", regenerate_invoice_path %></span>
+  <h4>    
+    <span><%= link_to 'Edit', edit_invoice_path(@invoice) %> |
+      <%= link_to 'Back', invoices_path %> |
+      <%= link_to "Regenerate Barcodes", regenerate_invoice_path %></span>
   </h4>
 <div>
 <div class='span-10'>
@@ -27,6 +27,8 @@
 </div>
 <div class='span-10' id='barcode'>
   <span>PO: <b><%= @invoice.po.code %></b></span>
+  <div>Branch: <b><%= @invoice.po.branch.name %></b></div>
+  <div>Supplier: <b><%= @invoice.po.supplier.name %></b></div>
   <div><%= image_tag(@invoice.formatted_po_file_name + ".png") %> </div>
   <p></p>
   <div>Invoice: <b><%= @invoice.invoice_no %></b></div>
