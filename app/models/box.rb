@@ -49,7 +49,7 @@ class Box < ActiveRecord::Base
     #else loop and fill crate
     else
       unassigned_boxes.each do |box|
-        if current_cnt + box.total_cnt < Crate::CAPACITY
+        if current_cnt + box.total_cnt <= Crate::CAPACITY
           current_cnt = current_cnt + box.total_cnt
           added_boxes.push(box)
         end
