@@ -1,6 +1,6 @@
 <%= form_tag('/invoices/new_with_supplier') do -%>
   <p>
-    Suppliers: <%= select_tag "supplier_id", options_from_collection_for_select(Supplier.where(:id => Po.open_pos.collect {|po| po.supplier_id} ), "id", "name") %>
+    Suppliers: <%= select_tag "supplier_id", options_from_collection_for_select(Supplier.where(:id => Po.open_pos.collect {|po| po.supplier_id}.uniq ), "id", "name") %>
   </p>
   <p>
     <%= submit_tag "Fetch POs" %>

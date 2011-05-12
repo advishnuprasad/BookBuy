@@ -2,7 +2,8 @@ BEGIN
   EXPAND_NEWARRIVALS_ITEMS(9);
 END;
 
-SELECT * FROM newarrivals_expanded
+SELECT count(*) FROM newarrivals_expanded WHERE key_id=13
+SELECT sum(qty) FROM newarrivals_expanded where key_id=13
 SELECT count(*) FROM CORELIST WHERE key_id = 4
 select count(*) from newarrivals_expanded where key_id = 9
 
@@ -21,14 +22,18 @@ BEGIN
 END;
 
 BEGIN
+  compress_newarrivals(13);
+end;
+
+BEGIN
   DATA_PULL.PR_PULL_CORELIST_ITEMS(12);
 END;
 
 BEGIN
-  DATA_PULL.PR_PULL_NEWARRIVAL_ITEMS(9);
+  DATA_PULL.PR_PULL_NEWARRIVAL_ITEMS(13);
 END;
 
-SELECT COUNT(*) FROM PROCUREMENTITEMS --  41329 / 41357 / 51245
+SELECT COUNT(*) FROM PROCUREMENTITEMS --  50751/51967
 SELECT count(*) FROM PROCUREMENTITEMS WHERE po_number IS NULL
 SELECT * FROM PROCUREMENTITEMS WHERE po_number IS NULL
 SELECT COUNT(*) FROM ENRICHEDTITLES WHERE ISBNVALID ='N'
@@ -62,10 +67,10 @@ delete FROM WORKLISTS -- 237 / 472
 delete FROM WORKITEMS -- 493 / 1401
 
 BEGIN
-  GENERATE_POS('NSTR', 12);
+  GENERATE_POS('NENT', 13);
 END;
 
-SELECT count(*) FROM pos -- 508 / 542 / 569 / 733 / 759 / 911
+SELECT count(*) FROM pos -- 508 / 542 / 569 / 733 / 759 / 911 / 1016
 SELECT * FROM PROCUREMENTITEMS WHERE PO_NUMBER IS NULL
 
 BEGIN
@@ -85,7 +90,7 @@ order by id desc
 
 BEGIN
   FOR i IN (
-    SELECT CODE FROM pos where to_char(created_at,'DD-MON-RR') = '06-MAY-11' and code like 'NSTR%'
+    SELECT CODE FROM pos where to_char(created_at,'DD-MON-RR') = '11-MAY-11' and code like 'NENT%'
     )
   loop
     extract_pos(i.code);
