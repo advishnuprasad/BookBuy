@@ -19,10 +19,10 @@
 <div class='span-10'>
   <p>Invoice No.:<%= @invoice.invoice_no %></p>
   <p>PO No.:<%= @invoice.po.code %></p>
-  <p>Invoice Date:<%= @invoice.date_of_invoice.strftime('%d-%b-%Y') %></p>
+  <p>Invoice Date:<%= @invoice.date_of_invoice.strftime('%d-%b-%Y') unless @invoice.date_of_invoice.nil?%></p>
   <p>Quantity:<%= @invoice.quantity %></p>
   <p>Amount:<%= @invoice.amount %></p>  
-  <p>Date of Receipt:<%= @invoice.date_of_receipt.strftime('%d-%b-%Y') %></p>
+  <p>Date of Receipt:<%= @invoice.date_of_receipt.strftime('%d-%b-%Y') unless @invoice.date_of_receipt.nil?%></p>
   <p>Boxes:<%= @invoice.boxes_cnt %></p>
 </div>
 <div class='span-10' id='barcode'>

@@ -39,6 +39,8 @@ class Po < ActiveRecord::Base
   has_many :procurementitems, :inverse_of => "po"
   has_many :invoices
   
+  before_create :make_uppercase
+  
   scope :open_pos, where(:status => 'O')
   scope :pos_with_invoices, where("invoices_count > ?",0)
   scope :pos_for_supplier, lambda { |supplier_id|
@@ -49,18 +51,8 @@ class Po < ActiveRecord::Base
       where("LOWER(code) LIKE LOWER(:q)",{:q => "#{q}%"})
     }
   
-  #Type Codes
-    #New Branch
-    #Member IBT
-    #Branch IBT
-    
-  def initialize(type)
-    #Initialization should fix the new PO Number
-  end
-  
-  private
-    def generatePONumber
-      #Fix unique type codes for different kinds of POs as Constants
-      #Format can be <Code>-<YYYYMMDDMM>-<NNNN>
+  private 
+    def make_uppercase
+      self.code = self.code.upcase
     end
 end

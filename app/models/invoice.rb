@@ -20,6 +20,16 @@ require 'barby/outputter/png_outputter'
 
 class Invoice < ActiveRecord::Base
   belongs_to :po, :counter_cache => true
+  
+  validates :invoice_no,              :presence => true
+  validates :po_id,                   :presence => true
+  validates :date_of_receipt,         :presence => true
+  validates :date_of_invoice,         :presence => true
+  validates :quantity,                :presence => true
+  validates :amount,                  :presence => true
+  validates :boxes_cnt,               :presence => true
+  
+  before_create :make_uppercase
   after_create :generate_barcodes
   
   def formatted_po_name
@@ -39,6 +49,9 @@ class Invoice < ActiveRecord::Base
   end
   
   private 
+    def make_uppercase
+      self.invoice_no = self.invoice_no.upcase
+    end
 
     def generate_barcodes
       postr = formatted_po_name

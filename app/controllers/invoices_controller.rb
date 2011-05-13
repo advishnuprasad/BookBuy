@@ -23,8 +23,10 @@ class InvoicesController < ApplicationController
       flash[:success] = "Save Successfully!"
       redirect_to invoice_path(@invoice.id)
     else
-      flash[:error] = "Cataloging failure!"
-      render :new
+      flash[:error] = "Invoice could not be created!"
+      @pos = Po.open_pos.find_by_supplier_id(@invoice.po.supplier.id)
+      @supplier = Supplier.find(@invoice.po.supplier.id)
+      render :new_with_supplier
     end
   end
   

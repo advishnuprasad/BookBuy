@@ -1,4 +1,15 @@
-<div><h4><div><%= link_to "Back", invoice_path(@invoice.id) %></div></h4><div>
+<% if @invoice.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@invoice.errors.count, "error") %> prohibited this invoice from being saved:</h2>
+
+    <ul>
+    <% @invoice.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+  <div><h4><div><%= link_to "Back", invoice_path(@invoice.id) %></div></h4><div>
 <%= form_for @invoice do |f| %>
   <p>
     Supplier: <%= @invoice.po.supplier.name %>
