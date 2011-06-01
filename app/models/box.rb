@@ -35,39 +35,42 @@ class Box < ActiveRecord::Base
     current_cnt = 0
     added_boxes = Array.new
     
-    unassigned_boxes = Box.unassigned.unassigned_among_pos(Po.pos_for_supplier(Po.find_by_code(Box.unassigned.first.po_no).supplier_id).collect {|po| po.code})
-    
-    #More Intelligence
-    #1. Get the Biggest boxes first
-    #2. The first box might be lesser than capacity, but the next may be more than capacity
-    
-    #If first crate has more books than capacity
-    if unassigned_boxes.first.total_cnt > Crate::CAPACITY
-      box = unassigned_boxes.first
-      current_cnt = current_cnt + box.total_cnt
-      added_boxes.push(box)
-    #else loop and fill crate
-    else
-      unassigned_boxes.each do |box|
-        if current_cnt + box.total_cnt <= Crate::CAPACITY
-          current_cnt = current_cnt + box.total_cnt
-          added_boxes.push(box)
+    boxes = Box.unassigned.first.po_no
+    if boxes
+      unassigned_boxes = Box.unassigned.unassigned_among_pos(Po.pos_for_supplier(Po.find_by_code(boxes).supplier_id).collect {|po| po.code})
+      
+      #More Intelligence
+      #1. Get the Biggest boxes first
+      #2. The first box might be lesser than capacity, but the next may be more than capacity
+      
+      #If first crate has more books than capacity
+      if unassigned_boxes.first.total_cnt > Crate::CAPACITY
+        box = unassigned_boxes.first
+        current_cnt = current_cnt + box.total_cnt
+        added_boxes.push(box)
+      #else loop and fill crate
+      else
+        unassigned_boxes.each do |box|
+          if current_cnt + box.total_cnt <= Crate::CAPACITY
+            current_cnt = current_cnt + box.total_cnt
+            added_boxes.push(box)
+          end
         end
       end
-    end
-    
-    #Create entries for Crate and update crate_id in Boxes
-    if current_cnt > 0
-      #Assign box to crate
-      added_boxes.each do |added_box|
-        added_box.crate_id = crate_id
-        added_box.save
-      end
       
-      #Update Crate with Total Items
-      crate = Crate.find(crate_id)
-      crate.total_cnt = current_cnt
-      crate.save
+      #Create entries for Crate and update crate_id in Boxes
+      if current_cnt > 0
+        #Assign box to crate
+        added_boxes.each do |added_box|
+          added_box.crate_id = crate_id
+          added_box.save
+        end
+        
+        #Update Crate with Total Items
+        crate = Crate.find(crate_id)
+        crate.total_cnt = current_cnt
+        crate.save
+      end
     end
   end
 end
