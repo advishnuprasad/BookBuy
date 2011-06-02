@@ -50,6 +50,20 @@ class Po < ActiveRecord::Base
       open_pos.
       where("LOWER(code) LIKE LOWER(:q)",{:q => "#{q}%"})
     }
+  scope :among, lambda {|po_nos|
+      open_pos.
+      where(:code => po_nos).
+      order("id")
+    }
+  scope :today, lambda { 
+      where("created_at >= ? and created_at <= ?",  Time.zone.today.to_time.beginning_of_day, Time.zone.today.to_time.end_of_day) 
+    }
+  scope :created_on, lambda {|date| 
+      {:conditions => ['created_at >= ? AND created_at <= ?', Time.zone.date.to_time.beginning_of_day, Time.zone.date.to_time.end_of_day]}
+    }
+  scope :created_between, lambda {|startdate, enddate| 
+      {:conditions => ['created_at >= ? AND created_at <= ?', Time.zone.startdate.to_time.beginning_of_day, Time.zone.enddate.to_time.end_of_day]}
+    }
   
   private 
     def make_uppercase

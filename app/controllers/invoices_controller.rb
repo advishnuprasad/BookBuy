@@ -1,6 +1,16 @@
 class InvoicesController < ApplicationController
   def index
-    @invoices = Invoice.paginate(:per_page => 10, :page => params[:page])
+    if params[:query].nil?
+      @invoices = Invoice.paginate(:per_page => 25, :page => params[:page])
+    else
+      if params[:query] == 'Today'
+        @invoices = Invoice.today.paginate(:per_page => 25, :page => params[:page])
+        po_nos = @invoices.collect {|invoice| invoice.po.code}
+        @pos = Po.among(po_nos)
+      else
+        @invoices = Invoice.paginate(:per_page => 25, :page => params[:page])
+      end
+    end
   end
 
   def show

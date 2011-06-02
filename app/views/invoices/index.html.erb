@@ -1,25 +1,172 @@
+<script type="text/javascript">
+  function setPrinterDivForInvoices(id){
+    document.getElementById(id).style.display = 'block';
+    $('#invoices').printElement({
+      overrideElementCSS:['print.css', { href:'print.css', media:'print'}],
+      leaveOpen:false,
+      printMode:'popup'
+    });
+		document.getElementById(id).style.display = 'none';
+  }
+  function setPrinterDivForVouchers(id){
+    document.getElementById(id).style.display = 'block';
+    $('#vouchers').printElement({
+      overrideElementCSS:['print.css', { href:'print.css', media:'print'}],
+      leaveOpen:false,
+      printMode:'popup'
+    });
+		document.getElementById(id).style.display = 'none';
+  }
+</script>
+
 <div><h2>Invoices</h2></div>
 <div><h4><%= link_to "New Invoice", new_invoice_path %></h4></div>
-<br/><br/>
+<br/>
+<!--Options -->
+<div>
+  <div><h3>Filters</h3></div>
+  <table style="width: 10%">
+    <tr>
+      <td><%= link_to "All", invoices_path(:query => 'All') %></a></td>
+      <td><%= link_to "Today", invoices_path(:query => 'Today') %></td>
+    </tr>
+  </table>  
+</div>
+<!--Options -->
+<%= button_to_function 'Print Invoices', "setPrinterDivForInvoices('invoices');" %>
+<%= button_to_function 'Print Vouchers', "setPrinterDivForVouchers('vouchers');" %>
 <div>
   <% if @invoices %>
     <%= will_paginate :prev_label => '<< Previous', :next_label => 'Next >>', :class => 'pagination'%>
-      <% @invoices.each do |invoice| %>
-        <div class="ui-widget-content ui-corner-all list-item-row">
-          <table style="width: 100%;">
+      <div class="ui-widget-content ui-corner-all list-item-row">
+        <table style="width: 100%;">
+          <tr>
+            <th style="width: 15%;">Invoice No.</th>
+            <th style="width: 20%;">PO Number</th>
+            <th style="width: 20%;">Supplier </th>
+            <th style="width: 7.5%;">Qty</th>
+            <th style="width: 10%;">Amount</th>
+            <th style="width: 7.5%;">Boxes</th>
+            <th style="width: 15%;">Date of Invoice</th>
+          </tr>
+          <% @invoices.each do |invoice| %>
             <tr>
               <td style="width: 15%;"><%= link_to invoice.invoice_no, invoice_path(invoice.id) %></td>            
-              <td style="width: 15%;"><%= invoice.po.code %></td>
+              <td style="width: 20%;"><%= invoice.po.code %></td>
               <td style="width: 20%;"><%= invoice.po.supplier.name %></td>
-              <td style="width: 10%;"><%= invoice.quantity %></td>
+              <td style="width: 7.5%;"><%= invoice.quantity %></td>
               <td style="width: 10%;"><%= invoice.amount %></td>
-              <td style="width: 10%;"><%= invoice.boxes_cnt %></td>
-              <td style="width: 10%;"><%= invoice.date_of_invoice.strftime('%d-%b-%Y') unless invoice.date_of_invoice.nil? %></td>
+              <td style="width: 7.5%;"><%= invoice.boxes_cnt %></td>
+              <td style="width: 15%;"><%= invoice.date_of_invoice.strftime('%d-%b-%Y') unless invoice.date_of_invoice.nil? %></td>
             </tr>
-          </table>
-        </div>
-      <% end %>
+          <% end %>
+        </table>
+      </div>
+    <%= will_paginate %>
+  <% end %>
+</div>
+<div>
+  <% if @invoices %>
+    <div id='invoices' class="ui-widget-content ui-corner-all list-item-row">
+      <br/>    
+        <table style="width: 100%;">
+          <tr>
+            <td colspan=9><b><h3>Invoices</h3></b></td>
+            <td><b>Date: </b></td>
+            <td colspan=2><%= Date.today.strftime('%d-%b-%Y') %></td>
+          </tr>
+          <tr>
+            <th style="width: 10%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px">Invoice No.</th>
+            <th style="width: 12%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">PO Number</th>
+            <th style="width: 15%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Supplier </th>
+            <th style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Received Date </th>
+            <th style="width: 12%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Branch </th>
+            <th style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Qty</th>
+            <th style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Amount</th>
+            <th style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Boxes</th>
+            <th style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Invoice Date</th>
+            <th style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Received By</th>
+            <th style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Voucher No.</th>
+            <th style="width: 10%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Sign</th>
+          </tr>
+          <% @invoices.each do |invoice| %>
+            <tr>
+              <td style="width: 10%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= link_to invoice.invoice_no, invoice_path(invoice.id) %></td>            
+              <td style="width: 12%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= invoice.po.code %></td>
+              <td style="width: 15%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= invoice.po.supplier.name %></td>
+              <td style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= invoice.created_at.strftime('%d-%b-%Y') unless invoice.created_at.nil? %></td>
+              <td style="width: 12%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= invoice.po.branch.name %></td>
+              <td style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= invoice.quantity %></td>
+              <td style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= invoice.amount %></td>
+              <td style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= invoice.boxes_cnt %></td>
+              <td style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= invoice.date_of_invoice.strftime('%d-%b-%Y') unless invoice.date_of_invoice.nil? %></td>
+              <td style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"></td>
+              <td style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"></td>
+              <td style="width: 10%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
     <%= will_paginate %>
   <% end %>
 </div>
 
+<div id="vouchers" style="display:none;">
+  <% if @pos %>
+    <% @pos.each do |po| %>
+      <table style="width: 90%;">
+        <tr><td colspan=6><b><h3>Purchase Voucher</h3></b></td></tr>
+        <tr>
+          <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><b>Supplier</b></td>
+          <td colspan=2 style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><%= po.supplier.name %></td>
+          <td colspan=2 style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><b>Voucher No.</b></td>
+          <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000"></td>
+        </tr>
+        <tr>
+          <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><b>PO No.</b></td>
+          <td colspan=2 style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><%= po.code %></td>
+          <td colspan=2 style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><b>Received On.</b></td>
+          <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><%= po.created_at.strftime('%d-%b-%Y') %></td>
+        </tr>
+        <tr></tr>
+        <tr>
+          <th style="padding: 2px 4px 2px 4px; border: 1px solid #000000">Sl No.</th>
+          <th style="padding: 2px 4px 2px 4px; border: 1px solid #000000">Invoice Date</th>
+          <th style="padding: 2px 4px 2px 4px; border: 1px solid #000000">Desc of Goods</th>
+          <th style="padding: 2px 4px 2px 4px; border: 1px solid #000000">Invoice No.</th>
+          <th style="padding: 2px 4px 2px 4px; border: 1px solid #000000">Quantity</th>
+          <th style="padding: 2px 4px 2px 4px; border: 1px solid #000000">Invoice Amount</th>
+        </tr>
+        <% po.invoices.each_with_index do |invoice, index| %>
+          <tr>
+            <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><%= index+1 %></td>
+            <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><%= invoice.date_of_invoice.strftime('%d-%b-%Y') %></td>
+            <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000">Books</td>
+            <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><%= invoice.invoice_no %></td>
+            <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><%= invoice.quantity %></td>
+            <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><%= invoice.amount %></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td colspan=4></td>
+          <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><b>Total</b></td>
+          <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><%= po.invoices.inject(0) { |sum, invoice| sum += invoice.amount.to_f } %></td>
+        </tr>
+        <tr></tr>
+        <tr style="padding: 2px 4px 2px 4px; border: 1px solid #000000">
+          <th colspan=2 style="padding: 2px 4px 2px 4px; border: 1px solid #000000">Recvd & Checked By</th>
+          <th style="padding: 2px 4px 2px 4px; border: 1px solid #000000">Ordered By</th>
+          <th colspan=2 style="padding: 2px 4px 2px 4px; border: 1px solid #000000">Approved By</th>
+          <th style="padding: 2px 4px 2px 4px; border: 1px solid #000000">Accounted </th>
+        </tr>
+        <tr>
+          <td colspan=2 style="padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;height:40px"></td>
+          <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px"></td>
+          <td colspan=2 style="padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px"></td>
+          <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px"></td>
+        </tr>
+      </table>
+      <br/>
+      <% end %>
+  <% end %>
+</div>

@@ -32,6 +32,10 @@ class Invoice < ActiveRecord::Base
   before_create :make_uppercase
   after_create :generate_barcodes
   
+  scope :today, lambda { where("created_at >= ? and created_at <= ?",  Time.zone.today.to_time.beginning_of_day, Time.zone.today.to_time.end_of_day) }
+  scope :created_on, lambda {|date| {:conditions => ['created_at >= ? AND created_at <= ?', Time.zone.date.to_time.beginning_of_day, Time.zone.date.to_time.end_of_day]}}
+  scope :created_between, lambda {|startdate, enddate| {:conditions => ['created_at >= ? AND created_at <= ?', Time.zone.startdate.to_time.beginning_of_day, Time.zone.enddate.to_time.end_of_day]}}
+  
   def formatted_po_name
     po.code[0..po.code.index('/',5)-1]
   end
