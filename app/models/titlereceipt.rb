@@ -1,16 +1,16 @@
 # == Schema Information
-# Schema version: 20110419045025
+# Schema version: 20110602060441
 #
 # Table name: titlereceipts
 #
 #  id         :integer(38)     not null, primary key
-#  po_no      :string(255)
-#  invoice_no :string(255)
-#  isbn       :string(255)
-#  box_no     :integer(38)
+#  po_no      :string(255)     not null
+#  invoice_no :string(255)     not null
+#  isbn       :string(255)     not null
+#  box_no     :integer(38)     not null
 #  created_at :datetime
 #  updated_at :datetime
-#  book_no    :string(255)
+#  book_no    :string(1020)
 #
 
 class Titlereceipt < ActiveRecord::Base

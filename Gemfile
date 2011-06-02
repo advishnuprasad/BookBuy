@@ -15,6 +15,7 @@ gem 'devise', '1.1.7'
 gem 'omniauth'
 gem 'will_paginate', '~> 3.0.pre2'
 gem 'rufus-scheduler'
+gem 'ruby-plsql'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110419010134
+# Schema version: 20110602060441
 #
 # Table name: procurementitems
 #
@@ -21,7 +21,7 @@
 #  created_at       :datetime
 #  updated_at       :datetime
 #  quantity         :integer(38)
-#  procured_cnt     :integer(38)
+#  procured_cnt     :integer(38)     default(0)
 #
 
 class Procurementitem < ActiveRecord::Base

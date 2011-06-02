@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Source:</b>
+  <%= @procurement.source_id %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @procurement.description %>
+</p>
+
+<p>
+  <b>Requests cnt:</b>
+  <%= @procurement.requests_cnt %>
+</p>
+
+<p>
+  <b>Created by:</b>
+  <%= @procurement.created_by %>
+</p>
+
+<p>
+  <b>Modified by:</b>
+  <%= @procurement.modified_by %>
+</p>
+
+
+<%= link_to 'Edit', edit_procurement_path(@procurement) %> |
+<%= link_to 'Back', procurements_path %>

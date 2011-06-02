@@ -1,13 +1,13 @@
 # == Schema Information
-# Schema version: 20110410134111
+# Schema version: 20110602060441
 #
 # Table name: enrichedtitles
 #
 #  id           :integer(38)     not null, primary key
 #  title_id     :integer(38)
-#  title        :string(255)
+#  title        :string(255)     not null
 #  publisher_id :integer(38)
-#  isbn         :string(255)
+#  isbn         :string(255)     not null
 #  language     :string(255)
 #  category     :string(255)
 #  subcategory  :string(255)

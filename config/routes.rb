@@ -1,5 +1,7 @@
 BookBuy::Application.routes.draw do
 
+  resources :procurements
+
   resources :worklists
   resources :publishers
   resources :suppliers
