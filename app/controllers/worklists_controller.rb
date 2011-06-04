@@ -21,7 +21,6 @@ class WorklistsController < ApplicationController
   def save_items_with_no_isbn
     #TODO - Cleanup
     data = params[:data]
-    puts data.to_s
     id = params[:id]
     
     result = false
@@ -66,7 +65,6 @@ class WorklistsController < ApplicationController
     items = Array.new
     
     result = true
-    puts data.to_s
     data.each {|key, value|
       procurementitem = Procurementitem.find(value["id"])
       procurementitem.quantity = value["quantity"] unless value["quantity"].nil?

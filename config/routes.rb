@@ -24,6 +24,9 @@ BookBuy::Application.routes.draw do
       get 'regenerate'
     end
   end
+  resources :supplierdiscounts do
+    post 'update_records', :on => :collection
+  end
 
   match '/dashboard' => 'dashboard#show'
 

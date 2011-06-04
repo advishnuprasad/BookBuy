@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Code:</b>
+  <%= @publisher.code %>
+</p>
+
+<p>
+  <b>Imprintname:</b>
+  <%= @publisher.imprintname %>
+</p>
+
+<p>
+  <b>Group:</b>
+  <%= @publisher.group_id %>
+</p>
+
+<p>
+  <b>Publishername:</b>
+  <%= @publisher.publishername %>
+</p>
+
+
+<%= link_to 'Edit', edit_publisher_path(@publisher) %> |
+<%= link_to 'Back', publishers_path %>

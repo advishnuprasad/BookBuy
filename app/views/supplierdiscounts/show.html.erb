@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Publisher:</b>
+  <%= @supplierdiscount.publisher_id %>
+</p>
+
+<p>
+  <b>Supplier:</b>
+  <%= @supplierdiscount.supplier_id %>
+</p>
+
+<p>
+  <b>Discount:</b>
+  <%= @supplierdiscount.discount %>
+</p>
+
+<p>
+  <b>Bulkdiscount:</b>
+  <%= @supplierdiscount.bulkdiscount %>
+</p>
+
+
+<%= link_to 'Edit', edit_supplierdiscount_path(@supplierdiscount) %> |
+<%= link_to 'Back', supplierdiscounts_path %>

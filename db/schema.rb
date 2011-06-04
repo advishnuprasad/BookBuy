@@ -213,7 +213,7 @@ ActiveRecord::Schema.define(:version => 20110603110110) do
   create_table "supplierdiscounts", :force => true do |t|
     t.integer  "publisher_id", :precision => 38, :scale => 0
     t.integer  "supplier_id",  :precision => 38, :scale => 0
-    t.integer  "discount",     :precision => 38, :scale => 0
+    t.decimal  "discount"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.decimal  "bulkdiscount"

@@ -1,0 +1,33 @@
+<%= form_for(@supplierdiscount) do |f| %>
+  <% if @supplierdiscount.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@supplierdiscount.errors.count, "error") %> prohibited this supplierdiscount from being saved:</h2>
+
+      <ul>
+      <% @supplierdiscount.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :publisher_id %><br />
+    <%= f.text_field :publisher_id %>
+  </div>
+  <div class="field">
+    <%= f.label :supplier_id %><br />
+    <%= f.text_field :supplier_id %>
+  </div>
+  <div class="field">
+    <%= f.label :discount %><br />
+    <%= f.text_field :discount %>
+  </div>
+  <div class="field">
+    <%= f.label :bulkdiscount %><br />
+    <%= f.text_field :bulkdiscount %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

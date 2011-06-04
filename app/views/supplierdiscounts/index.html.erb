@@ -1,0 +1,30 @@
+<% content_for(:head) do %>
+  <%= javascript_include_tag 'supplierdiscounts/index' %>
+<% end %>
+
+<h1>Supplier Discounts</h1>
+
+<%= link_to_function "Update Records","saveItems(); return false;", :id=>'saveItemsLink' %>
+<br />
+
+<table id="items">
+  <tr>
+    <th style="width: 20%;">Supplier</th>
+    <th style="width: 15%;">Publisher</th>
+    <th style="width: 10%;">Group</th>
+    <th style="width: 15%;">Imprint</th>
+    <th style="width: 7.5%;">Discount %</th>
+    <th style="width: 7.5%;">Bulk Disc %</th>
+  </tr>
+
+<% @supplierdiscounts.each do |supplierdiscount| %>
+  <tr>
+    <td><%= supplierdiscount.supplier.name %></td>
+    <td><%= supplierdiscount.publisher.publishername %></td>
+    <td><%= supplierdiscount.publisher.code %></td>
+    <td><%= tag(:input, {:class => 'input_imprintname', :dataid => supplierdiscount.id, :type => 'text', :size => 25, :dataimprintname => supplierdiscount.publisher.imprintname, :value => supplierdiscount.publisher.imprintname }, false, false) %></td>    
+    <td><%= tag(:input, {:class => 'input_discount', :dataid => supplierdiscount.id, :type => 'text', :size => 7.5, :datadiscount => supplierdiscount.discount, :value => supplierdiscount.discount }, false, false) %></td>
+    <td><%= tag(:input, {:class => 'input_bulkdiscount', :dataid => supplierdiscount.id, :type => 'text', :size => 7.5, :databulkdiscount => supplierdiscount.bulkdiscount, :value => supplierdiscount.bulkdiscount }, false, false) %></td>
+  </tr>
+<% end %>
+</table>

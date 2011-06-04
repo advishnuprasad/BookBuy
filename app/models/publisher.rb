@@ -17,4 +17,6 @@ class Publisher < ActiveRecord::Base
   
   has_many :supplierdiscounts
   has_many :suppliers, :through => :supplierdiscounts
+  
+  scope :to_fill, where("group_id is NULL or publishername is NULL")
 end
