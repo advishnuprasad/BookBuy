@@ -2,9 +2,16 @@ class SupplierdiscountsController < ApplicationController
   # GET /supplierdiscounts
   # GET /supplierdiscounts.xml
   def index
-    #Order by Supplier and Publisher (Group)
-    @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:publisher).order("publishers.group_id").all
-
+    filter = params[:filter]
+    filter ||= 'all'
+    if filter == 'all'
+      #Order by Supplier and Publisher (Group)
+      @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:publisher).order("publishers.group_id").all
+    elsif filter == 'to_fill'
+      #Order by Supplier and Publisher (Group)
+      @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:publisher).order("publishers.group_id").to_fill
+    end
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @supplierdiscounts }

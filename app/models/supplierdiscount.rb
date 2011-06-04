@@ -15,4 +15,6 @@
 class Supplierdiscount < ActiveRecord::Base
   belongs_to :publisher
   belongs_to :supplier
+  
+  scope :to_fill, where("discount is NULL or bulkdiscount is NULL")
 end

@@ -4,6 +4,17 @@
 
 <h1>Supplier Discounts</h1>
 
+<!--Options -->
+<div>
+  <table style="width: 10%">
+    <tr>
+      <td><%= link_to "All", supplierdiscounts_path(:filter => 'all') %></a></td>
+      <td><%= link_to "To Fill", supplierdiscounts_path(:filter => 'to_fill') %></td>
+    </tr>
+  </table>  
+</div>
+<!--Options -->
+
 <%= link_to_function "Update Records","saveItems(); return false;", :id=>'saveItemsLink' %>
 <br />
 
