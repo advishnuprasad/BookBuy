@@ -13,6 +13,50 @@ class WorklistsController < ApplicationController
       render 'items_with_invalid_isbn'
     elsif @worklist.description == "Procurement Items with Details Not Verified"
       render 'items_with_details_not_enriched'
+    elsif @worklist.description == "Procurement Items with No ISBN"
+      render 'items_with_no_isbn'
+    end
+  end
+  
+  def save_items_with_no_isbn
+    #TODO - Cleanup
+    data = params[:data]
+    puts data.to_s
+    id = params[:id]
+    
+    result = false
+    data.each {|key, value|
+      procurementitem = Procurementitem.find(value["id"])
+      
+      unless value["isbn"].nil?
+        enrichedtitle = Enrichedtitle.new
+        enrichedtitle.isbn = value["isbn"].gsub(/-/,'').gsub(/ /,'')
+        enrichedtitle.title_id = procurementitem.title.id unless procurementitem.title.nil?
+        enrichedtitle.title = procurementitem.title.title unless procurementitem.title.nil?
+        enrichedtitle.author = procurementitem.title.author.name unless procurementitem.title.nil?
+        enrichedtitle.language = procurementitem.title.language unless procurementitem.title.nil?
+        enrichedtitle.category = procurementitem.title.category.name unless procurementitem.title.nil? || procurementitem.title.category.nil?
+        enrichedtitle.isbn10 = procurementitem.title.isbn10 unless procurementitem.title.nil?
+        if enrichedtitle.save
+          procurementitem.enrichedtitle_id = enrichedtitle.id
+          procurementitem.isbn = enrichedtitle.isbn
+          if procurementitem.save        
+            if Enrichedtitle.validate(procurementitem.enrichedtitle.id, procurementitem.enrichedtitle.isbn)
+              result = true
+            end
+          end
+        end
+      end
+    }
+    
+    if result == true
+      flash[:success] = "Items have been Successfully Updated!"
+    else
+      flash[:error] = "Items updation failed!"
+    end
+    
+    respond_to do |format|
+      format.js
     end
   end
   

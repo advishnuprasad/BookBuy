@@ -156,6 +156,7 @@ GEM
     ruby-openid (2.1.8)
     ruby-openid-apps-discovery (1.2.0)
       ruby-openid (>= 2.1.7)
+    ruby-plsql (0.4.4)
     rubyntlm (0.1.1)
     rufus-scheduler (2.0.8)
       tzinfo (>= 0.3.23)
@@ -192,6 +193,7 @@ DEPENDENCIES
   rspec
   rspec-rails
   ruby-oci8
+  ruby-plsql
   rufus-scheduler
   spork (= 0.9.0.rc7)
   webrat (= 0.7.1)

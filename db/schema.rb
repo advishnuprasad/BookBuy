@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110602060441) do
+ActiveRecord::Schema.define(:version => 20110603110110) do
 
   create_table "book_mig_log", :id => false, :force => true do |t|
     t.string   "book_no",    :limit => 20,                                :null => false
@@ -185,9 +185,9 @@ ActiveRecord::Schema.define(:version => 20110602060441) do
     t.datetime "updated_at"
     t.integer  "quantity",         :precision => 38, :scale => 0
     t.integer  "procured_cnt",     :precision => 38, :scale => 0, :default => 0
+    t.integer  "procurement_id",   :precision => 38, :scale => 0
+    t.integer  "title_id",         :precision => 38, :scale => 0
   end
-
-  add_index "procurementitems", ["po_number", "isbn", "branch_id"], :name => "unq_po_isbn", :unique => true
 
   create_table "procurements", :force => true do |t|
     t.integer  "source_id",    :precision => 38, :scale => 0
@@ -264,6 +264,7 @@ ActiveRecord::Schema.define(:version => 20110602060441) do
     t.string   "list_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "procurement_id", :precision => 38, :scale => 0
   end
 
   add_synonym "authentications", "authentications@link_opac", :force => true

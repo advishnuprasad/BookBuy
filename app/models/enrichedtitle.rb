@@ -29,6 +29,8 @@ class Enrichedtitle < ActiveRecord::Base
   acts_as_versioned
   
   belongs_to :publisher
+  belongs_to :jbtitle, :foreign_key => "title_id", :class_name => "Title"
+  has_many :procurementitems
   
   named_scope :unscanned, :conditions => ["isbnvalid IS NULL"]
   
@@ -48,7 +50,7 @@ class Enrichedtitle < ActiveRecord::Base
     title = Enrichedtitle.find(id)
     unless title.nil?
       #ISBN validity
-      isbn = Isbnutil::Isbn.parse(title.isbn, nil)
+      isbn = Isbnutil::Isbn.parse(isbn, nil)
       if isbn
         title.isbnvalid = 'Y'
         
@@ -67,6 +69,12 @@ class Enrichedtitle < ActiveRecord::Base
         if isbn.isIsbn10
           title.isbn10 = isbn.asIsbn10.gsub(/-/,'')
           title.isbn = isbn.asIsbn13.gsub(/-/,'')
+          
+          #Update Items if ISBN was updated to ISBN13
+          procurementitems.each do |item|
+            item.isbn = title.isbn
+            item.save
+          end
         end
       else
         title.isbnvalid = 'N'

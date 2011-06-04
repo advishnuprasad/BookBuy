@@ -1,0 +1,54 @@
+<% content_for(:head) do %>
+  <%= javascript_include_tag 'worklists/items_with_no_isbn' %>
+<% end %>
+
+<% if !@worklist.nil? %>
+  <%= form_tag( { :autocomplete => :off } ) do -%>
+    <span style="display: none;" id="worklist-id"><%= @worklist.id %></span>
+    <%= link_to_function "Update Items","saveItems(); return false;", :id=>'saveItemsLink' %>
+    <div id="grid">
+      <div id="gridbox" class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+        <div id="gridview" class="ui-jqgrid-view">
+          <div class="clear"></div>
+          
+          <!--Table Header -->
+          <div id="gridheader" class="ui-state-default ui-jqgrid-hdiv" style="width: 956px;">
+            <div class="ui-jqgrid-hbox" style="width: 956px;">
+              <table class="ui-jqgrid-htable" cellspacing="0" cellpadding="0" border="0" role="grid">
+                <thead>
+                  <tr class="ui-jqgrid-labels" role="rowheader">
+                    <th id="col_TitleID" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 10%;">ID</th>
+                    <th id="col_Title" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 30%;">Title</th>
+                    <th id="col_Author" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 16%;">Author</th>
+                    <th id="col_ISBN" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 15%;">ISBN</th>
+                    <th id="col_Status" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 10%;">Status</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            
+            <!--Table body -->
+            <div class="ui-jqgrid-bdiv" style="height: auto; width: 956px;">
+              <div style="position: relative;">
+                <table id="items" class="ui-jqgrid-btable" cellspacing="0" cellpadding="0" border="0" role="grid" style="width: 956px;">
+                  <tbody>
+                    <% @worklist.workitems.each do |workitem| %>
+                      <tr class="ui-widget-content jqgrow ui-row-ltr" role="row">
+                        <td aria-describedby="col_TitleID" role="gridcell" style="width: 5%;"><%= workitem.referenceitem.id %></td>
+                        <td aria-describedby="col_Title" role="gridcell" style="width: 35%;"><%= workitem.referenceitem.title.title unless workitem.referenceitem.title.title.nil? %></td>
+                        <td aria-describedby="col_Author" role="gridcell" style="width: 15%;"><%= workitem.referenceitem.title.author.name unless workitem.referenceitem.title.author.name.nil? %></td>
+                        <td aria-describedby="col_ISBN" role="gridcell" style="width: 20%;"><%= tag(:input, {:class => 'input_isbn', :dataid => workitem.referenceitem.id, :type => 'text', :size => 15, :dataisbn => workitem.referenceitem.isbn, :value => workitem.referenceitem.isbn }, false, false) %></td>
+                        <td aria-describedby="col_Status" role="gridcell" style="width: 10%;"><%= validity_status(workitem.referenceitem.enrichedtitle.isbnvalid) unless workitem.referenceitem.enrichedtitle.nil? %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end -%>
+<% end %>
+

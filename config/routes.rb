@@ -1,7 +1,13 @@
 BookBuy::Application.routes.draw do
 
-  resources :procurements
-
+  resources :procurements do
+    get 'pull', :on => :collection
+    member do
+      get 'refresh'
+      get 'generate_po'
+      get 'close'
+    end
+  end
   resources :worklists
   resources :publishers
   resources :suppliers
@@ -22,6 +28,7 @@ BookBuy::Application.routes.draw do
   match '/dashboard' => 'dashboard#show'
 
   match 'worklist_save_items_with_invalid_isbn'             => 'worklists#save_items_with_invalid_isbn'
+  match 'worklist_save_items_with_no_isbn'                  => 'worklists#save_items_with_no_isbn'
   match 'worklist_save_items_with_details_not_enriched'     => 'worklists#save_items_with_details_not_enriched'
   match 'worklist_save_items_with_po_not_generated'         => 'worklists#save_items_with_po_not_generated'
   

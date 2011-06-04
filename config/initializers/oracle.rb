@@ -10,3 +10,6 @@ ActiveSupport.on_load(:active_record) do
     end
   end
 end
+
+#For ruby-plsql
+plsql.activerecord_class = ActiveRecord::Base

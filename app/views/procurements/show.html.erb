@@ -1,30 +1,35 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Source:</b>
-  <%= @procurement.source_id %>
-</p>
+<h1>Procurements</h1>
 
-<p>
-  <b>Description:</b>
-  <%= @procurement.description %>
-</p>
+<div>
+<%= @procurement.description %> of <%= @procurement.requests_cnt %> items
+(Created on: <%= @procurement.created_at.strftime('%d-%b-%Y') %>)
+</div>
+<br/><br/>
+<div><b>Worklists</b></div>
+<div><%= link_to "Refresh", refresh_procurement_path %> |
+  <%= link_to "Generate PO", generate_po_procurement_path %> |
+  <%= link_to "Mark Close", close_procurement_path %>
+</div>
+<br/>
+<div>
+  <% if @procurement.worklists.open %>
+    <% @procurement.worklists.open.each do |worklist| %>
+      <div class="ui-widget-content ui-corner-all list-item-row">
+        <table style="width: 100%;">
+          <tr>
+            <td style="width: 10%;"><%= link_to worklist.id, worklist_path(worklist.id) %></td>            
+            <td style="width: 40%;"><%= worklist.description %></td>
+            <td style="width: 30%;"><%= worklist.workitems.count %> Items</td>
+            <td style="width: 10%;"><%= worklist.status %></td>
+            <td style="width: 10%;"><%= worklist.created_at.strftime('%d-%b-%Y') %></td>
+          </tr>
+        </table>
+      </div>
+    <% end %>
+  <% end %>
+</div>
 
-<p>
-  <b>Requests cnt:</b>
-  <%= @procurement.requests_cnt %>
-</p>
-
-<p>
-  <b>Created by:</b>
-  <%= @procurement.created_by %>
-</p>
-
-<p>
-  <b>Modified by:</b>
-  <%= @procurement.modified_by %>
-</p>
-
-
-<%= link_to 'Edit', edit_procurement_path(@procurement) %> |
+<!--<%= link_to 'Edit', edit_procurement_path(@procurement) %> |-->
 <%= link_to 'Back', procurements_path %>

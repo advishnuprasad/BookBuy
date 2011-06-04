@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110602060441
+# Schema version: 20110603110110
 #
 # Table name: procurementitems
 #
@@ -22,11 +22,15 @@
 #  updated_at       :datetime
 #  quantity         :integer(38)
 #  procured_cnt     :integer(38)     default(0)
+#  procurement_id   :integer(38)
+#  title_id         :integer(38)
 #
 
 class Procurementitem < ActiveRecord::Base
   belongs_to :enrichedtitle
   belongs_to :supplier
+  belongs_to :procurement
+  belongs_to :title
   belongs_to :po, :foreign_key => "po_number", :primary_key => "po_number", :class_name => "Po"
   
   scope :mapped, joins(:enrichedtitle).where("enrichedtitles.title_id IS NOT NULL")

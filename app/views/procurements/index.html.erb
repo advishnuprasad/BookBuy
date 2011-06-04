@@ -1,4 +1,4 @@
-<h1>Listing procurements</h1>
+<h1>Procurements</h1>
 
 <table>
   <tr>
@@ -29,3 +29,10 @@
 <br />
 
 <%= link_to 'New Procurement', new_procurement_path %>
+
+<br/><br/>
+<h2>Pull items</h2>
+
+<div id='left-nav' style="width:100%">
+  <span><%= link_to "IBT Requests", pull_procurements_path(:pull => 'ibtrs') %></span>
+</div>

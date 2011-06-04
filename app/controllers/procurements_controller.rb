@@ -3,7 +3,7 @@ class ProcurementsController < ApplicationController
   # GET /procurements.xml
   def index
     @procurements = Procurement.all
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @procurements }
@@ -15,6 +15,15 @@ class ProcurementsController < ApplicationController
   def show
     @procurement = Procurement.find(params[:id])
 
+    #unless params[:view].nil?
+    #  if params[:view] == 'items'
+    #    render ''
+    #  elsif params[:view] == 'worklists'
+    #    render ''
+    #  else
+    #  end
+    #end
+    
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @procurement }
@@ -78,6 +87,51 @@ class ProcurementsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(procurements_url) }
       format.xml  { head :ok }
+    end
+  end
+  
+  def pull
+    unless params[:pull].nil?
+      if params[:pull] == 'ibtrs'
+        cnt = Procurement.pending_ibtr_items_exist
+        
+        if cnt > 0
+          id = Procurement.pull_ibtr_items
+          @procurement = Procurement.find(id)
+        else
+          flash[:success] = "No pending IBTR Requests!"
+        end
+      end
+    end
+    
+    respond_to do |format|
+      if id
+        format.html { redirect_to(@procurement, :notice => 'Procurement was successfully created.') }
+        format.xml  { render :xml => @procurement, :status => :created, :location => @procurement }
+      else
+        format.html { redirect_to(procurements_url, :notice => 'No pending IBTR Requests!') }
+        format.xml  { head :ok }
+      end
+    end
+  end
+  
+  def refresh
+    @procurement = Procurement.find(params[:id])
+    @procurement.refresh_worklists
+    
+    respond_to do |format|
+      format.html { redirect_to(@procurement, :notice => 'Worklists regenerated.') }
+      format.xml  { render :xml => @procurement }
+    end
+  end
+  
+  def generate_po
+    @procurement = Procurement.find(params[:id])
+    @procurement.generate_pos
+    
+    respond_to do |format|
+      format.html { redirect_to(@procurement, :notice => 'Worklists regenerated.') }
+      format.xml  { render :xml => @procurement }
     end
   end
 end
