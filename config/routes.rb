@@ -35,7 +35,7 @@ BookBuy::Application.routes.draw do
   match 'worklist_save_items_with_invalid_isbn'             => 'worklists#save_items_with_invalid_isbn'
   match 'worklist_save_items_with_no_isbn'                  => 'worklists#save_items_with_no_isbn'
   match 'worklist_save_items_with_details_not_enriched'     => 'worklists#save_items_with_details_not_enriched'
-  match 'worklist_save_items_with_po_not_generated'         => 'worklists#save_items_with_po_not_generated'
+  match 'worklist_save_items_with_no_supplier_details'      => 'worklists#save_items_with_no_supplier_details'
   
   match 'bookreceipts/fetch' => 'bookreceipts#fetch', :method => :post
   match 'pos/fetch_by_po_no/:po_no' => 'pos#fetch_by_po_no'

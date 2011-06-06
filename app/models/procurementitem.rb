@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110603110110
+# Schema version: 20110606113631
 #
 # Table name: procurementitems
 #
@@ -24,9 +24,12 @@
 #  procured_cnt     :integer(38)     default(0)
 #  procurement_id   :integer(38)
 #  title_id         :integer(38)
+#  availability     :string(255)
 #
 
 class Procurementitem < ActiveRecord::Base
+  AVAILABILITY_OPTIONS = ["Avl","Not Avl"]
+  
   belongs_to :enrichedtitle
   belongs_to :supplier
   belongs_to :procurement

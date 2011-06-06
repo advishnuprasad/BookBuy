@@ -37,7 +37,11 @@ select {
 }
 
 .select_supplier {
-    width: 100px
+    width: 75px
+}
+
+.select_publisher {
+    width: 125px
 }
 
 input {

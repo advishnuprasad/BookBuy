@@ -96,6 +96,7 @@ class WorklistsController < ApplicationController
       procurementitem = Procurementitem.find(value["id"])
       procurementitem.quantity = value["quantity"] unless value["quantity"].nil?
       procurementitem.supplier_id = value["supplier_id"] unless value["supplier_id"].nil?
+      procurementitem.availability = value["availability"] unless value["availability"].nil?
       
       if !procurementitem.save
         result = false

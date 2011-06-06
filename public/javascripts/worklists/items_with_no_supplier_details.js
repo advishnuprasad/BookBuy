@@ -55,3 +55,19 @@ $("#items .select_supplier").live("change",function(event) {
         if(changedCells[$(this).attr('datasuppid')])
             delete changedCells[$(this).attr('datasuppid')]["supplier_id"];
 });
+
+$("#items .select_avl").live("change",function(event) {
+    if($(this).attr('dataavl') != this.value) {
+        if(changedCells[$(this).attr('dataavlid')]) {
+            changedCells[$(this).attr('dataavlid')]["availability"] = this.value;
+        }
+        else {
+            changedCells[$(this).attr('dataavlid')] = {}
+            changedCells[$(this).attr('dataavlid')]["id"] = $(this).attr('dataavlid');
+            changedCells[$(this).attr('dataavlid')]["availability"] = this.value;
+        }
+    }
+    else
+        if(changedCells[$(this).attr('dataavlid')])
+            delete changedCells[$(this).attr('dataavlid')]["availability"];
+});

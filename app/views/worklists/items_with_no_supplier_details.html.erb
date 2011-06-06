@@ -17,12 +17,13 @@
               <table class="ui-jqgrid-htable" cellspacing="0" cellpadding="0" border="0" role="grid">
                 <thead>
                   <tr class="ui-jqgrid-labels" role="rowheader">
-                    <th id="col_Title" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 45%;">Title</th>
-                    <th id="col_Author" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 20%;">Author</th>
-                    <th id="col_Publisher" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 15%;">Publisher</th>
+                    <th id="col_Title" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 40%;">Title</th>
+                    <th id="col_Author" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 15%;">Author</th>
+                    <th id="col_Publisher" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 10%;">Publisher</th>
                     <th id="col_ISBN" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 10%;">ISBN</th>
                     <th id="col_Supplier" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 10%;">Supplier</th>
-                    <th id="col_Quantity" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 7%;">Quantity</th>
+                    <th id="col_Supplier" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 7.5%;">Avl</th>
+                    <th id="col_Quantity" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 5%;">Qty</th>
                   </tr>
                 </thead>
               </table>
@@ -36,13 +37,16 @@
                     <% @worklist.workitems.each do |workitem| %>
                       <tr class="ui-widget-content jqgrow ui-row-ltr" role="row">
                         <td aria-describedby="col_Title" role="gridcell" style="width: 40%;"><%= workitem.referenceitem.enrichedtitle.title %></td>
-                        <td aria-describedby="col_Author" role="gridcell" style="width: 20%;"><%= workitem.referenceitem.enrichedtitle.author %></td>
-                        <td aria-describedby="col_Publisher" role="gridcell" style="width: 15%;"><%= workitem.referenceitem.enrichedtitle.publisher.publishername %></td>
+                        <td aria-describedby="col_Author" role="gridcell" style="width: 15%;"><%= workitem.referenceitem.enrichedtitle.author %></td>
+                        <td aria-describedby="col_Publisher" role="gridcell" style="width: 10%;"><%= workitem.referenceitem.enrichedtitle.publisher.publishername %></td>
                         <td aria-describedby="col_ISBN" role="gridcell" style="width: 10%;"><%= workitem.referenceitem.isbn %></td>
                         <td aria-describedby="col_Supplier" role="gridcell" style="width: 10%;">
-                          <%= select_tag "supplier_id", options_from_collection_for_select(workitem.referenceitem.enrichedtitle.publisher.suppliers.map, :id, :name, workitem.referenceitem.supplier_id), {:class => 'select_supplier', :datasuppid => workitem.referenceitem.id, :datasupp => workitem.referenceitem.supplier_id, :value => workitem.referenceitem.supplier_id, :include_blank => true } %>
+                          <%= select_tag "supplier_id", options_from_collection_for_select(workitem.referenceitem.enrichedtitle.publisher.suppliers.map, :id, :name, workitem.referenceitem.supplier_id), {:class => 'select_supplier', :datasuppid => workitem.referenceitem.id, :datasupp => workitem.referenceitem.supplier_id, :value => workitem.referenceitem.supplier_id, :include_blank => true, :width => 5 } %>
                         </td>
-                        <td aria-describedby="col_Quantity" role="gridcell" style="width: 7%;"><%= tag(:input, 
+                        <td aria-describedby="col_Avl" role="gridcell" style="width: 7.5%;"">
+                          <%= select_tag "Avl", options_for_select(Procurementitem::AVAILABILITY_OPTIONS, workitem.referenceitem.availability), {:class => 'select_avl', :dataavlid => workitem.referenceitem.id, :dataavl => workitem.referenceitem.availability, :value => workitem.referenceitem.availability, :include_blank => true, } %>
+                        </td>
+                        <td aria-describedby="col_Quantity" role="gridcell" style="width: 5%;"><%= tag(:input, 
                                             {:id => workitem.referenceitem.id, :size => 3, :type => 'text', :dataquantity => workitem.referenceitem.quantity, 
                                             :value => workitem.referenceitem.quantity }, false, false)  %></td>
                       </tr>

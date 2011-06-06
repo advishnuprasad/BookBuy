@@ -43,10 +43,10 @@
                           <% if workitem.referenceitem.enrichedtitle.publisher.publishername.nil?%>
                             <%= tag(:input, {:class => 'input_publisher', :dataid => workitem.referenceitem.id, :type => 'text', :size => 15, :datapublisher => workitem.referenceitem.enrichedtitle.publisher.publishername, :value => workitem.referenceitem.enrichedtitle.publisher.code }, false, false) %>
                           <% else %>
-                            <%= select_tag "publishers", options_from_collection_for_select(Publisher.with_names.all, 'id', 'publishername', workitem.referenceitem.enrichedtitle.publisher_id), {:class => 'publisher'} %>
+                            <%= select_tag "publishers", options_from_collection_for_select(Publisher.with_names.all, 'id', 'publishername', workitem.referenceitem.enrichedtitle.publisher_id), {:class => 'select_publisher'} %>
                           <% end %>
                         </td>
-                        <td aria-describedby="col_ListPrice" role="gridcell" style="width: 15%;"><%= tag(:input, {:class => 'input_price', :dataid => workitem.referenceitem.id, :type => 'text', :size => 10, :dataprice => workitem.referenceitem.enrichedtitle.listprice, :value => workitem.referenceitem.enrichedtitle.listprice }, false, false) %></td>
+                        <td aria-describedby="col_ListPrice" role="gridcell" style="width: 10%;"><%= tag(:input, {:class => 'input_price', :dataid => workitem.referenceitem.id, :type => 'text', :size => 5, :dataprice => workitem.referenceitem.enrichedtitle.listprice, :value => workitem.referenceitem.enrichedtitle.listprice }, false, false) %></td>
                         <td aria-describedby="col_Currency" role="gridcell" style="width: 15%;"><%= tag(:input, {:class => 'input_currency', :dataid => workitem.referenceitem.id, :type => 'text', :size => 5, :datacurrency => workitem.referenceitem.enrichedtitle.currency, :value => workitem.referenceitem.enrichedtitle.currency }, false, false) %></td>
                         <td aria-describedby="col_Verified" role="gridcell" style="width: 5%;">
                           <%= check_box_tag "verified", workitem.referenceitem.enrichedtitle.verified , workitem.referenceitem.enrichedtitle.verified == 'Y' ? true : false, {:class => 'input_verified', :dataid => workitem.referenceitem.id, :dataverified => workitem.referenceitem.enrichedtitle.verified.nil? ? 'N' : workitem.referenceitem.enrichedtitle.verified } %>

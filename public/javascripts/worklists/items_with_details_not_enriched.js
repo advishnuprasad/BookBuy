@@ -57,7 +57,7 @@ $("#items .input_author").live("change",function(event) {
             delete changedCells[$(this).attr('dataid')]["author"];
 });
 
-$("#items .input_publisher").live("change",function(event) {
+$("#items .select_publisher").live("change",function(event) {
     if($(this).attr('datapublisher') != this.value) {
         if(changedCells[$(this).attr('dataid')]) {
             changedCells[$(this).attr('dataid')]["publisher"] = this.value;
