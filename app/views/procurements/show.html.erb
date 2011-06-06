@@ -18,6 +18,7 @@
 <div>
   <span>Geneated POs: </span>
   <span><%= link_to @procurement.pos.count, pos_path(:filter => 'for_procurement', :procurement_id => @procurement.id) %></span>
+  <span>(<%= link_to "Download", download_procurement_path(@procurement.id) %>)</span>
 </div>
 <br/>
 

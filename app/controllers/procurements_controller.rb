@@ -125,4 +125,16 @@ class ProcurementsController < ApplicationController
       format.xml  { render :xml => @procurement }
     end
   end
+  
+  def download
+    @procurement = Procurement.find(params[:id])
+    
+    if(@procurement.pos.count > 0)
+      temppathstr = @procurement.download
+      zip_file_name = @procurement.id.to_s + '.zip'
+      send_file temppathstr, :type => 'application/zip',
+                               :disposition => 'attachment',
+                               :filename => zip_file_name
+    end
+  end
 end

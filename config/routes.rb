@@ -7,6 +7,7 @@ BookBuy::Application.routes.draw do
     member do
       get 'refresh'
       get 'generate_po'
+      get 'download'
       get 'close'
     end
   end
