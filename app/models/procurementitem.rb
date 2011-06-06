@@ -44,6 +44,9 @@ class Procurementitem < ActiveRecord::Base
       where(:po_number => po_nos).
       order("id")
     }
+  scope :of_procurement, lambda {|procurement_id|
+      where(:procurement_id => procurement_id)
+    }
   scope :to_order_in_procurement, lambda {|procurement_id|
       joins(:enrichedtitle).
       where("procurementitems.supplier_id IS NOT NULL

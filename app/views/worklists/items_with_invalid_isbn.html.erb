@@ -2,6 +2,8 @@
   <%= javascript_include_tag 'worklists/items_with_invalid_isbn' %>
 <% end %>
 
+<%= link_to 'Back', request.referer %><br/><br/>
+
 <% if !@worklist.nil? %>
   <%= form_tag( { :autocomplete => :off } ) do -%>
     <span style="display: none;" id="worklist-id"><%= @worklist.id %></span>

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110602060441
+# Schema version: 20110606174055
 #
 # Table name: procurements
 #
@@ -11,6 +11,7 @@
 #  modified_by  :integer(38)
 #  created_at   :datetime
 #  updated_at   :datetime
+#  status       :string(255)
 #
 
 require 'zip/zip'
@@ -77,6 +78,7 @@ class Procurement < ActiveRecord::Base
       procurement = Procurement.new
       procurement.source_id = 1
       procurement.description = 'IBTR'
+      procurement.status = 'Open'
       #TODO - Fill Requests Count
       if procurement.save
         #Pull Items

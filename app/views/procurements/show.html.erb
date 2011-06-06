@@ -1,17 +1,18 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Procurements</h1>
+<h1>Procurement Basket - <%= @procurement.id %> (<%= @procurement.status %>)</h1>
 
 <div>
-  <%= link_to 'Back', procurements_path %> |
+  <%= link_to 'Back', request.referer %> |
   <%= link_to "Generate PO", generate_po_procurement_path %> |
   <%= link_to "Mark Close", close_procurement_path %>
 </div>
 <br/>
 
 <div>
-<%= @procurement.description %> of <%= @procurement.requests_cnt %> items
+<b><%= @procurement.description %></b> of <b><%= @procurement.requests_cnt %></b> items
 (Created on: <%= @procurement.created_at.strftime('%d-%b-%Y') %>)
+<span><%= link_to 'View', procurementitems_path(:filter => 'of_procurement', :procurement_id => @procurement.id) %></span>
 </div>
 <br/>
 
@@ -37,7 +38,7 @@
   </div>
   <div>
     <span>Items ready to be ordered:</span>
-    <span><%= link_to @procurement.items_ready_to_order_cnt, procurementitems_path(:filter => 'for_procurement', :procurement_id => @procurement.id) %></span>
+    <span><%= link_to @procurement.items_ready_to_order_cnt, procurementitems_path(:filter => 'of_procurement_to_order', :procurement_id => @procurement.id) %></span>
   </div>
 </div>
 <br/><br/>

@@ -1,5 +1,7 @@
 <h1>Procurementitems</h1>
 
+<%= link_to 'Back', request.referer %><br/><br/>
+
 <table>
   <tr>
     <th style="width: 10%;">Isbn</th>
@@ -14,12 +16,12 @@
 <% @procurementitems.each do |procurementitem| %>
   <tr>
     <td><%= procurementitem.isbn %></td>
-    <td><%= procurementitem.enrichedtitle.title %></td>
-    <td><%= procurementitem.enrichedtitle.author %></td>
-    <td><%= procurementitem.enrichedtitle.publisher.publishername %></td>
-    <td><%= procurementitem.supplier.name %></td>
+    <td><%= procurementitem.enrichedtitle.title unless procurementitem.enrichedtitle.nil? %></td>
+    <td><%= procurementitem.enrichedtitle.author unless procurementitem.enrichedtitle.nil? %></td>
+    <td><%= procurementitem.enrichedtitle.publisher.publishername unless procurementitem.enrichedtitle.nil? || procurementitem.enrichedtitle.publisher.nil? %></td>
+    <td><%= procurementitem.supplier.name unless procurementitem.supplier.nil? %></td>
     <td><%= procurementitem.quantity %></td>
-    <td><%= procurementitem.branch.name %></td>
+    <td><%= procurementitem.branch.name unless procurementitem.branch.nil? %></td>
   </tr>
 <% end %>
 </table>
