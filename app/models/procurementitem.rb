@@ -54,7 +54,8 @@ class Procurementitem < ActiveRecord::Base
           AND enrichedtitles.title_id IS NOT NULL
           AND enrichedtitles.publisher_id IS NOT NULL
           AND enrichedtitles.author IS NOT NULL
-          )").
+          )
+        AND procurementitems.po_number IS NULL").
       where(:procurement_id => procurement_id)
     }
     

@@ -13,7 +13,13 @@
 <%= @procurement.description %> of <%= @procurement.requests_cnt %> items
 (Created on: <%= @procurement.created_at.strftime('%d-%b-%Y') %>)
 </div>
-<br/><br/>
+<br/>
+
+<div>
+  <span>Geneated POs: </span>
+  <span><%= link_to @procurement.pos.count, pos_path(:filter => 'for_procurement', :procurement_id => @procurement.id) %></span>
+</div>
+<br/>
 
 <div>
   <div>

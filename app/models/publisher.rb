@@ -25,4 +25,8 @@ class Publisher < ActiveRecord::Base
       where(:procurementitems => {:procurement_id => procurement_id}).
       where("group_id is NULL or publishername is NULL")
     }
+    
+  def self.get_publisher_name(group_id)
+    Publisher.find_by_group_id(group_id).publishername
+  end
 end

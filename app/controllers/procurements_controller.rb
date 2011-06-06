@@ -118,10 +118,10 @@ class ProcurementsController < ApplicationController
   
   def generate_po
     @procurement = Procurement.find(params[:id])
-    @procurement.generate_pos
+    cnt = @procurement.generate_pos
     
     respond_to do |format|
-      format.html { redirect_to(@procurement, :notice => 'Worklists regenerated.') }
+      format.html { redirect_to(@procurement, :notice => cnt.to_s + ' POs generated!') }
       format.xml  { render :xml => @procurement }
     end
   end

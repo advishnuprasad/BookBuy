@@ -5,7 +5,11 @@ body {
 
 table {
     table-layout:fixed;
-    font-family: Arial,sans-serif; font-size: 1.1em;
+    font-family: Arial,sans-serif; font-size: 1em;
+}
+
+table td {
+    padding: 0px;
 }
 
 /* Pagination */

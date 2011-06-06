@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110417114610
+# Schema version: 20110606132340
 #
 # Table name: pos
 #
@@ -31,11 +31,14 @@
 #  payableamt3    :decimal(, )
 #  narration      :string(255)
 #  invoices_count :integer(38)
+#  procurement_id :integer(38)
+#  currency       :string(255)
 #
 
 class Po < ActiveRecord::Base
   belongs_to :supplier
   belongs_to :branch
+  belongs_to :procurement
   has_many :procurementitems, :inverse_of => "po"
   has_many :invoices
   
@@ -64,6 +67,13 @@ class Po < ActiveRecord::Base
   scope :created_between, lambda {|startdate, enddate| 
       {:conditions => ['created_at >= ? AND created_at <= ?', Time.zone.startdate.to_time.beginning_of_day, Time.zone.enddate.to_time.end_of_day]}
     }
+  scope :of_procurement, lambda {|procurement_id|
+      where(:procurement_id => procurement_id)
+    }
+  
+  def publishername
+    Publisher.get_publisher_name(publisher_id)
+  end
   
   private 
     def make_uppercase

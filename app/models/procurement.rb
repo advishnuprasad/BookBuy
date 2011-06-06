@@ -16,13 +16,14 @@
 class Procurement < ActiveRecord::Base
   has_many :procurementitems
   has_many :worklists
+  has_many :pos
   
   def refresh_worklists
     plsql.worklist_generator.regenerate_ibtr_wl(id)
   end
   
   def generate_pos
-    plsql.generate_pos(id, description)
+    plsql.po_generator.generate(id, description)
   end
   
   def pending_publisher_updates_cnt
