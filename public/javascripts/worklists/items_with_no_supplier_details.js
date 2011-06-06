@@ -12,7 +12,7 @@ function saveItems() {
     dataValue["data"] = changedCellsHash;
     dataValue["id"] = getWorklistID();
     
-    jQuery.post('/worklist_save_items_with_po_not_generated',dataValue);
+    jQuery.post('/worklist_save_items_with_no_supplier_details',dataValue);
     clearChangedCells();
 }
 

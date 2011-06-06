@@ -4,10 +4,16 @@ class PublishersController < ApplicationController
   def index
     filter = params[:filter]
     filter ||= 'all'
-    if filter == 'all'
-      @publishers = Publisher.order("group_id").all
-    elsif filter == 'to_fill'
+    if filter == 'to_fill'
       @publishers = Publisher.to_fill
+    elsif filter == 'for_procurement'
+      if params[:procurement_id]
+        @publishers = Publisher.to_fill_in_procurement(params[:procurement_id])
+      else
+        @publishers = Publisher.to_fill
+      end
+    else
+      @publishers = Publisher.order("group_id").all
     end
 
     respond_to do |format|

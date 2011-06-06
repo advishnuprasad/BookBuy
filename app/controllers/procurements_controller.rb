@@ -15,16 +15,7 @@ class ProcurementsController < ApplicationController
   def show
     @procurement = Procurement.find(params[:id])
 
-    #unless params[:view].nil?
-    #  if params[:view] == 'items'
-    #    render ''
-    #  elsif params[:view] == 'worklists'
-    #    render ''
-    #  else
-    #  end
-    #end
-    
-    respond_to do |format|
+   respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @procurement }
     end

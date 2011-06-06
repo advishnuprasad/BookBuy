@@ -7,14 +7,14 @@ class WorklistsController < ApplicationController
   
   def show
     @worklist = Worklist.find(params[:id])
-    if @worklist.description == "Procurement Items with PO not generated"
-      render 'items_with_po_not_generated'
-    elsif @worklist.description == "Procurement Items with Invalid ISBN"
+    if @worklist.description == "Procurement Items with Invalid ISBN"
       render 'items_with_invalid_isbn'
     elsif @worklist.description == "Procurement Items with Details Not Verified"
       render 'items_with_details_not_enriched'
     elsif @worklist.description == "Procurement Items with No ISBN"
       render 'items_with_no_isbn'
+    elsif @worklist.description == "Procurement Items with No Supplier Details"
+      render 'items_with_no_supplier_details'
     end
   end
   
@@ -60,6 +60,33 @@ class WorklistsController < ApplicationController
   end
   
   def save_items_with_po_not_generated
+    data = params[:data]
+    id = params[:id]
+    items = Array.new
+    
+    result = true
+    data.each {|key, value|
+      procurementitem = Procurementitem.find(value["id"])
+      procurementitem.quantity = value["quantity"] unless value["quantity"].nil?
+      procurementitem.supplier_id = value["supplier_id"] unless value["supplier_id"].nil?
+      
+      if !procurementitem.save
+        result = false
+      end
+    }
+    
+    if result == true
+      flash[:success] = "Items have been Successfully Updated!"
+    else
+      flash[:error] = "Items updation failed!"
+    end
+    
+    respond_to do |format|
+      format.js
+    end
+  end
+  
+  def save_items_with_no_supplier_details
     data = params[:data]
     id = params[:id]
     items = Array.new

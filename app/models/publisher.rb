@@ -15,8 +15,14 @@
 class Publisher < ActiveRecord::Base
   named_scope :with_names, :conditions => ["publishername IS NOT NULL"]
   
+  has_many :enrichedtitles
   has_many :supplierdiscounts
   has_many :suppliers, :through => :supplierdiscounts
   
   scope :to_fill, where("group_id is NULL or publishername is NULL")
+  scope :to_fill_in_procurement, lambda {|procurement_id|
+      joins(:enrichedtitles => :procurementitems).
+      where(:procurementitems => {:procurement_id => procurement_id}).
+      where("group_id is NULL or publishername is NULL")
+    }
 end

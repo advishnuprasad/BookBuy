@@ -1,5 +1,7 @@
 BookBuy::Application.routes.draw do
 
+  resources :procurementitems
+
   resources :procurements do
     get 'pull', :on => :collection
     member do

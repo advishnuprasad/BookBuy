@@ -25,6 +25,24 @@ class Procurement < ActiveRecord::Base
     plsql.generate_pos(id, description)
   end
   
+  def pending_publisher_updates_cnt
+    #procurementitems.joins(:enrichedtitle => :publisher).where(:publishers => {:group_id => nil}).count
+    Publisher.to_fill_in_procurement(id).count
+  end
+  
+  def pending_supplier_updates_cnt
+    procurementitems.where('supplier_id is NULL').count
+  end
+  
+  def pending_discount_updates_cnt
+    #procurementitems.joins([:enrichedtitle => {:publisher => :supplierdiscounts}], :supplier).where("supplierdiscounts.bulkdiscount is NULL OR supplierdiscounts.discount is NULL").count
+    Supplierdiscount.to_fill_in_procurement(id).count
+  end
+  
+  def items_ready_to_order_cnt
+    procurementitems.to_order_in_procurement(id).count
+  end
+  
   private
     def self.pending_ibtr_items_exist
       cnt = plsql.data_pull.get_ibtr_items_count

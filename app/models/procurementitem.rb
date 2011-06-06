@@ -31,6 +31,7 @@ class Procurementitem < ActiveRecord::Base
   belongs_to :supplier
   belongs_to :procurement
   belongs_to :title
+  belongs_to :branch
   belongs_to :po, :foreign_key => "po_number", :primary_key => "po_number", :class_name => "Po"
   
   scope :mapped, joins(:enrichedtitle).where("enrichedtitles.title_id IS NOT NULL")
@@ -39,6 +40,19 @@ class Procurementitem < ActiveRecord::Base
       where("isbn = :isbn AND procured_cnt < quantity AND po_number IS NOT NULL",:isbn => isbn).
       where(:po_number => po_nos).
       order("id")
+    }
+  scope :to_order_in_procurement, lambda {|procurement_id|
+      joins(:enrichedtitle).
+      where("procurementitems.supplier_id IS NOT NULL
+        AND (procurementitems.isbn IS NOT NULL AND procurementitems.isbn != 'XXXXXXXXXXXXX') AND enrichedtitles.isbnvalid = 'Y'
+        AND (
+          enrichedtitles.verified = 'Y'
+          AND enrichedtitles.isbn IS NOT NULL
+          AND enrichedtitles.title_id IS NOT NULL
+          AND enrichedtitles.publisher_id IS NOT NULL
+          AND enrichedtitles.author IS NOT NULL
+          )").
+      where(:procurement_id => procurement_id)
     }
     
   #Assumptions

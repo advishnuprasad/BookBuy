@@ -3,15 +3,39 @@
 <h1>Procurements</h1>
 
 <div>
+  <%= link_to 'Back', procurements_path %> |
+  <%= link_to "Generate PO", generate_po_procurement_path %> |
+  <%= link_to "Mark Close", close_procurement_path %>
+</div>
+<br/>
+
+<div>
 <%= @procurement.description %> of <%= @procurement.requests_cnt %> items
 (Created on: <%= @procurement.created_at.strftime('%d-%b-%Y') %>)
 </div>
 <br/><br/>
-<div><b>Worklists</b></div>
-<div><%= link_to "Refresh", refresh_procurement_path %> |
-  <%= link_to "Generate PO", generate_po_procurement_path %> |
-  <%= link_to "Mark Close", close_procurement_path %>
+
+<div>
+  <div>
+    <span>No. of publishers to be updated: </span>
+    <span><%= link_to @procurement.pending_publisher_updates_cnt, publishers_path(:filter => 'for_procurement', :procurement_id => @procurement.id)%></span>
+  </div>
+  <div>
+    <span>No. of suppliers to be updated: </span>
+    <span><%= @procurement.pending_supplier_updates_cnt %></span>
+  </div>
+  <div>
+    <span>No. of discounts to be updated: </span>
+    <span><%= link_to @procurement.pending_discount_updates_cnt, supplierdiscounts_path(:filter => 'for_procurement', :procurement_id => @procurement.id) %></span>
+  </div>
+  <div>
+    <span>Items ready to be ordered:</span>
+    <span><%= link_to @procurement.items_ready_to_order_cnt, procurementitems_path(:filter => 'for_procurement', :procurement_id => @procurement.id) %></span>
+  </div>
 </div>
+<br/><br/>
+
+<div><b><h3>Worklists</h3></b>(<%= link_to "Refresh Worklists", refresh_procurement_path %>)</div>
 <br/>
 <div>
   <% if @procurement.worklists.open %>
@@ -30,6 +54,3 @@
     <% end %>
   <% end %>
 </div>
-
-<!--<%= link_to 'Edit', edit_procurement_path(@procurement) %> |-->
-<%= link_to 'Back', procurements_path %>

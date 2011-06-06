@@ -4,12 +4,18 @@ class SupplierdiscountsController < ApplicationController
   def index
     filter = params[:filter]
     filter ||= 'all'
-    if filter == 'all'
-      #Order by Supplier and Publisher (Group)
-      @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:publisher).order("publishers.group_id").all
-    elsif filter == 'to_fill'
+    if filter == 'to_fill'
       #Order by Supplier and Publisher (Group)
       @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:publisher).order("publishers.group_id").to_fill
+    elsif filter == 'for_procurement'
+      if params[:procurement_id]
+        @supplierdiscounts = Supplierdiscount.to_fill_in_procurement(params[:procurement_id])
+      else
+        @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:publisher).order("publishers.group_id").to_fill
+      end
+    else
+      #Order by Supplier and Publisher (Group)
+      @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:publisher).order("publishers.group_id").all
     end
     
     respond_to do |format|

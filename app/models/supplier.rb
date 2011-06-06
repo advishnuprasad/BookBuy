@@ -18,4 +18,5 @@ class Supplier < ActiveRecord::Base
   has_many :supplierdiscounts
   has_many :publishers, :through => :supplierdiscounts
   has_many :pos
+  has_many :procurementitems
 end

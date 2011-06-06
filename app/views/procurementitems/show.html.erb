@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Isbn:</b>
+  <%= @procurementitem.isbn %>
+</p>
+
+<p>
+  <b>Title:</b>
+  <%= @procurementitem.title %>
+</p>
+
+<p>
+  <b>Author:</b>
+  <%= @procurementitem.author %>
+</p>
+
+<p>
+  <b>Publisher:</b>
+  <%= @procurementitem.publisher %>
+</p>
+
+<p>
+  <b>Supplier:</b>
+  <%= @procurementitem.supplier %>
+</p>
+
+<p>
+  <b>Qty:</b>
+  <%= @procurementitem.qty %>
+</p>
+
+<p>
+  <b>Branch:</b>
+  <%= @procurementitem.branch %>
+</p>
+
+
+<%= link_to 'Edit', edit_procurementitem_path(@procurementitem) %> |
+<%= link_to 'Back', procurementitems_path %>
