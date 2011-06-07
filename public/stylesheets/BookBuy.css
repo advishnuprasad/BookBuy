@@ -12,6 +12,25 @@ table td {
     padding: 0px;
 }
 
+.left { 
+margin: 0; 
+padding: 0;
+width: 50%;
+float: left; 
+}
+
+.right { 
+margin: 0; 
+padding: 0;
+width: 50%;
+}
+
+.clear {
+  clear:both;
+  height:1px;
+  overflow:hidden;
+}
+
 /* Pagination */
 .pagination {
   background: #F1F1F1;

@@ -19,7 +19,8 @@ BookBuy::Application.routes.draw do
     get 'regenerate', :on => :member
     collection do
       get 'autocomplete'
-      get 'filter'
+      get 'filter_by_invoice_date'
+      get 'filter_by_entry_date'
     end
   end
   resources :bookreceipts

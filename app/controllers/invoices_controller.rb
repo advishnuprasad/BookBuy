@@ -91,8 +91,17 @@ class InvoicesController < ApplicationController
     end
   end
   
-  def filter
-    @invoices = Invoice.filter(params)
+  def filter_by_invoice_date
+    @invoices = Invoice.filter_by_invoice_date(params)
+    @pos = Po.among(@invoices.collect {|invoice| invoice.po.code})
+    respond_to do |format|
+      format.html { render :index }
+      format.xml  { render :xml => @invoices }
+    end
+  end
+  
+  def filter_by_entry_date
+    @invoices = Invoice.filter_by_entry_date(params)
     @pos = Po.among(@invoices.collect {|invoice| invoice.po.code})
     respond_to do |format|
       format.html { render :index }

@@ -26,16 +26,17 @@
 <div><h2>Invoices</h2></div>
 <div><h4><%= link_to "New Invoice", new_invoice_path %></h4></div>
 <!--Options -->
-<div style="width: 50%;">
-  <%= form_tag filter_invoices_path,:class=>'search_invoice', :method => 'get' do -%>
-      <%= field_set_tag 'Search' do %>
+<div style="width: 50%;" class="left">
+  <%= form_tag filter_by_invoice_date_invoices_path, :class=>'search_invoice', :method => 'get' do -%>
+      <%= field_set_tag 'Search on Invoice Date' do %>
+        <%= hidden_field_tag 'type', 'invoice_date' %>
         <div>
           <%= label_tag 'Show Invoices:'%>
-          <%= select_tag :created, options_for_select([['All','All'],['Raised today','Today'],['Raised on','On'],['Raised Between','Range']], params[:created]) %>
+          <%= select_tag :raised, options_for_select([['All','All'],['Raised today','Today'],['Raised on','On'],['Raised Between','Range']], params[:raised]) %>
         </div>
         <div id="div_start_date">
           <%= label_tag 'Start:'%>
-          <%= date_select 'start', 'start', :order =>[:day, :month, :year] %>
+          <%= date_select :start, 'start', :order =>[:day, :month, :year] %>
         </div>
         <div id="div_end_date">
           <%= label_tag  'End  :'  %>
@@ -47,7 +48,30 @@
       <% end -%>
   <% end -%>
 </div>
-  
+
+<div style="width: 50%;" class="right">
+  <%= form_tag filter_by_entry_date_invoices_path, :class=>'search_entry', :method => 'get' do -%>
+      <%= field_set_tag 'Search on Entry Date' do %>
+        <%= hidden_field_tag 'type', 'entry_date' %>
+        <div>
+          <%= label_tag 'Show Invoices:'%>
+          <%= select_tag :entered, options_for_select([['All','All'],['Entered today','Today'],['Entered on','On'],['Entered Between','Range']], params[:entered]) %>
+        </div>
+        <div id="div_start_date">
+          <%= label_tag 'Start:'%>
+          <%= date_select :start, 'start', :order =>[:day, :month, :year] %>
+        </div>
+        <div id="div_end_date">
+          <%= label_tag  'End  :'  %>
+          <%= date_select :end, 'end', :order =>[:day, :month, :year] %>
+        </div>
+        <div>
+          <%= submit_tag "Submit", :name => nil %>
+        </div>
+      <% end -%>
+  <% end -%>
+</div>
+<div class="clear"></div>
 <!--Options -->
 <%= button_to_function 'Print Invoices', "setPrinterDivForInvoices('invoices');" %>
 <%= button_to_function 'Print Vouchers', "setPrinterDivForVouchers('vouchers');" %>
@@ -156,7 +180,7 @@
         <% po.invoices.each_with_index do |invoice, index| %>
           <tr>
             <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><%= index+1 %></td>
-            <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><%= invoice.date_of_invoice.strftime('%d-%b-%Y') %></td>
+            <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><%= invoice.date_of_invoice.strftime('%d-%b-%Y') unless invoice.date_of_invoice.nil? %></td>
             <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000">Books</td>
             <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><%= invoice.invoice_no %></td>
             <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000"><%= invoice.quantity %></td>
