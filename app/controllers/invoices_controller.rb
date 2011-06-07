@@ -1,14 +1,14 @@
 class InvoicesController < ApplicationController
   def index
     if params[:query].nil?
-      @invoices = Invoice.paginate(:per_page => 25, :page => params[:page])
+      @invoices = Invoice.paginate(:per_page => 250, :page => params[:page])
     else
       if params[:query] == 'Today'
-        @invoices = Invoice.today.paginate(:per_page => 25, :page => params[:page])
+        @invoices = Invoice.today.paginate(:per_page => 250, :page => params[:page])
         po_nos = @invoices.collect {|invoice| invoice.po.code}
         @pos = Po.among(po_nos)
       else
-        @invoices = Invoice.paginate(:per_page => 25, :page => params[:page])
+        @invoices = Invoice.paginate(:per_page => 250, :page => params[:page])
       end
     end
   end
@@ -88,6 +88,15 @@ class InvoicesController < ApplicationController
         format.html { render :index }
         format.xml { render :nothing => true, :status => :not_found }
       end
+    end
+  end
+  
+  def filter
+    @invoices = Invoice.filter(params)
+    @pos = Po.among(@invoices.collect {|invoice| invoice.po.code})
+    respond_to do |format|
+      format.html { render :index }
+      format.xml  { render :xml => @invoices }
     end
   end
 end

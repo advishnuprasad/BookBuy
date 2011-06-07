@@ -1,3 +1,7 @@
+<% content_for(:head) do %>
+  <%= javascript_include_tag 'invoices/index' %>
+<% end %>
+
 <script type="text/javascript">
   function setPrinterDivForInvoices(id){
     document.getElementById(id).style.display = 'block';
@@ -21,22 +25,34 @@
 
 <div><h2>Invoices</h2></div>
 <div><h4><%= link_to "New Invoice", new_invoice_path %></h4></div>
-<br/>
 <!--Options -->
-<div>
-  <div><h3>Filters</h3></div>
-  <table style="width: 10%">
-    <tr>
-      <td><%= link_to "All", invoices_path(:query => 'All') %></a></td>
-      <td><%= link_to "Today", invoices_path(:query => 'Today') %></td>
-    </tr>
-  </table>  
+<div style="width: 50%;">
+  <%= form_tag filter_invoices_path,:class=>'search_invoice', :method => 'get' do -%>
+      <%= field_set_tag 'Search' do %>
+        <div>
+          <%= label_tag 'Show Invoices:'%>
+          <%= select_tag :created, options_for_select([['All','All'],['Raised today','Today'],['Raised on','On'],['Raised Between','Range']], params[:created]) %>
+        </div>
+        <div id="div_start_date">
+          <%= label_tag 'Start:'%>
+          <%= date_select 'start', 'start', :order =>[:day, :month, :year] %>
+        </div>
+        <div id="div_end_date">
+          <%= label_tag  'End  :'  %>
+          <%= date_select :end, 'end', :order =>[:day, :month, :year] %>
+        </div>
+        <div>
+          <%= submit_tag "Submit", :name => nil %>
+        </div>
+      <% end -%>
+  <% end -%>
 </div>
+  
 <!--Options -->
 <%= button_to_function 'Print Invoices', "setPrinterDivForInvoices('invoices');" %>
 <%= button_to_function 'Print Vouchers', "setPrinterDivForVouchers('vouchers');" %>
 <div>
-  <% if @invoices %>
+  <% if @invoices.count > 0 %>
     <%= will_paginate :prev_label => '<< Previous', :next_label => 'Next >>', :class => 'pagination'%>
       <div class="ui-widget-content ui-corner-all list-item-row">
         <table style="width: 100%;">
@@ -67,7 +83,7 @@
 </div>
 <div>
   <% if @invoices %>
-    <div id='invoices' class="ui-widget-content ui-corner-all list-item-row">
+    <div id='invoices' class="ui-widget-content ui-corner-all list-item-row" style="display:none;">
       <br/>    
         <table style="width: 100%;">
           <tr>
@@ -76,33 +92,33 @@
             <td colspan=2><%= Date.today.strftime('%d-%b-%Y') %></td>
           </tr>
           <tr>
-            <th style="width: 10%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px">Invoice No.</th>
-            <th style="width: 12%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">PO Number</th>
-            <th style="width: 15%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Supplier </th>
-            <th style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Received Date </th>
-            <th style="width: 12%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Branch </th>
-            <th style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Qty</th>
-            <th style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Amount</th>
-            <th style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Boxes</th>
-            <th style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Invoice Date</th>
-            <th style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Received By</th>
-            <th style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Voucher No.</th>
-            <th style="width: 10%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;">Sign</th>
+            <th style="width: 10%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px">Invoice No.</th>
+            <th style="width: 12%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;">PO Number</th>
+            <th style="width: 15%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;">Supplier </th>
+            <th style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;">Received Date </th>
+            <th style="width: 12%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;">Branch </th>
+            <th style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;">Qty</th>
+            <th style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;">Amount</th>
+            <th style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;">Boxes</th>
+            <th style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;">Invoice Date</th>
+            <th style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;">Received By</th>
+            <th style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;">Voucher No.</th>
+            <th style="width: 10%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;">Sign</th>
           </tr>
           <% @invoices.each do |invoice| %>
             <tr>
-              <td style="width: 10%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= link_to invoice.invoice_no, invoice_path(invoice.id) %></td>            
-              <td style="width: 12%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= invoice.po.code %></td>
-              <td style="width: 15%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= invoice.po.supplier.name %></td>
-              <td style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= invoice.created_at.strftime('%d-%b-%Y') unless invoice.created_at.nil? %></td>
-              <td style="width: 12%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= invoice.po.branch.name %></td>
-              <td style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= invoice.quantity %></td>
-              <td style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= invoice.amount %></td>
-              <td style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= invoice.boxes_cnt %></td>
-              <td style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"><%= invoice.date_of_invoice.strftime('%d-%b-%Y') unless invoice.date_of_invoice.nil? %></td>
-              <td style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"></td>
-              <td style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"></td>
-              <td style="width: 10%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;"></td>
+              <td style="width: 10%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= link_to invoice.invoice_no, invoice_path(invoice.id) %></td>            
+              <td style="width: 12%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.po.code %></td>
+              <td style="width: 15%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.po.supplier.name %></td>
+              <td style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.created_at.strftime('%d-%b-%Y') unless invoice.created_at.nil? %></td>
+              <td style="width: 12%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.po.branch.name %></td>
+              <td style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.quantity %></td>
+              <td style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.amount %></td>
+              <td style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.boxes_cnt %></td>
+              <td style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.date_of_invoice.strftime('%d-%b-%Y') unless invoice.date_of_invoice.nil? %></td>
+              <td style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"></td>
+              <td style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"></td>
+              <td style="width: 10%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"></td>
             </tr>
           <% end %>
         </table>
@@ -160,10 +176,10 @@
           <th style="padding: 2px 4px 2px 4px; border: 1px solid #000000">Accounted </th>
         </tr>
         <tr>
-          <td colspan=2 style="padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px;height:40px"></td>
-          <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px"></td>
-          <td colspan=2 style="padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px"></td>
-          <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 8px"></td>
+          <td colspan=2 style="padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;height:40px"></td>
+          <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px"></td>
+          <td colspan=2 style="padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px"></td>
+          <td style="padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px"></td>
         </tr>
       </table>
       <br/>

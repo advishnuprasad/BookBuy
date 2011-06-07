@@ -17,7 +17,10 @@ BookBuy::Application.routes.draw do
   resources :pos
   resources :invoices do
     get 'regenerate', :on => :member
-    get 'autocomplete', :on => :collection
+    collection do
+      get 'autocomplete'
+      get 'filter'
+    end
   end
   resources :bookreceipts
   resources :titlereceipts
