@@ -19,11 +19,13 @@
               <table class="ui-jqgrid-htable" cellspacing="0" cellpadding="0" border="0" role="grid">
                 <thead>
                   <tr class="ui-jqgrid-labels" role="rowheader">
-                    <th id="col_TitleID" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 10%;">ID</th>
+                    <th id="col_TitleID" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 5%;">ID</th>
                     <th id="col_Title" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 30%;">Title</th>
-                    <th id="col_Author" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 16%;">Author</th>
-                    <th id="col_ISBN" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 15%;">ISBN</th>
-                    <th id="col_Status" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 10%;">Status</th>
+                    <th id="col_Author" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 10%;">Author</th>
+                    <th id="col_ISBN" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 10%;">ISBN</th>
+                    <th id="col_Status" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 5%;">Status</th>
+                    <th id="col_Defer" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 3%;">Defer</th>
+                    <th id="col_Cancel" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 3%;">Cancel</th>
                   </tr>
                 </thead>
               </table>
@@ -37,10 +39,19 @@
                     <% @worklist.workitems.each do |workitem| %>
                       <tr class="ui-widget-content jqgrow ui-row-ltr" role="row">
                         <td aria-describedby="col_TitleID" role="gridcell" style="width: 5%;"><%= workitem.referenceitem.id %></td>
-                        <td aria-describedby="col_Title" role="gridcell" style="width: 35%;"><%= workitem.referenceitem.title.title unless workitem.referenceitem.title.title.nil? %></td>
-                        <td aria-describedby="col_Author" role="gridcell" style="width: 15%;"><%= workitem.referenceitem.title.author.name unless workitem.referenceitem.title.author.name.nil? %></td>
-                        <td aria-describedby="col_ISBN" role="gridcell" style="width: 20%;"><%= tag(:input, {:class => 'input_isbn', :dataid => workitem.referenceitem.id, :type => 'text', :size => 15, :dataisbn => workitem.referenceitem.isbn, :value => workitem.referenceitem.isbn }, false, false) %></td>
-                        <td aria-describedby="col_Status" role="gridcell" style="width: 10%;"><%= validity_status(workitem.referenceitem.enrichedtitle.isbnvalid) unless workitem.referenceitem.enrichedtitle.nil? %></td>
+                        <td aria-describedby="col_Title" role="gridcell" style="width: 30%;"><%= workitem.referenceitem.title.title unless workitem.referenceitem.title.title.nil? %></td>
+                        <td aria-describedby="col_Author" role="gridcell" style="width: 10%;"><%= workitem.referenceitem.title.author.name unless workitem.referenceitem.title.author.name.nil? %></td>
+                        <td aria-describedby="col_ISBN" role="gridcell" style="width: 10%;"><%= tag(:input, {:class => 'input_isbn', :dataid => workitem.referenceitem.id, :type => 'text', :size => 15, :dataisbn => workitem.referenceitem.isbn, :value => workitem.referenceitem.isbn }, false, false) %></td>
+                        <td aria-describedby="col_Status" role="gridcell" style="width: 5%;"><%= validity_status(workitem.referenceitem.enrichedtitle.isbnvalid) unless workitem.referenceitem.enrichedtitle.nil? %></td>
+                        <td aria-describedby="col_Defer" role="gridcell" style="width: 3%;"><%= tag(:input, 
+                                            {:class => 'input_defer', :datadeferid => workitem.referenceitem.id, :size => 2, :type => 'text', 
+                                            :datadefer => workitem.referenceitem.deferred_by, 
+                                            :value => workitem.referenceitem.deferred_by }, false, false)  %></td>
+                        <td aria-describedby="col_Cancel" role="gridcell" style="width: 3%;"><%= select_tag "Cancel", 
+                                            options_for_select(Procurementitem::CANCEL_REASONS, workitem.referenceitem.cancel_reason), 
+                                            {:class => 'select_cancel', :datacancelid => workitem.referenceitem.id, 
+                                            :datacancel => workitem.referenceitem.cancel_reason, 
+                                            :value => workitem.referenceitem.cancel_reason, :include_blank => true, } %></td>
                       </tr>
                     <% end %>
                   </tbody>

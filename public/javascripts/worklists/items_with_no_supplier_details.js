@@ -24,7 +24,7 @@ function clearChangedCells() {
     changedCells = {};
 }
 
-$("#items input").live("change",function(event) {
+$("#items .input_qty").live("change",function(event) {
     if($(this).attr('dataquantity') != this.value) {
         if(changedCells[this.id]) {
             changedCells[this.id]["quantity"] = this.value;
@@ -70,4 +70,36 @@ $("#items .select_avl").live("change",function(event) {
     else
         if(changedCells[$(this).attr('dataavlid')])
             delete changedCells[$(this).attr('dataavlid')]["availability"];
+});
+
+$("#items .select_cancel").live("change",function(event) {
+    if($(this).attr('datacancel') != this.value) {
+        if(changedCells[$(this).attr('datacancelid')]) {
+            changedCells[$(this).attr('datacancelid')]["cancel_reason"] = this.value;
+        }
+        else {
+            changedCells[$(this).attr('datacancelid')] = {}
+            changedCells[$(this).attr('datacancelid')]["id"] = $(this).attr('datacancelid');
+            changedCells[$(this).attr('datacancelid')]["cancel_reason"] = this.value;
+        }
+    }
+    else
+        if(changedCells[$(this).attr('datacancelid')])
+            delete changedCells[$(this).attr('datacancelid')]["cancel_reason"];
+});
+
+$("#items .input_defer").live("change",function(event) {
+    if($(this).attr('datadefer') != this.value) {
+        if(changedCells[$(this).attr('datadeferid')]) {
+            changedCells[$(this).attr('datadeferid')]["deferred_by"] = this.value;
+        }
+        else {
+            changedCells[$(this).attr('datadeferid')] = {}
+            changedCells[$(this).attr('datadeferid')]["id"] = $(this).attr('datadeferid');
+            changedCells[$(this).attr('datadeferid')]["deferred_by"] = this.value;
+        }
+    }
+    else
+        if(changedCells[$(this).attr('datadeferid')])
+            delete changedCells[$(this).attr('datadeferid')]["deferred_by"];
 });

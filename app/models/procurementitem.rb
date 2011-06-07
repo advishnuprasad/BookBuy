@@ -29,6 +29,7 @@
 
 class Procurementitem < ActiveRecord::Base
   AVAILABILITY_OPTIONS = ["Avl","Not Avl"]
+  CANCEL_REASONS = ["Out of Print","High Cost","Unavailable in Market", "Insufficient Data","Imported Edition","Non-Procurable Category"]
   
   belongs_to :enrichedtitle
   belongs_to :supplier
@@ -61,6 +62,8 @@ class Procurementitem < ActiveRecord::Base
         AND procurementitems.po_number IS NULL").
       where(:procurement_id => procurement_id)
     }
+  scope :cancelled, where(:status => 'Cancelled')
+  scope :deferred, where(:status => 'Deferred')
     
   #Assumptions
   # Branch ID is the same

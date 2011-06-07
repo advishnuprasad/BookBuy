@@ -8,7 +8,15 @@ class ProcurementitemsController < ApplicationController
       if filter == 'of_procurement_to_order' && params[:procurement_id]
         @procurementitems = Procurementitem.to_order_in_procurement(params[:procurement_id])
       elsif filter == 'of_procurement' && params[:procurement_id]
-        @procurementitems = Procurementitem.of_procurement(params[:procurement_id])
+        if params[:status]
+          if params[:status] == 'Deferred'
+            @procurementitems = Procurementitem.of_procurement(params[:procurement_id]).deferred
+          elsif params[:status] == 'Cancelled'
+            @procurementitems = Procurementitem.of_procurement(params[:procurement_id]).cancelled
+          end
+        else
+          @procurementitems = Procurementitem.of_procurement(params[:procurement_id])
+        end
       else
         @procurementitems = Procurementitem.all
       end

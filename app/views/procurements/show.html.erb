@@ -40,6 +40,16 @@
     <span>Items ready to be ordered:</span>
     <span><%= link_to @procurement.items_ready_to_order_cnt, procurementitems_path(:filter => 'of_procurement_to_order', :procurement_id => @procurement.id) %></span>
   </div>
+  <div>
+    <span>Items Deferred:</span>
+    <span><%= link_to @procurement.procurementitems.deferred.count, procurementitems_path(:filter => 'of_procurement', 
+              :procurement_id => @procurement.id, :status => 'Deferred') %></span>
+  </div>
+  <div>
+    <span>Items Cancelled:</span>
+    <span><%= link_to @procurement.procurementitems.cancelled.count, procurementitems_path(:filter => 'of_procurement', 
+              :procurement_id => @procurement.id, :status => 'Cancelled') %></span>
+  </div>
 </div>
 <br/><br/>
 

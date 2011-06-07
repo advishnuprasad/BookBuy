@@ -45,7 +45,11 @@ select {
 }
 
 .select_publisher {
-    width: 125px
+    width: 100px
+}
+
+.select_cancel {
+    width: 50px
 }
 
 input {
