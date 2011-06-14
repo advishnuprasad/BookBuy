@@ -1,4 +1,6 @@
+require 'exceptions.rb'
 class InvoicesController < ApplicationController
+  
   def index
     if params[:query].nil?
       @invoices = Invoice.paginate(:per_page => 250, :page => params[:page])
@@ -60,7 +62,23 @@ class InvoicesController < ApplicationController
       end
     end
   end
-
+  
+  # DELETE /invoices/1
+  # DELETE /invoices/1.xml
+  def destroy
+    @invoice = Invoice.find(params[:id])
+    respond_to do |format|
+      if @invoice.destroy
+        format.html { redirect_to(invoices_url) }
+        format.xml  { head :ok }
+      else
+        flash[:error] = "Invoice cannot be deleted. Items in it have already been received."
+        format.html { redirect_to(@invoice, :notice => 'Invoice cannot be deleted. Items in it have already been received.') }
+        format.xml  { render :xml => @invoice.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
   def regenerate
     @invoice = Invoice.find(params[:id])
     @invoice.regenerate

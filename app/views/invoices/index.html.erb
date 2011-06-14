@@ -76,7 +76,7 @@
 <%= button_to_function 'Print Invoices', "setPrinterDivForInvoices('invoices');" %>
 <%= button_to_function 'Print Vouchers', "setPrinterDivForVouchers('vouchers');" %>
 <div>
-  <% if @invoices.count > 0 %>
+  <% if @invoices && @invoices.count > 0 %>
     <%= will_paginate :prev_label => '<< Previous', :next_label => 'Next >>', :class => 'pagination'%>
       <div class="ui-widget-content ui-corner-all list-item-row">
         <table style="width: 100%;">
@@ -88,6 +88,7 @@
             <th style="width: 10%;">Amount</th>
             <th style="width: 7.5%;">Boxes</th>
             <th style="width: 15%;">Date of Invoice</th>
+            <th></th>
           </tr>
           <% @invoices.each do |invoice| %>
             <tr>
@@ -98,6 +99,7 @@
               <td style="width: 10%;"><%= invoice.amount %></td>
               <td style="width: 7.5%;"><%= invoice.boxes_cnt %></td>
               <td style="width: 15%;"><%= invoice.date_of_invoice.strftime('%d-%b-%Y') unless invoice.date_of_invoice.nil? %></td>
+              <td><%= link_to 'Destroy', invoice, :confirm => 'Are you sure?', :method => :delete %></td>
             </tr>
           <% end %>
         </table>

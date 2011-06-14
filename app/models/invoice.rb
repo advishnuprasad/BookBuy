@@ -78,25 +78,16 @@ class Invoice < ActiveRecord::Base
       
       start_date = Time.zone.today.beginning_of_day
       end_date =  Time.zone.today.end_of_day
-      puts "Start S" + start_s.to_s
-      puts "End S" + end_s.to_s
       
       if created == 'Today'
-        puts "IN TODAY"
         start_date = Time.zone.today.beginning_of_day
         end_date =  Time.zone.today.end_of_day
       elsif created == 'Range'
-        puts "IN RANGE"
         start_date = start_s.to_time.beginning_of_day
         end_date =  end_s.to_time.beginning_of_day
-        puts start_date.to_s
-        puts end_date.to_s
       elsif created == 'On'
-        puts "IN ON"
         start_date = start_s.to_time.beginning_of_day
         end_date =  start_s.to_time.end_of_day
-        puts "Start Date" + start_date.to_s
-        puts "End Date" + end_date.to_s      
       end
       
       Invoice.invoice_date_between(start_date, end_date).paginate(:per_page => 250, :page => params[:page])
@@ -122,29 +113,30 @@ class Invoice < ActiveRecord::Base
       
       start_date = Time.zone.today.beginning_of_day
       end_date =  Time.zone.today.end_of_day
-      puts "Start S" + start_s.to_s
-      puts "End S" + end_s.to_s
       
       if created == 'Today'
-        puts "IN TODAY"
         start_date = Time.zone.today.beginning_of_day
         end_date =  Time.zone.today.end_of_day
       elsif created == 'Range'
-        puts "IN RANGE"
         start_date = start_s.to_time.beginning_of_day
         end_date =  end_s.to_time.beginning_of_day
-        puts start_date.to_s
-        puts end_date.to_s
       elsif created == 'On'
-        puts "IN ON"
         start_date = start_s.to_time.beginning_of_day
         end_date =  start_s.to_time.end_of_day
-        puts "Start Date" + start_date.to_s
-        puts "End Date" + end_date.to_s      
       end
       
       Invoice.created_between(start_date, end_date).paginate(:per_page => 250, :page => params[:page])
     end   
+  end
+  
+  def destroy
+    #raise Exceptions::InvoiceInUse unless Titlereceipt.of_invoice(invoice_no).count == 0
+    if Titlereceipt.of_invoice(invoice_no).count != 0
+      return false
+    else
+      super
+      return true
+    end
   end
   
   private 

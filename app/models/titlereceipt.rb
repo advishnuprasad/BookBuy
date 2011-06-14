@@ -17,10 +17,15 @@ class Titlereceipt < ActiveRecord::Base
   before_validation :select_full_po_no
   before_create :upsert_box_total_cnt
   
+  #TODO Change scope name to of_po_and_isbn
   scope :of_po, lambda { |po_no, isbn|
       where("po_no = :po_no AND isbn = :isbn", {:po_no => po_no, :isbn => isbn}).
       order("created_at")
     }  
+  scope :of_invoice, lambda{|invoice_no|
+      where(:invoice_no => invoice_no).
+      order("created_at")
+    }
   scope :not_cataloged, where("book_no IS NULL")
   
   validates :po_no,             :presence => true
