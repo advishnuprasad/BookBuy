@@ -71,9 +71,11 @@ class Enrichedtitle < ActiveRecord::Base
           title.isbn = isbn.asIsbn13.gsub(/-/,'')
           
           #Update Items if ISBN was updated to ISBN13
-          procurementitems.each do |item|
-            item.isbn = title.isbn
-            item.save
+          if procurementitems
+            procurementitems.each do |item|
+              item.isbn = title.isbn
+              item.save
+            end
           end
         end
       else
