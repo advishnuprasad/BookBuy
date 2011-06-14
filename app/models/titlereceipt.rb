@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110602060441
+# Schema version: 20110614094857
 #
 # Table name: titlereceipts
 #
@@ -11,6 +11,7 @@
 #  created_at :datetime
 #  updated_at :datetime
 #  book_no    :string(1020)
+#  created_by :integer(38)
 #
 
 class Titlereceipt < ActiveRecord::Base
@@ -81,7 +82,6 @@ class Titlereceipt < ActiveRecord::Base
   end
   
   private
-    
     def select_full_po_no
       if po_no.length == 9
         po_item = Po.where("code LIKE :po_no", {:po_no => "#{po_no}%"})

@@ -28,8 +28,9 @@ class BookreceiptsController < ApplicationController
 
   def create
     @bookreceipt = Bookreceipt.new(params[:bookreceipt])
-    respond_to do |format|
-      
+    @bookreceipt.created_by = current_user.id
+    
+    respond_to do |format|      
       if @bookreceipt.save
         puts 'Successfully saved!'
         flash[:success] = "Cataloged Successfully!"

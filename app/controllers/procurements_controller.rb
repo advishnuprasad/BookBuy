@@ -41,7 +41,8 @@ class ProcurementsController < ApplicationController
   # POST /procurements.xml
   def create
     @procurement = Procurement.new(params[:procurement])
-
+    @procurement.created_by = current_user.id
+    
     respond_to do |format|
       if @procurement.save
         format.html { redirect_to(@procurement, :notice => 'Procurement was successfully created.') }
@@ -57,7 +58,8 @@ class ProcurementsController < ApplicationController
   # PUT /procurements/1.xml
   def update
     @procurement = Procurement.find(params[:id])
-
+    @procurement.modified_by = current_user.id
+    
     respond_to do |format|
       if @procurement.update_attributes(params[:procurement])
         format.html { redirect_to(@procurement, :notice => 'Procurement was successfully updated.') }
@@ -89,6 +91,9 @@ class ProcurementsController < ApplicationController
         if cnt > 0
           id = Procurement.pull_ibtr_items
           @procurement = Procurement.find(id)
+          
+          @procurement.created_by = current_user.id
+          @procurement.save
         else
           flash[:success] = "No pending IBTR Requests!"
         end

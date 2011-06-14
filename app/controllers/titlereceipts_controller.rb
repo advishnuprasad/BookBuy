@@ -13,6 +13,8 @@ class TitlereceiptsController < ApplicationController
 
   def create
     @titlereceipt = Titlereceipt.new(params[:titlereceipt])
+    @titlereceipt.created_by = current_user.id
+    
     respond_to do |format|
       if @titlereceipt.save
         flash[:success] = "Title Receipt captured successfully!"

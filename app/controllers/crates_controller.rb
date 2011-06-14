@@ -13,6 +13,7 @@ class CratesController < ApplicationController
   
   def create
     @crate = Crate.new(params[:crate])
+    @titlereceipt.created_by = current_user.id
     @crate.total_cnt = 0
     if @crate.save
       flash[:success] = "Saved Successfully!"
@@ -25,12 +26,20 @@ class CratesController < ApplicationController
 
   def fill
     @crate = Crate.find(params[:id])
+    
+    @crate.modified_by = current_user.id
+    @crate.save
+    
     @crate.fill
     redirect_to crate_path
   end
   
   def regenerate
     @crate = Crate.find(params[:id])
+    
+    @crate.modified_by = current_user.id
+    @crate.save
+    
     @crate.regenerate
     redirect_to crate_path
   end

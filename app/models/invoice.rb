@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110418173812
+# Schema version: 20110614110459
 #
 # Table name: invoices
 #
@@ -13,6 +13,8 @@
 #  updated_at      :datetime
 #  boxes_cnt       :integer(38)
 #  date_of_invoice :datetime
+#  created_by      :integer(38)
+#  modified_by     :integer(38)
 #
 
 require 'barby'

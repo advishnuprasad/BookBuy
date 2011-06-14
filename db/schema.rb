@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110606174055) do
+ActiveRecord::Schema.define(:version => 20110614110836) do
 
   create_table "book_mig_log", :id => false, :force => true do |t|
     t.string   "book_no",    :limit => 20,                                :null => false
@@ -21,14 +21,16 @@ ActiveRecord::Schema.define(:version => 20110606174055) do
   end
 
   create_table "bookreceipts", :force => true do |t|
-    t.string   "book_no",                                   :null => false
-    t.string   "po_no",                                     :null => false
-    t.string   "invoice_no",                                :null => false
-    t.string   "isbn",                                      :null => false
-    t.integer  "title_id",   :precision => 38, :scale => 0, :null => false
+    t.string   "book_no",                                    :null => false
+    t.string   "po_no",                                      :null => false
+    t.string   "invoice_no",                                 :null => false
+    t.string   "isbn",                                       :null => false
+    t.integer  "title_id",    :precision => 38, :scale => 0, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "crate_id",   :precision => 38, :scale => 0, :null => false
+    t.integer  "crate_id",    :precision => 38, :scale => 0, :null => false
+    t.integer  "created_by",  :precision => 38, :scale => 0
+    t.integer  "modified_by", :precision => 38, :scale => 0
   end
 
   create_table "boxes", :force => true do |t|
@@ -59,9 +61,11 @@ ActiveRecord::Schema.define(:version => 20110606174055) do
   create_table "crates", :force => true do |t|
     t.string   "po_no"
     t.string   "invoice_no"
-    t.integer  "total_cnt",  :precision => 38, :scale => 0
+    t.integer  "total_cnt",   :precision => 38, :scale => 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "created_by",  :precision => 38, :scale => 0
+    t.integer  "modified_by", :precision => 38, :scale => 0
   end
 
   create_table "enrichedtitle_versions", :force => true do |t|
@@ -119,6 +123,8 @@ ActiveRecord::Schema.define(:version => 20110606174055) do
     t.datetime "updated_at"
     t.integer  "boxes_cnt",       :precision => 38, :scale => 0
     t.datetime "date_of_invoice"
+    t.integer  "created_by",      :precision => 38, :scale => 0
+    t.integer  "modified_by",     :precision => 38, :scale => 0
   end
 
   create_table "newarrivals_expanded", :force => true do |t|
@@ -248,6 +254,7 @@ ActiveRecord::Schema.define(:version => 20110606174055) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "book_no",    :limit => 1020
+    t.integer  "created_by",                 :precision => 38, :scale => 0
   end
 
   create_table "workitems", :force => true do |t|

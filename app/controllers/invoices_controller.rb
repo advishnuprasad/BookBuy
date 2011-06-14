@@ -31,6 +31,8 @@ class InvoicesController < ApplicationController
 
   def create
     @invoice = Invoice.new(params[:invoice])
+    @invoice.created_by = current_user.id
+    
     if @invoice.save
       flash[:success] = "Save Successfully!"
       redirect_to invoice_path(@invoice.id)
@@ -51,7 +53,8 @@ class InvoicesController < ApplicationController
   # PUT /invoices/1.xml
   def update
     @invoice = Invoice.find(params[:id])
-
+    @invoice.modified_by = current_user.id
+    
     respond_to do |format|
       if @invoice.update_attributes(params[:invoice])
         format.html { redirect_to(@invoice, :notice => 'Invoice was successfully updated.') }

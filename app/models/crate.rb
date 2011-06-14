@@ -1,14 +1,16 @@
 # == Schema Information
-# Schema version: 20110417061158
+# Schema version: 20110614110836
 #
 # Table name: crates
 #
-#  id         :integer(38)     not null, primary key
-#  po_no      :string(255)
-#  invoice_no :string(255)
-#  total_cnt  :integer(38)
-#  created_at :datetime
-#  updated_at :datetime
+#  id          :integer(38)     not null, primary key
+#  po_no       :string(255)
+#  invoice_no  :string(255)
+#  total_cnt   :integer(38)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  created_by  :integer(38)
+#  modified_by :integer(38)
 #
 
 require 'barby'
