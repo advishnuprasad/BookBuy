@@ -13,7 +13,7 @@ class CratesController < ApplicationController
   
   def create
     @crate = Crate.new(params[:crate])
-    @titlereceipt.created_by = current_user.id
+    @crate.created_by = current_user.id
     @crate.total_cnt = 0
     if @crate.save
       flash[:success] = "Saved Successfully!"
