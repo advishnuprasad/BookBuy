@@ -73,6 +73,14 @@ module Isbnutil
           @article = $4
           @check = $5
         end
+        
+        #Check if Check Digit is correct
+        if @isValid
+          if @check != _calcCheckDigit([@prefix, @group, @publisher, @article].join(''))
+            @isValid = false
+          end
+        end
+        
         return @isValid
       end
       
