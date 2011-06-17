@@ -115,7 +115,7 @@
           <tr>
             <td colspan=9><b><h3>Invoices</h3></b></td>
             <td><b>Date: </b></td>
-            <td colspan=2><%= Date.today.strftime('%d-%b-%Y') %></td>
+            <td colspan=2><%= Time.zone.today.strftime('%d-%b-%Y') %></td>
           </tr>
           <tr>
             <th style="width: 10%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px">Invoice No.</th>

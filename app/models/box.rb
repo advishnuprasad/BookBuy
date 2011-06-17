@@ -35,7 +35,10 @@ class Box < ActiveRecord::Base
     current_cnt = 0
     added_boxes = Array.new
     
-    boxes = Box.unassigned.first.po_no
+    if Box.unassigned.count > 0
+      boxes = Box.unassigned.first.po_no
+    end
+    
     if boxes
       unassigned_boxes = Box.unassigned.unassigned_among_pos(Po.pos_for_supplier(Po.find_by_code(boxes).supplier_id).collect {|po| po.code})
       
