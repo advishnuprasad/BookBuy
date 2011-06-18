@@ -30,6 +30,44 @@ module Isbnutil
       end
     end
     
+    def self.validate(isbn)
+      #Cleanup Miscellaneous characters in ISBN
+      isbn = isbn.squeeze(' ').gsub(/-/,'').gsub(/\./,'').chomp.upcase
+      
+      result = "Valid"
+      if (isbn.length == 10)
+        true if Float(isbn[0..8]) rescue result="Not Numeric"
+        result = "Invalid Checkdigit" unless isbn[9] == calculateCheckDigit(isbn).to_s
+      elsif (isbn.length == 13)
+        true if Float(isbn[0..11]) rescue result="Not Numeric"
+        result = "Invalid Checkdigit" unless isbn[12] == calculateCheckDigit(isbn).to_s
+      else
+        result = "Invalid Length"
+      end
+      return result
+    end
+    
+    def self.calculateCheckDigit(isbn)
+      if (isbn.match(/^\d{9}[\dX]?$/))
+        c=0
+        (0..8).each do |i|
+          c = c + (10 - i) * Integer(isbn[i])
+        end
+        c = (11 -c % 11) % 11
+        return c == 10 ? 'X' : c.to_s #Returns X in place of 10
+      elsif (isbn.match(/(?:978|979)\d{9}[\dX]?/))
+        c=0
+        i=0
+        until i > 11
+          c = c + Integer(isbn[i]) + 3 * Integer(isbn[i+1])
+          i+=2
+        end
+        c = (10 - c % 10) % 10 #Returns 0 in place of 10
+        return c
+      end
+      return nil
+    end
+    
     private
       def _parse(isbn, groups)
         if (isbn =~ /^\d{9}[\dX]$/) != nil
