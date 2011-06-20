@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110329115540
+# Schema version: 20110617100008
 #
 # Table name: workitems
 #
@@ -8,8 +8,8 @@
 #  item_type   :string(255)
 #  ref_id      :integer(38)
 #  status      :string(255)
-#  created_at  :datetime
-#  updated_at  :datetime
+#  created_at  :timestamp(6)
+#  updated_at  :timestamp(6)
 #
 
 class Workitem < ActiveRecord::Base

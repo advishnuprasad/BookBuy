@@ -1,0 +1,75 @@
+<h3>Upload Invoice Details(<%= link_to '#'+@invoice.invoice_no,  invoice_path(@invoice) %>)</h3>
+  			<section class="round">
+				<% flash.each do |key, value| %>
+					<div class="flash <%= key %>"><%= value %></div>
+				<% end %>
+        </section>
+
+<%= form_for :upload, :html => { :multipart => true } do |f| -%>
+  <%= f.file_field :csv %>
+  <%= f.hidden_field :invoice_id, :value => params[:invoice_id] %>
+  <%= f.hidden_field :user_id, :value => current_user.id %>
+  <%= f.submit "Preview", :disable_with => 'Uploading...' %>
+<% end -%>
+<br/>
+<hr/>
+<div class="span-24">
+
+<% if @csv_error_count > 0 %>
+  <h4> File has <%=@csv_error_count %> errors. Correct and upload again. </h4>
+<% end %>
+<% if @csv_error_count == 0 and @csvdata.size > 0 %>
+  
+  <%= form_tag item_save_path, :method => "post" do  -%>
+    <%= hidden_field_tag :invoice_id,   params[:invoice_id] %>
+    <%=  hidden_field_tag :user_id,   current_user.id %>
+    <div>
+    In all <%= pluralize(@csvdata.size,'row') %>  <%=  submit_tag "Save details", :disable_with => 'Saving...' %>
+    </div>
+    
+    
+  
+  <% end -%>
+<hr/>
+<br/>
+<% end %>
+  <table>
+    <tr>
+      <th>ISBN</th>
+      <th><br/></th>  
+      <th>Author</th>
+      <th>Title</th>
+      
+      <th>Publisher</th>
+      
+      <th>Qty</th>
+      <th>Unit Price</th>
+      <th>Unit Price (INR)</th>
+      <th>Currency</th>
+      <th>Rate</th>
+      <th>Discount</th>
+      <th>Net Amount</th>
+      <th>Error</th>
+    </tr>
+    <% @csvdata.each do |row| %>
+    <tr>
+      <td> <%= row.isbn %> </td>
+      <td><br/></td>
+      <td> <%= row.author %> </td>
+      <td> <%= row.title %> </td>
+      <td> <%= row.publisher %> </td>
+      <td> <%= row.quantity %> </td>
+      <td> <%= row.unit_price %> </td>
+      <td> <%= row.unit_price_inr  %> </td>
+      <td> <%= row.currency %> </td>
+      <td> <%= row.conv_rate  %> </td>
+      <td> <%= row.discount %> </td>
+      <td> <%= row.net_amount %> </td>
+      <td> <%= row.error %> </td>
+      
+    </tr>
+  
+    <% end %>
+  
+  </table>
+</div>

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110606113631
+# Schema version: 20110617100008
 #
 # Table name: supplierdiscounts
 #
@@ -7,8 +7,8 @@
 #  publisher_id :integer(38)
 #  supplier_id  :integer(38)
 #  discount     :decimal(, )
-#  created_at   :datetime
-#  updated_at   :datetime
+#  created_at   :timestamp(6)
+#  updated_at   :timestamp(6)
 #  bulkdiscount :decimal(, )
 #
 

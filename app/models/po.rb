@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110606132340
+# Schema version: 20110617100008
 #
 # Table name: pos
 #
@@ -7,14 +7,14 @@
 #  code           :string(255)
 #  supplier_id    :integer(38)
 #  branch_id      :integer(38)
-#  raised_on      :datetime
+#  raised_on      :timestamp(6)
 #  titles_cnt     :integer(38)
 #  copies_cnt     :integer(38)
 #  status         :string(255)
 #  user           :string(255)
-#  created_at     :datetime
-#  updated_at     :datetime
-#  discount       :integer(38)
+#  created_at     :timestamp(6)
+#  updated_at     :timestamp(6)
+#  discount       :decimal(, )
 #  publisher_id   :integer
 #  typeofpo       :string(255)
 #  convrate       :decimal(, )
@@ -23,16 +23,16 @@
 #  orgunit        :decimal(, )
 #  suborgunit     :decimal(, )
 #  expensehead    :decimal(, )
-#  payby1         :datetime
+#  payby1         :timestamp(6)
 #  payableamt1    :decimal(, )
-#  payby2         :datetime
+#  payby2         :timestamp(6)
 #  payableamt2    :decimal(, )
-#  payby3         :datetime
+#  payby3         :timestamp(6)
 #  payableamt3    :decimal(, )
 #  narration      :string(255)
 #  invoices_count :integer(38)
+#  currency       :string(1020)
 #  procurement_id :integer(38)
-#  currency       :string(255)
 #
 
 class Po < ActiveRecord::Base

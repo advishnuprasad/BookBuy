@@ -14,7 +14,10 @@
   <h4>    
     <span><%= link_to 'Edit', edit_invoice_path(@invoice) %> |
       <%= link_to 'Back', invoices_path %> |
-      <%= link_to "Regenerate Barcodes", regenerate_invoice_path %></span>
+      <%= link_to "Regenerate Barcodes", regenerate_invoice_path %> |
+      <%= link_to "Load Invoice Details", import_csv_path(:invoice_id => @invoice.id) %> | 
+      <%= link_to "View Invoice Details", invoiceitems_path(:invoice_id=>@invoice.id) %>
+    </span>
   </h4>
 <div>
 <div class='span-10'>

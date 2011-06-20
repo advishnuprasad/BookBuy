@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110417061158
+# Schema version: 20110617100008
 #
 # Table name: boxes
 #
@@ -8,8 +8,8 @@
 #  po_no      :string(255)
 #  invoice_no :string(255)
 #  total_cnt  :integer(38)
-#  created_at :datetime
-#  updated_at :datetime
+#  created_at :timestamp(6)
+#  updated_at :timestamp(6)
 #  crate_id   :integer(38)
 #
 

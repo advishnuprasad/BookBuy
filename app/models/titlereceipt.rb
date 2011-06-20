@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110614094857
+# Schema version: 20110617100008
 #
 # Table name: titlereceipts
 #
@@ -8,8 +8,8 @@
 #  invoice_no :string(255)     not null
 #  isbn       :string(255)     not null
 #  box_no     :integer(38)     not null
-#  created_at :datetime
-#  updated_at :datetime
+#  created_at :timestamp(6)
+#  updated_at :timestamp(6)
 #  book_no    :string(1020)
 #  created_by :integer(38)
 #

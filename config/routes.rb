@@ -1,7 +1,7 @@
 BookBuy::Application.routes.draw do
 
   resources :procurementitems
-
+  resources :invoiceitems
   resources :procurements do
     get 'pull', :on => :collection
     member do
@@ -34,7 +34,13 @@ BookBuy::Application.routes.draw do
   resources :supplierdiscounts do
     post 'update_records', :on => :collection
   end
-
+  
+  get "csv/import" , :as => 'import_csv'
+  post "csv/import" => 'csv#upload'
+  post "csv/save" => 'csv#save', :as =>'item_save'
+  
+  match 'removeitems' => 'invoiceitems#destroy', :as => 'remove_items'
+  
   match '/dashboard' => 'dashboard#show'
 
   match 'worklist_save_items_with_invalid_isbn'             => 'worklists#save_items_with_invalid_isbn'

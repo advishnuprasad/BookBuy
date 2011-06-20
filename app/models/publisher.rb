@@ -1,13 +1,13 @@
 # == Schema Information
-# Schema version: 20110410134111
+# Schema version: 20110617100008
 #
 # Table name: publishers
 #
 #  id            :integer(38)     not null, primary key
 #  code          :string(255)
 #  imprintname   :string(255)
-#  created_at    :datetime
-#  updated_at    :datetime
+#  created_at    :timestamp(6)
+#  updated_at    :timestamp(6)
 #  group_id      :integer(38)
 #  publishername :string(255)
 #

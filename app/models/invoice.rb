@@ -1,18 +1,18 @@
 # == Schema Information
-# Schema version: 20110614110459
+# Schema version: 20110617100008
 #
 # Table name: invoices
 #
 #  id              :integer(38)     not null, primary key
 #  invoice_no      :string(255)
 #  po_id           :integer(38)
-#  date_of_receipt :datetime
+#  date_of_receipt :timestamp(6)
 #  quantity        :integer(38)
 #  amount          :decimal(, )
-#  created_at      :datetime
-#  updated_at      :datetime
+#  created_at      :timestamp(6)
+#  updated_at      :timestamp(6)
 #  boxes_cnt       :integer(38)
-#  date_of_invoice :datetime
+#  date_of_invoice :timestamp(6)
 #  created_by      :integer(38)
 #  modified_by     :integer(38)
 #

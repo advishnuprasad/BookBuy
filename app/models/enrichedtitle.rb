@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110602060441
+# Schema version: 20110617100008
 #
 # Table name: enrichedtitles
 #
@@ -12,8 +12,8 @@
 #  category     :string(255)
 #  subcategory  :string(255)
 #  isbn10       :string(255)
-#  created_at   :datetime
-#  updated_at   :datetime
+#  created_at   :timestamp(6)
+#  updated_at   :timestamp(6)
 #  version      :integer(38)
 #  verified     :string(255)
 #  author       :string(255)

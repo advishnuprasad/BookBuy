@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110606174055
+# Schema version: 20110617100008
 #
 # Table name: procurements
 #
@@ -9,8 +9,8 @@
 #  requests_cnt :integer(38)
 #  created_by   :integer(38)
 #  modified_by  :integer(38)
-#  created_at   :datetime
-#  updated_at   :datetime
+#  created_at   :timestamp(6)
+#  updated_at   :timestamp(6)
 #  status       :string(255)
 #
 

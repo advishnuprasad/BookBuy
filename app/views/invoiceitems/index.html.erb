@@ -1,0 +1,70 @@
+<h1>Invoice details(<%= link_to '#'+@invoice.invoice_no,  invoice_path(@invoice) %>)</h1>
+
+  			<section class="round">
+				<% flash.each do |key, value| %>
+					<div class="flash <%= key %>"><%= value %></div>
+				<% end %>
+        </section>
+
+<div class="info">
+    In all <%= pluralize(@invoiceitems.size,'row') %>  <%= link_to 'Destroy All', remove_items_path(:invoice_id => params[:invoice_id]), :confirm => 'Are you sure?', :method => :delete %>
+    </div>
+    
+
+
+
+
+<table>
+    <tr>
+      <th class="span-3">ISBN</th>
+      <th class="span-2">Author</th>
+      <th class="span-3">Title</th>
+      
+      <th class="span-2">Publisher</th>
+      
+      <th class="span-2">Qty</th>
+      <th class="span-2">Unit Price</th>
+      <th class="span-2">Unit Price (INR)</th>
+      <th class="span-2">Currency</th>
+      <th class="span-2">Rate</th>
+      <th class="span-2">Discount</th>
+      <th class="span-2">Net Amount</th>
+      
+    </tr>
+    <% @invoiceitems.each do |row| %>
+    <tr>
+      <td class="span-3"> <%= row.isbn %> </td>
+      <td class="span-2"> <%= row.author %> </td>
+      <td class="span-3"> <%= row.title %> </td>
+      <td class="span-2"> <%= row.publisher %> </td>
+      <td class="span-2"> <%= row.quantity %> </td>
+      <td class="span-2"> <%= row.unit_price %> </td>
+      <td class="span-2"> <%= row.unit_price_inr  %> </td>
+      <td class="span-2"> <%= row.currency %> </td>
+      <td class="span-2"> <%= row.conv_rate  %> </td>
+      <td class="span-2"> <%= row.discount %> </td>
+      <td class="span-2"> <%= row.net_amount %> </td>
+      
+    </tr>
+    
+    <% end %>
+    
+    <tfoot" >
+      <tr class="info large">
+        <td class="span-3">Summary</td>
+        <td class="span-2"><br/></td>
+        <td class="span-3"><br/></td>
+        <td class="span-2"><br/></td>
+        <td class="span-2"><%= sum_attr("quantity",@invoiceitems) %></td>
+        <td class="span-2"><br/></td>
+        <td class="span-2"><br/></td>
+        <td class="span-2"><br/></td>
+        <td class="span-2"><br/></td>
+        <td class="span-2"><br/></td>
+        <td class="span-2"><%= sum_attr("net_amount",@invoiceitems) %></td>
+      </tr>
+    </tfoot>
+
+  </table>
+
+<br />
