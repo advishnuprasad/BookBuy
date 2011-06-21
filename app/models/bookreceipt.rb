@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110617100008
+# Schema version: 20110621102402
 #
 # Table name: bookreceipts
 #
@@ -14,12 +14,15 @@
 #  crate_id    :integer(38)     not null
 #  created_by  :integer(38)
 #  modified_by :integer(38)
+#  invoice_id  :integer(38)
+#  po_id       :integer(38)
 #
 
 class Bookreceipt < ActiveRecord::Base
   before_validation             :find_order_item
   before_validation             :select_full_po_no
   before_create                 :set_title_id
+  after_validation              :populate_invoice_and_po_ids
   after_create                  :update_procurement_item_cnt
   after_create                  :update_book_no_in_titlereceipt
   
@@ -46,7 +49,8 @@ class Bookreceipt < ActiveRecord::Base
   
   def invoice_no_should_exist
     unless invoice_no.blank?
-      invoice = Invoice.find_by_invoice_no(invoice_no)
+      po = Po.find_by_code(po_no)
+      invoice = Invoice.find_by_invoice_no_and_po_id(invoice_no, po.id)
       if invoice.nil?
         errors.add(:invoice_no, " is invalid!")
       end
@@ -125,5 +129,12 @@ class Bookreceipt < ActiveRecord::Base
         title.book_no = book_no
         title.save
       end
+    end
+    
+    def populate_invoice_and_po_ids
+      po = Po.find_by_code(po_no)
+      self.po_id = po.id
+      invoice = Invoice.find_by_invoice_no_and_po_id(invoice_no, po.id)
+      self.invoice_id = invoice.id
     end
 end
