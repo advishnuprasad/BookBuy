@@ -28,7 +28,7 @@ class InvoicesController < ApplicationController
     @pos = Po.open_pos.find_by_supplier_id(params[:supplier_id])
     @supplier = Supplier.find(params[:supplier_id])
   end
-
+  
   def create
     @invoice = Invoice.new(params[:invoice])
     @invoice.created_by = current_user.id
@@ -128,5 +128,10 @@ class InvoicesController < ApplicationController
       format.html { render :index }
       format.xml  { render :xml => @invoices }
     end
+  end
+  
+  def discrepency
+    @invoice = Invoice.find(params[:id])
+    render 'discrepency_rpt'
   end
 end

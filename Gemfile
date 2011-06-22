@@ -6,18 +6,17 @@ gem 'rails', '3.0.3'
 gem 'hoe', '2.8.0'
 gem 'barcode'
 gem 'barby'
-gem 'png', '1.1.0'
+#gem 'png'
 
 gem 'autotest'
 gem 'autotest-rails'
 gem 'acts_as_versioned'
-gem 'devise', '1.1.7'
+gem 'devise'
 gem 'omniauth'
 gem 'will_paginate', '~> 3.0.pre2'
 gem 'rufus-scheduler'
 gem 'ruby-plsql'
 gem 'rubyzip'
-
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -28,13 +27,13 @@ gem 'ruby-oci8'
 group :development do
   gem 'rspec-rails'
   gem 'annotate-models', '1.0.4'
-  gem 'ruby-debug19'
+  #gem 'ruby-debug19'
 end
 
 group :test do
   gem 'rspec'
   gem 'spork', '0.9.0.rc7'
-  gem 'webrat', '0.7.1'
+#  gem 'webrat', '0.7.1'
   gem 'factory_girl_rails', '1.0'
 end
 
@@ -50,7 +49,7 @@ end
 
 # Bundle the extra gems:
 # gem 'bj'
-# gem 'nokogiri'
+gem 'nokogiri'
 # gem 'sqlite3-ruby', :require => 'sqlite3'
 # gem 'aws-s3', :require => 'aws/s3'
 
