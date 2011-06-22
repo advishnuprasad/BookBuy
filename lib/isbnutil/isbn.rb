@@ -114,7 +114,7 @@ module Isbnutil
         
         #Check if Check Digit is correct
         if @isValid
-          if @check != _calcCheckDigit([@prefix, @group, @publisher, @article].join(''))
+          if @check != _calcCheckDigit([@prefix, @group, @publisher, @article].join('')).to_s
             @isValid = false
           end
         end
