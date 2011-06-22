@@ -41,3 +41,28 @@
   <div><%= image_tag(@invoice.formatted_invoice_name + ".png") %> </div>
 </div>
 <%= button_to_function 'Print Barcodes', "setPrinterDiv('barcode')" %> 
+
+<div class='span-24'>
+  <div class="span-11">
+    <%= field_set_tag 'Invoice details summary' do %>
+
+      <% if @invoice.invoiceitems.blank? %>
+        <p> Invoice details not loaded </p>
+      <% else %>
+        <p> Total quantity : <%= @invoice.invoiceitems.collect{|x| x.quantity}.sum %> </p>
+        <p> Total Amount : INR <%= @invoice.invoiceitems.collect{|x| x.net_amount}.sum.to_f%> </p>
+        <%= link_to "check for discrepencies", discrepency_path(:id => @invoice.id) %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="span-11">
+    <%= field_set_tag 'Book receipts summary' do %>
+
+      <% if @invoice.bookreceipts.blank? %>
+        <p> Books not catalogued  </p>
+      <% else %>
+        <p> Total Books : <%= @invoice.bookreceipts.size %> </p>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -1,18 +1,18 @@
 # == Schema Information
-# Schema version: 20110617100008
+# Schema version: 20110614110459
 #
 # Table name: invoices
 #
 #  id              :integer(38)     not null, primary key
 #  invoice_no      :string(255)
 #  po_id           :integer(38)
-#  date_of_receipt :timestamp(6)
+#  date_of_receipt :datetime
 #  quantity        :integer(38)
 #  amount          :decimal(, )
-#  created_at      :timestamp(6)
-#  updated_at      :timestamp(6)
+#  created_at      :datetime
+#  updated_at      :datetime
 #  boxes_cnt       :integer(38)
-#  date_of_invoice :timestamp(6)
+#  date_of_invoice :datetime
 #  created_by      :integer(38)
 #  modified_by     :integer(38)
 #
@@ -31,6 +31,9 @@ class Invoice < ActiveRecord::Base
   validates :amount,                  :presence => true
   validates :boxes_cnt,               :presence => true
   
+  has_many :invoiceitems
+  has_many :bookreceipts
+
   before_create :make_uppercase
   after_create :generate_barcodes
   
@@ -139,6 +142,43 @@ class Invoice < ActiveRecord::Base
       super
       return true
     end
+  end
+  
+  def get_bookreceipts_invoiceitems
+      
+    sql_stmt = "select b.isbn isbn, count(b.isbn) cnt, ii.isbn ii_isbn, ii.quantity quantity, "+
+                              " decode( (count(b.isbn) - ii.quantity), 0, 'Same',-1, 'Over',1, 'Under', 'diff') diff" +
+                              " from invoiceitems ii, bookreceipts b where ii.invoice_id = b.invoice_id " +
+                              " and trim(ii.isbn) = trim(b.isbn) "+
+                              " and b.invoice_id= #{self.id.to_s} and ii.invoice_id= #{self.id.to_s} group by b.isbn, ii.isbn, ii.quantity "
+    bookreceipt_invoiceitems = Bookreceipt.find_by_sql(sql_stmt)
+
+  end
+  
+  def get_extra_bookreceipts 
+  
+    sql_stmt =  "SELECT '' isbn, 0 cnt, ii.isbn ii_isbn, ii.quantity quantity, 'Over' diff" +
+                    " FROM invoiceitems ii " +
+                    " WHERE (ii.invoice_id , trim(ii.isbn) ) NOT IN "+
+                      "(SELECT  invoice_id, trim(isbn) FROM bookreceipts WHERE invoice_id = #{self.id.to_s}) "+
+                       " AND invoice_id = #{self.id.to_s} "+ 
+                    " GROUP BY '', 0, ii.isbn, ii.quantity "
+                    
+      bookreceipts = Invoiceitem.find_by_sql(sql_stmt)
+
+  end
+  
+  def get_extra_invoiceitems
+  
+    sql_stmt =  "SELECT b.isbn isbn, COUNT(b.isbn) cnt,'' ii_isbn, 0 quantity, 'Under' diff"+
+                " FROM Bookreceipts b  WHERE (b.invoice_id , trim(b.isbn) ) NOT IN "+
+                " (select  invoice_id, trim(isbn) FROM invoiceitems WHERE "+
+                " invoice_id = #{self.id.to_s}) "+
+                " AND invoice_id = #{self.id.to_s} "+
+                " GROUP BY  b.isbn, '',0 " +
+                " ORDER BY 2 DESC "
+    bookreceipts = Bookreceipt.find_by_sql(sql_stmt)
+    
   end
   
   private 

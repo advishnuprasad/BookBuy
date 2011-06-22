@@ -11,16 +11,19 @@ BookBuy::Application.routes.draw do
       get 'close'
     end
   end
+  match  'discrepency' => 'invoices#discrepency', :as => 'discrepency'
   resources :worklists
   resources :publishers
   resources :suppliers
   resources :pos
   resources :invoices do
     get 'regenerate', :on => :member
+    
     collection do
       get 'autocomplete'
       get 'filter_by_invoice_date'
       get 'filter_by_entry_date'
+        
     end
   end
   resources :bookreceipts
