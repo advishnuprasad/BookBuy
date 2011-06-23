@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110617100008
+# Schema version: 20110623145106
 #
 # Table name: procurementitems
 #
@@ -25,6 +25,7 @@
 #  availability     :string(1020)
 #  title_id         :integer(38)
 #  procurement_id   :integer(38)
+#  received_cnt     :integer(38)
 #
 
 class Procurementitem < ActiveRecord::Base

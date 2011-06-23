@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110621102402) do
+ActiveRecord::Schema.define(:version => 20110623145106) do
 
   create_table "book_mig_log", :id => false, :force => true do |t|
     t.string    "book_no",    :limit => 20,                                :null => false
@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(:version => 20110621102402) do
     t.string  "author"
     t.string  "publisher"
     t.integer "publishercode",                :precision => 38, :scale => 0
-    t.integer "price",                        :precision => 38, :scale => 0
+    t.decimal "price"
     t.string  "currency",      :limit => 30
     t.string  "category"
     t.string  "subcategory"
@@ -127,7 +127,7 @@ ActiveRecord::Schema.define(:version => 20110621102402) do
     t.string    "verified"
     t.string    "author"
     t.string    "isbnvalid"
-    t.integer   "listprice",                 :precision => 38, :scale => 0
+    t.decimal   "listprice"
     t.string    "currency"
     t.string    "enriched"
   end
@@ -166,13 +166,15 @@ ActiveRecord::Schema.define(:version => 20110621102402) do
     t.integer   "modified_by",                  :precision => 38, :scale => 0
   end
 
+  add_index "invoices", ["invoice_no", "po_id"], :name => "invoices_unq", :unique => true
+
   create_table "newarrivals_expanded", :force => true do |t|
     t.string  "isbn",          :limit => 30,                                 :null => false
     t.string  "title"
     t.string  "author"
     t.string  "publisher"
     t.integer "publishercode",                :precision => 38, :scale => 0
-    t.integer "price",                        :precision => 38, :scale => 0
+    t.decimal "price"
     t.string  "currency",      :limit => 30
     t.string  "category"
     t.string  "subcategory"
@@ -235,9 +237,8 @@ ActiveRecord::Schema.define(:version => 20110621102402) do
     t.string    "availability",     :limit => 1020
     t.integer   "title_id",                         :precision => 38, :scale => 0
     t.integer   "procurement_id",                   :precision => 38, :scale => 0
+    t.integer   "received_cnt",                     :precision => 38, :scale => 0
   end
-
-  add_index "procurementitems", ["po_number", "isbn", "branch_id"], :name => "unq_po_isbn", :unique => true
 
   create_table "procurements", :force => true do |t|
     t.integer   "source_id",                 :precision => 38, :scale => 0
@@ -326,8 +327,8 @@ ActiveRecord::Schema.define(:version => 20110621102402) do
     t.integer   "procurement_id",              :precision => 38, :scale => 0
   end
 
-  add_synonym "users", "users@link_opac", :force => true
   add_synonym "authentications", "authentications@link_opac", :force => true
+  add_synonym "users", "users@link_opac", :force => true
   add_synonym "users_seq", "users_seq@link_opac", :force => true
 
 end

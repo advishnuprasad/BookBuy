@@ -118,6 +118,7 @@ class Bookreceipt < ActiveRecord::Base
     def update_procurement_item_cnt
       item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
       if item
+        item.procured_cnt ||= 0
         item.procured_cnt = item.procured_cnt + 1
         item.save
       end

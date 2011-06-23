@@ -15,8 +15,9 @@
 #
 
 class Titlereceipt < ActiveRecord::Base
-  before_validation :select_full_po_no
-  before_create :upsert_box_total_cnt
+  before_validation             :select_full_po_no
+  before_create                 :upsert_box_total_cnt
+  after_create                  :update_procurement_item_cnt
   
   #TODO Change scope name to of_po_and_isbn
   scope :of_po, lambda { |po_no, isbn|
@@ -89,6 +90,15 @@ class Titlereceipt < ActiveRecord::Base
         if po_item
           self.po_no = po_item[0].code
         end
+      end
+    end
+    
+    def update_procurement_item_cnt
+      item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
+      if item
+        item.received_cnt ||= 0
+        item.received_cnt = item.received_cnt + 1
+        item.save
       end
     end
     
