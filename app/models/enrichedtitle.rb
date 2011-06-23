@@ -65,16 +65,36 @@ class Enrichedtitle < ActiveRecord::Base
           title.publisher_id = pub.id
         end
         
-        #ISBN 13 generation
         if isbn.isIsbn10
           title.isbn10 = isbn.asIsbn10.gsub(/-/,'')
           title.isbn = isbn.asIsbn13.gsub(/-/,'')
-          
-          #Update Items if ISBN was updated to ISBN13
-          if procurementitems
-            procurementitems.each do |item|
-              item.isbn = title.isbn
-              item.save
+            
+          title_isbn13 = Enrichedtitle.find_by_isbn(isbn.asIsbn13.gsub(/-/,''))
+          if title_isbn13
+            #Update procurementitems to old enrichedtitle
+            if title.procurementitems
+              title.procurementitems.each do |item|
+                item.enrichedtitle_id = title_isbn13.id
+                item.isbn = title_isbn13.isbn
+                item.save
+              end
+            end
+            
+            #Update ISBN10 in old enrichedtitle if blank
+            title_isbn13.isbn10 = title.isbn10 if title_isbn13.isbn10.nil?
+            if title_isbn13.changed?
+              title_isbn13.save
+            end
+            
+            #Remove the ISBN10 that was replaced
+            title.destroy
+          else
+            #Update Items if ISBN was updated to ISBN13
+            if title.procurementitems
+              title.procurementitems.each do |item|
+                item.isbn = title.isbn
+                item.save
+              end
             end
           end
         end
