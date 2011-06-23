@@ -50,6 +50,8 @@ class Invoice < ActiveRecord::Base
   validates :amount,                  :presence => true
   validates :boxes_cnt,               :presence => true
   
+  validate  :po_val_greater_than_total_invoices_val
+  
   has_many :invoiceitems
   has_many :bookreceipts
 
@@ -220,5 +222,17 @@ class Invoice < ActiveRecord::Base
         f.write invbarcode.to_png
       end
     end
-  
+    
+    def po_val_greater_than_total_invoices_val
+      po_temp = Po.find(po_id)
+      if po_temp
+        total_util_so_far = po_temp.invoices.collect{|x| x.amount}.sum
+        total_qty_so_far = po_temp.invoices.collect{|x| x.quantity}.sum
+        if total_util_so_far + amount > po_temp.netamt
+          errors.add(:amount, " - Total invoices amount exceeds PO value")
+        elsif total_qty_so_far + quantity > po_temp.copies_cnt
+          errors.add(:quantity, " - Total invoices quantity exceeds PO copies")
+        end
+      end
+    end
 end
