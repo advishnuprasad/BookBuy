@@ -37,7 +37,7 @@ class BookreceiptsController < ApplicationController
         format.html { redirect_to bookreceipts_path}
         format.xml
       else
-        if @bookreceipt.errors[:book_no] && @bookreceipt.errors[:book_no].first.include?("already been used")
+        if @bookreceipt.errors.count > 0 && @bookreceipt.errors.values.join("").include?("already been used")
           flash[:error] = "Cataloging failure!"
           format.html { render :new }
           format.xml { render :nothing => true, :status => :conflict }

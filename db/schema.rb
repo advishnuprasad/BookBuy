@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110623145106) do
+ActiveRecord::Schema.define(:version => 20110623174749) do
 
   create_table "book_mig_log", :id => false, :force => true do |t|
     t.string    "book_no",    :limit => 20,                                :null => false
@@ -304,6 +304,7 @@ ActiveRecord::Schema.define(:version => 20110623145106) do
     t.timestamp "updated_at", :limit => 6
     t.string    "book_no",    :limit => 1020
     t.integer   "created_by",                 :precision => 38, :scale => 0
+    t.string    "error"
   end
 
   create_table "workitems", :force => true do |t|

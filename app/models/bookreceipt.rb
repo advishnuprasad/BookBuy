@@ -88,11 +88,14 @@ class Bookreceipt < ActiveRecord::Base
     unless isbn.blank?
       po_nos = Crate.find(crate_id).boxes.collect {|box| box.po_no}
       Procurementitem.to_be_procured(isbn, po_nos).each do |item|
-        Titlereceipt.of_po(item.po_number, isbn).each do |titlereceipt|
+        Titlereceipt.of_po_and_isbn(item.po_number, isbn).each do |titlereceipt|
           self.po_no = titlereceipt.po_no
           self.invoice_no = titlereceipt.invoice_no
           break
         end
+      end
+      if po_no.blank?
+        errors.add(:isbn, " not found among items to Catalog")
       end
     end
   end
@@ -109,33 +112,41 @@ class Bookreceipt < ActiveRecord::Base
     end
     
     def set_title_id
-      item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
-      if item
-        self.title_id = item.enrichedtitle.title_id
+      unless po_no.blank?
+        item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
+        if item
+          self.title_id = item.enrichedtitle.title_id
+        end
       end
     end
     
     def update_procurement_item_cnt
-      item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
-      if item
-        item.procured_cnt ||= 0
-        item.procured_cnt = item.procured_cnt + 1
-        item.save
+      unless po_no.blank?
+        item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
+        if item
+          item.procured_cnt ||= 0
+          item.procured_cnt = item.procured_cnt + 1
+          item.save
+        end
       end
     end
     
     def update_book_no_in_titlereceipt
-      title = Titlereceipt.not_cataloged.find_by_po_no_and_invoice_no_and_isbn(po_no, invoice_no, isbn)
-      if title
-        title.book_no = book_no
-        title.save
+      unless po_no.blank?
+        title = Titlereceipt.not_cataloged.find_by_po_no_and_invoice_no_and_isbn(po_no, invoice_no, isbn)
+        if title
+          title.book_no = book_no
+          title.save
+        end
       end
     end
     
     def populate_invoice_and_po_ids
-      po = Po.find_by_code(po_no)
-      self.po_id = po.id
-      invoice = Invoice.find_by_invoice_no_and_po_id(invoice_no, po.id)
-      self.invoice_id = invoice.id
+      unless po_no.blank?
+        po = Po.find_by_code(po_no)
+        self.po_id = po.id
+        invoice = Invoice.find_by_invoice_no_and_po_id(invoice_no, po.id)
+        self.invoice_id = invoice.id
+      end
     end
 end
