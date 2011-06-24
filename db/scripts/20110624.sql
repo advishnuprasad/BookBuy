@@ -1,0 +1,2 @@
+alter table "PROCUREMENTITEMS" add ( "RECEIVED_CNT" NUMBER (38,0) );
+alter table "TITLERECEIPTS" add ( "ERROR" VARCHAR2(1020) );
