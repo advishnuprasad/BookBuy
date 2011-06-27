@@ -96,6 +96,12 @@ class Titlereceipt < ActiveRecord::Base
     end
   end
   
+  def destroy
+    decr_procurement_item_cnt
+    decr_box_total_cnt
+    super
+  end
+  
   private
     def select_full_po_no
       if po_no.length == 9
@@ -134,6 +140,14 @@ class Titlereceipt < ActiveRecord::Base
       end
     end
     
+    def decr_procurement_item_cnt
+      item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
+      if item
+        item.received_cnt = item.received_cnt - 1
+        item.save
+      end
+    end
+    
     def upsert_box_total_cnt
       if @error_messages.count == 0
         unless box_no.blank?
@@ -155,5 +169,11 @@ class Titlereceipt < ActiveRecord::Base
           end
         end
       end
+    end
+    
+    def decr_box_total_cnt
+      box = Box.find_by_box_no_and_po_no_and_invoice_no(box_no, po_no, invoice_no)
+      box.total_cnt = box.total_cnt - 1
+      box.save
     end
 end
