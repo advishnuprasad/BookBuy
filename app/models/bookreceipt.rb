@@ -100,6 +100,12 @@ class Bookreceipt < ActiveRecord::Base
     end
   end
   
+  def destroy
+    decr_procurement_item_cnt
+    remove_book_no_in_titlereceipt
+    super
+  end
+  
   private
     
     def select_full_po_no
@@ -131,6 +137,14 @@ class Bookreceipt < ActiveRecord::Base
       end
     end
     
+    def decr_procurement_item_cnt
+      item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
+      if item
+        item.procured_cnt = item.procured_cnt - 1
+        item.save
+      end
+    end
+    
     def update_book_no_in_titlereceipt
       unless po_no.blank?
         title = Titlereceipt.not_cataloged.find_by_po_no_and_invoice_no_and_isbn(po_no, invoice_no, isbn)
@@ -138,6 +152,14 @@ class Bookreceipt < ActiveRecord::Base
           title.book_no = book_no
           title.save
         end
+      end
+    end
+    
+    def remove_book_no_in_titlereceipt
+      title = Titlereceipt.find_by_book_no(book_no)
+      if title
+        title.book_no = ''
+        title.save
       end
     end
     
