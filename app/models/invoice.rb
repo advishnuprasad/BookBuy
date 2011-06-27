@@ -68,6 +68,10 @@ class Invoice < ActiveRecord::Base
   scope :invoice_date_between, lambda {|startdate, enddate| 
       {:conditions => ['date_of_invoice >= ? AND date_of_invoice <= ?', startdate, enddate]}
     }
+  scope :recent, lambda {
+      where('created_at >= ?', 7.days.ago).
+      order('id DESC')
+  }
   
   def formatted_po_name
     po.code[0..po.code.index('/',5)-1]

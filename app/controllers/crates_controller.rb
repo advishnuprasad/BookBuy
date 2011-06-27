@@ -1,6 +1,6 @@
 class CratesController < ApplicationController
   def index
-    @crates = Crate.paginate(:per_page => 10, :page => params[:page])
+    @crates = Crate.recent.paginate(:per_page => 10, :page => params[:page])
   end
 
   def show
