@@ -1,0 +1,15 @@
+<crate>
+  <id><%= @crate.id %></id>
+  <% if @crate.boxes %>
+    <boxes>
+      <% @crate.boxes.each do |box| %>
+        <box>
+          <po_no><%= box.po_no %></po_no>
+          <invoice_no><%= box.invoice_no %></invoice_no>
+          <box_no><%= box.box_no %></box_no>
+          <total_cnt><%= box.total_cnt %></total_cnt>
+        </box>
+      <% end %>
+    </boxes>
+  <% end %>
+</crate>

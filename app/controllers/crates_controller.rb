@@ -49,7 +49,7 @@ class CratesController < ApplicationController
     respond_to do |format|
       if @crate
         format.html # show.html.erb
-        format.xml  { render :xml => @crate }
+        format.xml # fetch_by_crate_no.xml.erb
       else
         flash[:error] = "Could not find Crate!"
         format.html { render :index }

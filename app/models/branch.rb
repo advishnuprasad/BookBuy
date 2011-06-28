@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110316070023
+# Schema version: 20110623174749
 #
 # Table name: branches
 #
@@ -13,6 +13,8 @@
 #  parent_id   :integer
 #  parent_name :string(255)
 #  card_id     :string(16)
+#  city_id     :integer
+#  subdomain   :string(50)
 #
 
 class Branch < ActiveRecord::Base
