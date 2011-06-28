@@ -55,7 +55,7 @@ class Invoice < ActiveRecord::Base
   has_many :invoiceitems
   has_many :bookreceipts
 
-  before_create :make_uppercase
+  before_create :clean_invoice_no
   after_create :generate_barcodes
   
   scope :today, lambda { where("created_at >= ? and created_at <= ?",  Time.zone.today.to_time.beginning_of_day, Time.zone.today.to_time.end_of_day) }
@@ -71,7 +71,7 @@ class Invoice < ActiveRecord::Base
   scope :recent, lambda {
       where('created_at >= ?', 7.days.ago).
       order('id DESC')
-  }
+    }
   
   def formatted_po_name
     po.code[0..po.code.index('/',5)-1]
@@ -207,8 +207,8 @@ class Invoice < ActiveRecord::Base
   end
   
   private 
-    def make_uppercase
-      self.invoice_no = self.invoice_no.upcase
+    def clean_invoice_no
+      self.invoice_no = self.invoice_no.upcase.chomp.strip
     end
 
     def generate_barcodes
