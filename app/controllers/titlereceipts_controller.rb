@@ -26,6 +26,7 @@ class TitlereceiptsController < ApplicationController
           format.html { render :new }
           format.xml { render :nothing => true, :status => :not_found }
         else
+          @pending_cnt = Invoice.of_po_and_invoice(Po.find_by_code(@titlereceipt.po_no).id, @titlereceipt.invoice_no).first.quantity - Titlereceipt.of_po(@titlereceipt.po_no).count
           flash[:success] = "Title Receipt captured successfully!"
           format.html { redirect_to titlereceipts_path}
           format.xml

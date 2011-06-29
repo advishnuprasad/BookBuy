@@ -53,6 +53,9 @@ class Invoice < ActiveRecord::Base
       where('created_at >= ?', 7.days.ago).
       order('id DESC')
     }
+  scope :of_po_and_invoice, lambda { |po_id, invoice_no|
+      where('po_id = ? AND invoice_no = ?', po_id, invoice_no)
+    }
   
   def formatted_po_name
     po.code[0..po.code.index('/',5)-1]

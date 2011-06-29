@@ -38,6 +38,10 @@ class Titlereceipt < ActiveRecord::Base
       valid.
       where("book_no IS NULL")
     }
+  scope :of_po, lambda { |po_no|
+      valid.
+      where(:po_no => po_no)
+    }
   
   validates :po_no,             :presence => true
   validates :invoice_no,        :presence => true
