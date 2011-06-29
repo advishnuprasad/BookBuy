@@ -38,6 +38,10 @@ class Bookreceipt < ActiveRecord::Base
   validate :isbn_should_be_part_of_po
   validate :crate_no_should_exist
   
+  scope :of_user_for_today, lambda { |user_id|
+      {:conditions => ['created_by = ? AND created_at >= ? AND created_at <= ?', user_id, Time.zone.today.beginning_of_day, Time.zone.today.end_of_day]}
+    }
+  
   def po_no_should_exist
     unless po_no.blank?
       po = Po.find_by_code(po_no)

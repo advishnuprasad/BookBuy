@@ -6,11 +6,5 @@
   <isbn><%= @bookreceipt.isbn %></isbn>
   <book_no><%= @bookreceipt.book_no %></book_no>
   <title><%= title_for_isbn(@bookreceipt.isbn) %></title>
-  <% if @bookreceipt.errors %>
-    <errors>
-      <% @bookreceipt.errors.full_messages.each do |msg| %>
-        <message><%= msg %></message>
-      <% end %>
-    </errors>
-  <% end %>
+  <cnt><%= @daily_count %></cnt>
 </bookreceipt>
