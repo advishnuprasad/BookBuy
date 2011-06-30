@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110623174749
+# Schema version: 20110630044015
 #
 # Table name: titlereceipts
 #
@@ -12,7 +12,7 @@
 #  updated_at :timestamp(6)
 #  book_no    :string(1020)
 #  created_by :integer(38)
-#  error      :string(255)
+#  error      :string(1020)
 #
 
 class Titlereceipt < ActiveRecord::Base

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110623174749) do
+ActiveRecord::Schema.define(:version => 20110630101137) do
 
   create_table "book_mig_log", :id => false, :force => true do |t|
     t.string    "book_no",    :limit => 20,                                :null => false
@@ -153,20 +153,71 @@ ActiveRecord::Schema.define(:version => 20110623174749) do
   end
 
   create_table "invoices", :force => true do |t|
-    t.string    "invoice_no"
-    t.integer   "po_id",                        :precision => 38, :scale => 0
-    t.timestamp "date_of_receipt", :limit => 6
-    t.integer   "quantity",                     :precision => 38, :scale => 0
-    t.decimal   "amount"
+    t.string    "invoice_no",                                                  :null => false
+    t.integer   "po_id",                        :precision => 38, :scale => 0, :null => false
+    t.timestamp "date_of_receipt", :limit => 6,                                :null => false
+    t.integer   "quantity",                     :precision => 38, :scale => 0, :null => false
+    t.decimal   "amount",                                                      :null => false
     t.timestamp "created_at",      :limit => 6
     t.timestamp "updated_at",      :limit => 6
-    t.integer   "boxes_cnt",                    :precision => 38, :scale => 0
-    t.timestamp "date_of_invoice", :limit => 6
+    t.integer   "boxes_cnt",                    :precision => 38, :scale => 0, :null => false
+    t.timestamp "date_of_invoice", :limit => 6,                                :null => false
     t.integer   "created_by",                   :precision => 38, :scale => 0
     t.integer   "modified_by",                  :precision => 38, :scale => 0
   end
 
   add_index "invoices", ["invoice_no", "po_id"], :name => "invoices_unq", :unique => true
+
+  create_table "list_stagings", :force => true do |t|
+    t.string   "isbn"
+    t.string   "title"
+    t.string   "author"
+    t.string   "publisher"
+    t.string   "publisher_id"
+    t.integer  "quantity",     :precision => 38, :scale => 0
+    t.decimal  "listprice"
+    t.string   "currency"
+    t.string   "category"
+    t.string   "subcategory"
+    t.integer  "branch_id",    :precision => 38, :scale => 0
+    t.string   "error"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "list_id",      :precision => 38, :scale => 0
+    t.integer  "created_by",   :precision => 38, :scale => 0
+  end
+
+  create_table "listitems", :force => true do |t|
+    t.string   "isbn"
+    t.string   "title"
+    t.string   "author"
+    t.string   "publisher"
+    t.integer  "publisher_id", :precision => 38, :scale => 0
+    t.integer  "quantity",     :precision => 38, :scale => 0
+    t.decimal  "listprice"
+    t.string   "currency"
+    t.string   "category"
+    t.string   "subcategory"
+    t.integer  "branch_id",    :precision => 38, :scale => 0
+    t.integer  "created_by",   :precision => 38, :scale => 0
+    t.integer  "modified_by",  :precision => 38, :scale => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "error"
+    t.string   "pulled"
+    t.integer  "list_id",      :precision => 38, :scale => 0
+  end
+
+  create_table "lists", :force => true do |t|
+    t.string   "name"
+    t.string   "kind"
+    t.integer  "key",         :precision => 38, :scale => 0
+    t.string   "pulled"
+    t.integer  "created_by",  :precision => 38, :scale => 0
+    t.integer  "modified_by", :precision => 38, :scale => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "newarrivals_expanded", :force => true do |t|
     t.string  "isbn",          :limit => 30,                                 :null => false
@@ -240,6 +291,8 @@ ActiveRecord::Schema.define(:version => 20110623174749) do
     t.integer   "received_cnt",                     :precision => 38, :scale => 0
   end
 
+  add_index "procurementitems", ["po_number", "isbn", "branch_id"], :name => "unq_po_isbn", :unique => true
+
   create_table "procurements", :force => true do |t|
     t.integer   "source_id",                 :precision => 38, :scale => 0
     t.string    "description"
@@ -304,7 +357,7 @@ ActiveRecord::Schema.define(:version => 20110623174749) do
     t.timestamp "updated_at", :limit => 6
     t.string    "book_no",    :limit => 1020
     t.integer   "created_by",                 :precision => 38, :scale => 0
-    t.string    "error"
+    t.string    "error",      :limit => 1020
   end
 
   create_table "workitems", :force => true do |t|

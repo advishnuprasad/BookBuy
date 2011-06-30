@@ -1,5 +1,12 @@
 BookBuy::Application.routes.draw do
 
+  resources :lists do
+    member do
+      post 'upload'
+      post 'import'
+    end
+  end
+  resources :listitems
   resources :procurementitems
   resources :invoiceitems
   resources :procurements do
