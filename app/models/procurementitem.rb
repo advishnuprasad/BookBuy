@@ -56,7 +56,7 @@ class Procurementitem < ActiveRecord::Base
         AND (
           enrichedtitles.verified = 'Y'
           AND enrichedtitles.isbn IS NOT NULL
-          AND enrichedtitles.title_id IS NOT NULL
+          AND enrichedtitles.title IS NOT NULL
           AND enrichedtitles.publisher_id IS NOT NULL
           AND enrichedtitles.author IS NOT NULL
           )

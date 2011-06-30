@@ -67,33 +67,55 @@ class Procurement < ActiveRecord::Base
     end    
   end
   
-  private
-    def self.pending_ibtr_items_exist
-      cnt = plsql.data_pull.get_ibtr_items_count
-      return cnt      
+  def self.pending_ibtr_items_exist
+    cnt = plsql.data_pull.get_ibtr_items_count
+    return cnt      
+  end
+  
+  def self.pull_ibtr_items
+    #Create New Procurement Entity
+    procurement = Procurement.new
+    procurement.source_id = 1
+    procurement.description = 'IBTR'
+    procurement.status = 'Open'
+    #TODO - Fill Requests Count
+    if procurement.save
+      #Pull Items
+      cnt = plsql.data_pull.pull_ibtr_items(procurement.id)
+      
+      procurement.requests_cnt = cnt
+      procurement.save
     end
     
-    def self.pull_ibtr_items
-      #Create New Procurement Entity
-      procurement = Procurement.new
-      procurement.source_id = 1
-      procurement.description = 'IBTR'
-      procurement.status = 'Open'
-      #TODO - Fill Requests Count
-      if procurement.save
-        #Pull Items
-        cnt = plsql.data_pull.pull_ibtr_items(procurement.id)
-        
-        procurement.requests_cnt = cnt
-        procurement.save
-      end
+    #Scan ISBNs
+    Enrichedtitle.scan  
+    
+    #Create initial Worklists
+    plsql.worklist_generator.generate_ibtr_wl(procurement.id)
+    
+    return procurement.id
+  end
+  
+  def self.pull_nent_items(list_id)
+    #Create New Procurement Entity
+    procurement = Procurement.new
+    procurement.source_id = list_id
+    procurement.description = 'NENT'
+    procurement.status = 'Open'
+    if procurement.save
+      #Pull Items
+      cnt = plsql.data_pull.pull_nent_items(procurement.id, list_id)
       
-      #Scan ISBNs
-      Enrichedtitle.scan  
-      
-      #Create initial Worklists
-      plsql.worklist_generator.generate_ibtr_wl(procurement.id)
-      
-      return procurement.id
+      procurement.requests_cnt = cnt
+      procurement.save
     end
+    
+    #Scan ISBNs
+    Enrichedtitle.scan
+    
+    #Create initial Worklists
+    plsql.worklist_generator.generate_nent_wl(procurement.id)
+    
+    return procurement.id
+  end
 end

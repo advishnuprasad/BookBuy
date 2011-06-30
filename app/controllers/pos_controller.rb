@@ -4,7 +4,7 @@ class PosController < ApplicationController
     filter ||= 'all'
     if filter == 'for_procurement'
       if params[:procurement_id]
-        @pos = Po.of_procurement(params[:procurement_id]).paginate(:per_page => 25, :page => params[:page])
+        @pos = Po.of_procurement(params[:procurement_id]).paginate(:per_page => 100, :page => params[:page])
       else
         @pos = Po.paginate(:per_page => 100, :page => params[:page])
       end

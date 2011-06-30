@@ -19,6 +19,12 @@ class List < ActiveRecord::Base
   has_many :list_stagings
   
   before_create :generate_key
+  before_create :set_defaults
+  
+  scope :yet_to_pull, where(:pulled => 'N')
+  scope :of_kind, lambda { |kind|
+      where(:kind => kind)
+    }  
   
   def pull_items_from_staging_area (user_id)
     list_stagings.each do |list_staging|
@@ -46,5 +52,9 @@ class List < ActiveRecord::Base
   private
     def generate_key
       self.key = (Time.now.to_f*1000).round
+    end
+    
+    def set_defaults
+      self.pulled = 'N'
     end
 end

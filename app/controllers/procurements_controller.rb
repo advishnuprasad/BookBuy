@@ -97,6 +97,15 @@ class ProcurementsController < ApplicationController
         else
           flash[:success] = "No pending IBTR Requests!"
         end
+      elsif params[:pull] == 'nent'
+        List.yet_to_pull.of_kind('NENT').each do |list|
+          id = Procurement.pull_nent_items(list.id)
+          
+          @procurement = Procurement.find(id)
+          
+          @procurement.created_by = current_user.id
+          @procurement.save
+        end
       end
     end
     
