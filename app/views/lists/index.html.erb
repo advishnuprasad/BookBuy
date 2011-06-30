@@ -1,0 +1,33 @@
+<h1>Listing lists</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Kind</th>
+    <th>Key</th>
+    <th>Pulled</th>
+    <th>Created by</th>
+    <th>Modified by</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @lists.each do |list| %>
+  <tr>
+    <td><%= list.name %></td>
+    <td><%= list.kind %></td>
+    <td><%= list.key %></td>
+    <td><%= list.pulled %></td>
+    <td><%= list.created_by %></td>
+    <td><%= list.modified_by %></td>
+    <td><%= link_to 'Show', list %></td>
+    <td><%= link_to 'Edit', edit_list_path(list) %></td>
+    <td><%= link_to 'Destroy', list, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New List', new_list_path %>
