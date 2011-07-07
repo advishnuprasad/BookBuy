@@ -15,4 +15,8 @@
 class Workitem < ActiveRecord::Base
   belongs_to  :worklist
   belongs_to  :referenceitem, :foreign_key => "ref_id", :class_name => "Procurementitem"
+  
+  scope :of_publisher, lambda { |publisher|
+      joins([:referenceitem => {:procurementitems => :procurement}])
+    }
 end

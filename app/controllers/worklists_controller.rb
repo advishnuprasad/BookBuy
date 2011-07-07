@@ -15,6 +15,12 @@ class WorklistsController < ApplicationController
       render 'items_with_no_isbn'
     elsif @worklist.description == "Procurement Items with No Supplier Details"
       render 'items_with_no_supplier_details'
+      #publishers = @worklist.workitems.collect {|workitem| workitem.referenceitem.enrichedtitle.publisher.publishername}.uniq
+      #@pubsupp = Array.new(publishers.count)[Hash.new]
+      #@pubsupp.each do |pub|
+        #@worklist.workitems.collect {|workitem| workitem.referenceitem.supplier_id}
+      #end
+      #render 'items_with_no_supplier_details_publisher_wise'
     end
   end
   
@@ -76,6 +82,42 @@ class WorklistsController < ApplicationController
   end
   
   def save_items_with_no_supplier_details
+    data = params[:data]
+    id = params[:id]
+    items = Array.new
+    
+    result = true
+    data.each {|key, value|
+      procurementitem = Procurementitem.find(value["id"])
+      procurementitem.quantity = value["quantity"] unless value["quantity"].nil?
+      procurementitem.supplier_id = value["supplier_id"] unless value["supplier_id"].nil?
+      procurementitem.availability = value["availability"] unless value["availability"].nil?
+      procurementitem.cancel_reason = value["cancel_reason"] unless value["cancel_reason"].nil?
+      procurementitem.deferred_by = value["deferred_by"] unless value["deferred_by"].nil?
+      
+      if !procurementitem.cancel_reason.nil?
+        procurementitem.status = 'Cancelled'
+      elsif !procurementitem.deferred_by.nil?
+        procurementitem.status = 'Deferred'
+      end
+      
+      if !procurementitem.save
+        result = false
+      end
+    }
+    
+    if result == true
+      flash[:success] = "Items have been Successfully Updated!"
+    else
+      flash[:error] = "Items updation failed!"
+    end
+    
+    respond_to do |format|
+      format.js
+    end
+  end
+  
+  def save_items_with_no_supplier_details_publisher_wise
     data = params[:data]
     id = params[:id]
     items = Array.new

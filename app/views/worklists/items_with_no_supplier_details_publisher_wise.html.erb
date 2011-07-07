@@ -1,0 +1,55 @@
+<% content_for(:head) do %>
+  <%= javascript_include_tag 'worklists/items_with_no_supplier_details_publisher_wise' %>
+<% end %>
+
+<%= link_to 'Back', request.referer %><br/><br/>
+
+<% if !@worklist.nil? %>
+  <%= form_tag( { :autocomplete => :off } ) do -%>
+    <span style="display: none;" id="worklist-id"><%= @worklist.id %></span>
+    <%= link_to_function "Update Items","saveItems(); return false;", :id=>'saveItemsLink' %>
+    <div id="grid">
+      <div id="gridbox" class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+        <div id="gridview" class="ui-jqgrid-view">
+          <div class="clear"></div>
+          
+          <!--Table Header -->
+          <div id="gridheader" class="ui-state-default ui-jqgrid-hdiv" style="width: 956px;">
+            <div class="ui-jqgrid-hbox" style="width: 956px;">
+              <table class="ui-jqgrid-htable" cellspacing="0" cellpadding="0" border="0" role="grid">
+                <thead>
+                  <tr class="ui-jqgrid-labels" role="rowheader">
+                    <th id="col_Publisher" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 25%;">Publisher</th>
+                    <th id="col_Supplier" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 25%;">Supplier</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            
+            <!--Table body -->
+            <div class="ui-jqgrid-bdiv" style="height: auto; width: 956px;">
+              <div style="position: relative;">
+                <table id="items" class="ui-jqgrid-btable" cellspacing="0" cellpadding="0" border="0" role="grid" style="width: 956px;">
+                  <tbody>
+                    <% @worklist.workitems.collect {|workitem| workitem.referenceitem.enrichedtitle.publisher.publishername}.uniq.each do |publisher| %>
+                      <tr class="ui-widget-content jqgrow ui-row-ltr" role="row">
+                        <td aria-describedby="col_Publisher" role="gridcell" style="width: 25%;"><%= publisher %></td>
+                        <td aria-describedby="col_Supplier" role="gridcell" style="width: 25%;"><%= select_tag "supplier_id", 
+                                            options_from_collection_for_select(Publisher.find_by_publishername(publisher).suppliers.map, 
+                                            :id, :name, @worklist.workitems.collect {|workitem| workitem.referenceitem.supplier_id}.uniq), 
+                                            {:class => 'select_supplier', :datasuppid => publisher, 
+                                            :datasupp => workitem.referenceitem.supplier_id, 
+                                            :value => workitem.referenceitem.supplier_id, :include_blank => true, :width => 5 } %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end -%>
+<% end %>
+

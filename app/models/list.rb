@@ -16,7 +16,7 @@
 
 class List < ActiveRecord::Base
   has_many :listitems
-  has_many :list_stagings
+  has_many :list_stagings, :dependent => :delete_all
   
   before_create :generate_key
   before_create :set_defaults

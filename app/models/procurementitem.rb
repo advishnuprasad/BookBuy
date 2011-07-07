@@ -65,6 +65,10 @@ class Procurementitem < ActiveRecord::Base
     }
   scope :cancelled, where(:status => 'Cancelled')
   scope :deferred, where(:status => 'Deferred')
+  scope :of_publisher, lambda { |group_id|
+      joins(:enrichedtitle => :publisher).
+      where(:publishers => {:group_id => group_id})
+    }
     
   #Assumptions
   # Branch ID is the same
