@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe "publishers/show.html.erb" do
+describe "imprints/show.html.erb" do
   before(:each) do
-    @publisher = assign(:publisher, stub_model(Publisher,
+    @publisher = assign(:imprint, stub_model(Imprint,
       :code => "Code",
       :imprintname => "Imprintname",
       :group_id => 1,

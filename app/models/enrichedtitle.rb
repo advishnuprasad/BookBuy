@@ -1,26 +1,26 @@
 # == Schema Information
-# Schema version: 20110623145106
+# Schema version: 20110707070924
 #
 # Table name: enrichedtitles
 #
-#  id           :integer(38)     not null, primary key
-#  title_id     :integer(38)
-#  title        :string(255)     not null
-#  publisher_id :integer(38)
-#  isbn         :string(255)     not null
-#  language     :string(255)
-#  category     :string(255)
-#  subcategory  :string(255)
-#  isbn10       :string(255)
-#  created_at   :timestamp(6)
-#  updated_at   :timestamp(6)
-#  version      :integer(38)
-#  verified     :string(255)
-#  author       :string(255)
-#  isbnvalid    :string(255)
-#  listprice    :decimal(, )
-#  currency     :string(255)
-#  enriched     :string(255)
+#  id          :integer(38)     not null, primary key
+#  title_id    :integer(38)
+#  title       :string(255)     not null
+#  imprint_id  :integer(38)
+#  isbn        :string(255)     not null
+#  language    :string(255)
+#  category    :string(255)
+#  subcategory :string(255)
+#  isbn10      :string(255)
+#  created_at  :timestamp(6)
+#  updated_at  :timestamp(6)
+#  version     :integer(38)
+#  verified    :string(255)
+#  author      :string(255)
+#  isbnvalid   :string(255)
+#  listprice   :decimal(, )
+#  currency    :string(255)
+#  enriched    :string(255)
 #
 
 require 'isbnutil/isbn.rb'
@@ -28,7 +28,7 @@ require 'isbnutil/isbn.rb'
 class Enrichedtitle < ActiveRecord::Base
   acts_as_versioned
   
-  belongs_to :publisher
+  belongs_to :imprint
   belongs_to :jbtitle, :foreign_key => "title_id", :class_name => "Title"
   has_many :procurementitems
   
@@ -54,15 +54,15 @@ class Enrichedtitle < ActiveRecord::Base
       if isbn
         title.isbnvalid = 'Y'
         
-        #Publisher entry
-        unless isbn.publisher.nil?
-          pub = Publisher.find_by_code(isbn.group + '-' + isbn.publisher)
-          if pub.nil?
-            pub = Publisher.new
-            pub.code = isbn.group + '-' + isbn.publisher
-            pub.save
+        #Imprint entry
+        unless isbn.imprint.nil?
+          imp = Imprint.find_by_code(isbn.group + '-' + isbn.publisher)
+          if imp.nil?
+            imp = Imprint.new
+            imp.code = isbn.group + '-' + isbn.publisher
+            imp.save
           end
-          title.publisher_id = pub.id
+          title.imprint_id = imp.id
         end
         
         if isbn.isIsbn10

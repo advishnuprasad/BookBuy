@@ -1,7 +1,7 @@
 # == Schema Information
-# Schema version: 20110617100008
+# Schema version: 20110707064625
 #
-# Table name: publishers
+# Table name: imprints
 #
 #  id            :integer(38)     not null, primary key
 #  code          :string(255)
@@ -12,7 +12,7 @@
 #  publishername :string(255)
 #
 
-class Publisher < ActiveRecord::Base
+class Imprint < ActiveRecord::Base
   named_scope :with_names, :conditions => ["publishername IS NOT NULL"]
   
   has_many :enrichedtitles

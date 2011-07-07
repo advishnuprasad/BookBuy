@@ -27,8 +27,8 @@
 
 <div>
   <div>
-    <span>No. of publishers to be updated: </span>
-    <span><%= link_to @procurement.pending_publisher_updates_cnt, publishers_path(:filter => 'for_procurement', :procurement_id => @procurement.id)%></span>
+    <span>No. of imprints to be updated: </span>
+    <span><%= link_to @procurement.pending_imprint_updates_cnt, imprints_path(:filter => 'for_procurement', :procurement_id => @procurement.id)%></span>
   </div>
   <div>
     <span>No. of suppliers to be updated: </span>

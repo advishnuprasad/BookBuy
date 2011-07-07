@@ -44,10 +44,10 @@
                         <td aria-describedby="col_Title" role="gridcell" style="width: 30%;"><%= tag(:input, {:class => 'input_title', :dataid => workitem.referenceitem.id, :type => 'text', :size => 55, :datatitle => format_for_html(workitem.referenceitem.enrichedtitle.title), :value => format_for_html(workitem.referenceitem.enrichedtitle.title) }, false, false)  %></td>
                         <td aria-describedby="col_Author" role="gridcell" style="width: 15%;"><%= tag(:input, {:class => 'input_author', :dataid => workitem.referenceitem.id, :type => 'text', :size => 25, :dataauthor => workitem.referenceitem.enrichedtitle.author, :value => workitem.referenceitem.enrichedtitle.author }, false, false) %></td>
                         <td aria-describedby="col_Publisher" role="gridcell" style="width: 10%;">
-                          <% if workitem.referenceitem.enrichedtitle.publisher.publishername.nil?%>
-                            <%= tag(:input, {:class => 'input_publisher', :dataid => workitem.referenceitem.id, :type => 'text', :size => 15, :datapublisher => workitem.referenceitem.enrichedtitle.publisher.publishername, :value => workitem.referenceitem.enrichedtitle.publisher.code }, false, false) %>
+                          <% if workitem.referenceitem.enrichedtitle.imprint.publishername.nil?%>
+                            <%= tag(:input, {:class => 'input_publisher', :dataid => workitem.referenceitem.id, :type => 'text', :size => 15, :dataimprint => workitem.referenceitem.enrichedtitle.imprint.publishername, :value => workitem.referenceitem.enrichedtitle.imprint.code }, false, false) %>
                           <% else %>
-                            <%= select_tag "publishers", options_from_collection_for_select(Publisher.with_names.all, 'id', 'publishername', workitem.referenceitem.enrichedtitle.publisher_id), {:class => 'select_publisher'} %>
+                            <%= select_tag "imprints", options_from_collection_for_select(Imprint.with_names.all, 'id', 'publishername', workitem.referenceitem.enrichedtitle.publisher_id), {:class => 'select_publisher'} %>
                           <% end %>
                         </td>
                         <td aria-describedby="col_ListPrice" role="gridcell" style="width: 5%;"><%= tag(:input, {:class => 'input_price', :dataid => workitem.referenceitem.id, :type => 'text', :size => 5, :dataprice => workitem.referenceitem.enrichedtitle.listprice, :value => workitem.referenceitem.enrichedtitle.listprice }, false, false) %></td>

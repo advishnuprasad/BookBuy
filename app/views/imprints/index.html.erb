@@ -1,0 +1,42 @@
+<h1>Imprints</h1>
+
+<%= link_to 'Back', request.referer %><br/><br/>
+
+<!--Options -->
+<div>
+  <table style="width: 10%">
+    <tr>
+      <td><%= link_to "All", imprints_path(:filter => 'all') %></a></td>
+      <td><%= link_to "To Fill", imprints_path(:filter => 'to_fill') %></td>
+    </tr>
+  </table>  
+</div>
+<!--Options -->
+
+<table>
+  <tr>
+    <th style="width: 10%;">Code</th>
+    <th style="width: 20%;">Imprintname</th>
+    <th style="width: 10%;">Group</th>
+    <th style="width: 20%;">Publishername</th>
+    <th style="width: 5%;"></th>
+    <th style="width: 5%;"></th>
+    <th style="width: 5%;"></th>
+  </tr>
+
+<% @imprints.each do |imprint| %>
+  <tr>
+    <td><%= imprint.code %></td>
+    <td><%= imprint.imprintname %></td>
+    <td><%= imprint.group_id %></td>
+    <td><%= imprint.publishername %></td>
+    <td><%= link_to 'Show', imprint %></td>
+    <td><%= link_to 'Edit', edit_imprint_path(imprint) %></td>
+    <td><%= link_to 'Destroy', imprint, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Imprint', new_imprint_path %>

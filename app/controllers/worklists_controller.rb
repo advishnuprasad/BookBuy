@@ -15,8 +15,8 @@ class WorklistsController < ApplicationController
       render 'items_with_no_isbn'
     elsif @worklist.description == "Procurement Items with No Supplier Details"
       render 'items_with_no_supplier_details'
-      #publishers = @worklist.workitems.collect {|workitem| workitem.referenceitem.enrichedtitle.publisher.publishername}.uniq
-      #@pubsupp = Array.new(publishers.count)[Hash.new]
+      #imprints = @worklist.workitems.collect {|workitem| workitem.referenceitem.enrichedtitle.imprint.publishername}.uniq
+      #@pubsupp = Array.new(imprints.count)[Hash.new]
       #@pubsupp.each do |pub|
         #@worklist.workitems.collect {|workitem| workitem.referenceitem.supplier_id}
       #end

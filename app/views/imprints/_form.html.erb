@@ -1,10 +1,10 @@
-<%= form_for(@publisher) do |f| %>
-  <% if @publisher.errors.any? %>
+<%= form_for(@imprint) do |f| %>
+  <% if @imprint.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@publisher.errors.count, "error") %> prohibited this publisher from being saved:</h2>
+      <h2><%= pluralize(@imprint.errors.count, "error") %> prohibited this imprint from being saved:</h2>
 
       <ul>
-      <% @publisher.errors.full_messages.each do |msg| %>
+      <% @imprint.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
       </ul>

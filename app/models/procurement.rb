@@ -30,8 +30,8 @@ class Procurement < ActiveRecord::Base
     plsql.po_generator.generate(id, description)
   end
   
-  def pending_publisher_updates_cnt
-    #procurementitems.joins(:enrichedtitle => :publisher).where(:publishers => {:group_id => nil}).count
+  def pending_imprint_updates_cnt
+    #procurementitems.joins(:enrichedtitle => :imprint).where(:imprints => {:group_id => nil}).count
     Publisher.to_fill_in_procurement(id).count
   end
   
@@ -40,7 +40,7 @@ class Procurement < ActiveRecord::Base
   end
   
   def pending_discount_updates_cnt
-    #procurementitems.joins([:enrichedtitle => {:publisher => :supplierdiscounts}], :supplier).where("supplierdiscounts.bulkdiscount is NULL OR supplierdiscounts.discount is NULL").count
+    #procurementitems.joins([:enrichedtitle => {:imprint => :supplierdiscounts}], :supplier).where("supplierdiscounts.bulkdiscount is NULL OR supplierdiscounts.discount is NULL").count
     Supplierdiscount.to_fill_in_procurement(id).count
   end
   

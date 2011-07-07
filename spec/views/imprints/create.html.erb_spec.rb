@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe "publishers/create.html.erb" do
+describe "imprints/create.html.erb" do
   pending "add some examples to (or delete) #{__FILE__}"
 end

@@ -19,7 +19,7 @@ BookBuy::Application.routes.draw do
     end
   end
   resources :worklists
-  resources :publishers
+  resources :imprints
   resources :suppliers
   resources :pos
   resources :invoices do

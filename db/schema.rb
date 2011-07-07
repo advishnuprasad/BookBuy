@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110630101137) do
+ActiveRecord::Schema.define(:version => 20110707070924) do
 
   create_table "book_mig_log", :id => false, :force => true do |t|
     t.string    "book_no",    :limit => 20,                                :null => false
@@ -113,17 +113,17 @@ ActiveRecord::Schema.define(:version => 20110630101137) do
   add_index "enrichedtitle_versions", ["enrichedtitle_id"], :name => "i_enr_ver_enr_id"
 
   create_table "enrichedtitles", :force => true do |t|
-    t.integer   "title_id",                  :precision => 38, :scale => 0
-    t.string    "title",                                                    :null => false
-    t.integer   "publisher_id",              :precision => 38, :scale => 0
-    t.string    "isbn",                                                     :null => false
+    t.integer   "title_id",                 :precision => 38, :scale => 0
+    t.string    "title",                                                   :null => false
+    t.integer   "imprint_id",               :precision => 38, :scale => 0
+    t.string    "isbn",                                                    :null => false
     t.string    "language"
     t.string    "category"
     t.string    "subcategory"
     t.string    "isbn10"
-    t.timestamp "created_at",   :limit => 6
-    t.timestamp "updated_at",   :limit => 6
-    t.integer   "version",                   :precision => 38, :scale => 0
+    t.timestamp "created_at",  :limit => 6
+    t.timestamp "updated_at",  :limit => 6
+    t.integer   "version",                  :precision => 38, :scale => 0
     t.string    "verified"
     t.string    "author"
     t.string    "isbnvalid"
@@ -133,6 +133,17 @@ ActiveRecord::Schema.define(:version => 20110630101137) do
   end
 
   add_index "enrichedtitles", ["isbn"], :name => "enrichedtitles_isbn", :unique => true
+
+  create_table "imprints", :force => true do |t|
+    t.string    "code"
+    t.string    "imprintname"
+    t.timestamp "created_at",    :limit => 6
+    t.timestamp "updated_at",    :limit => 6
+    t.integer   "group_id",                   :precision => 38, :scale => 0
+    t.string    "publishername"
+  end
+
+  add_index "imprints", ["code"], :name => "index_publishers_on_code", :unique => true
 
   create_table "invoiceitems", :force => true do |t|
     t.integer  "invoice_id",     :precision => 38, :scale => 0
@@ -303,17 +314,6 @@ ActiveRecord::Schema.define(:version => 20110630101137) do
     t.timestamp "updated_at",   :limit => 6
     t.string    "status"
   end
-
-  create_table "publishers", :force => true do |t|
-    t.string    "code"
-    t.string    "imprintname"
-    t.timestamp "created_at",    :limit => 6
-    t.timestamp "updated_at",    :limit => 6
-    t.integer   "group_id",                   :precision => 38, :scale => 0
-    t.string    "publishername"
-  end
-
-  add_index "publishers", ["code"], :name => "index_publishers_on_code", :unique => true
 
   create_table "publisherxrefs", :force => true do |t|
     t.integer   "isbnpublishercode",              :precision => 38, :scale => 0

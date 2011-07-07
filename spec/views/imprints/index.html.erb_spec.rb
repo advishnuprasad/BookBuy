@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-describe "publishers/index.html.erb" do
+describe "imprints/index.html.erb" do
   before(:each) do
-    assign(:publishers, [
-      stub_model(Publisher,
+    assign(:imprints, [
+      stub_model(Imprint,
         :code => "Code",
         :imprintname => "Imprintname",
         :group_id => 1,
         :publishername => "Publishername"
       ),
-      stub_model(Publisher,
+      stub_model(Imprint,
         :code => "Code",
         :imprintname => "Imprintname",
         :group_id => 1,
@@ -18,7 +18,7 @@ describe "publishers/index.html.erb" do
     ])
   end
 
-  it "renders a list of publishers" do
+  it "renders a list of imprints" do
     render
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     assert_select "tr>td", :text => "Code".to_s, :count => 2
