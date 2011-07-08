@@ -2,7 +2,7 @@ require 'isbnutil/isbn_groups.rb'
 
 module Isbnutil
   class Isbn
-    attr_accessor :source, :isValid, :isIsbn13, :isIsbn10, :group, :publisher, :article, :check, :prefix
+    attr_accessor :source, :isValid, :isIsbn13, :isIsbn10, :group, :imprint, :article, :check, :prefix
     
     def initialize(isbn, args)
       groups = args ? args : IsbnGroups.keys
@@ -16,16 +16,16 @@ module Isbnutil
     
     def asIsbn10
       if isValid
-        return [@group, @publisher, @article, _calcCheckDigit([@group, @publisher, @article].join(''))].join('-')
+        return [@group, @imprint, @article, _calcCheckDigit([@group, @imprint, @article].join(''))].join('-')
       end
     end
     
     def asIsbn13
       if isValid
         if isIsbn13
-          return [@prefix, @group, @publisher, @article, _calcCheckDigit([@prefix, @group, @publisher, @article].join(''))].join('-')
+          return [@prefix, @group, @imprint, @article, _calcCheckDigit([@prefix, @group, @imprint, @article].join(''))].join('-')
         elsif isIsbn10
-          return ["978", @group, @publisher, @article, _calcCheckDigit(["978", @group, @publisher, @article].join(''))].join('-')
+          return ["978", @group, @imprint, @article, _calcCheckDigit(["978", @group, @imprint, @article].join(''))].join('-')
         end
       end
     end
@@ -77,7 +77,7 @@ module Isbnutil
           @isIsbn13 = false
           details = _split(isbn, groups)
           @group = details["group"]
-          @publisher = details["publisher"]
+          @imprint = details["imprint"]
           @article = details["article"]
           @check = details["check"]
         elsif isbn.length==13 && (isbn =~ /^(\d+)-(\d+)-(\d+)-([\dX])$/) != nil
@@ -86,7 +86,7 @@ module Isbnutil
           @isIsbn10 = true
           @isIsbn13 = false
           @group = $1
-          @publisher = $2
+          @imprint = $2
           @article = $3
           @check = $4
         elsif (isbn =~ /^(978|979)(\d{9}[\dX]$)/) != nil
@@ -97,7 +97,7 @@ module Isbnutil
           @prefix = $1
           details = _split($2, groups)
           @group = details["group"]
-          @publisher = details["publisher"]
+          @imprint = details["imprint"]
           @article = details["article"]
           @check = details["check"]
         elsif isbn.length==17 && (isbn =~ /^(978|979)-(\d+)-(\d+)-(\d+)-([\dX])$/) != nil
@@ -107,14 +107,14 @@ module Isbnutil
           @isIsbn13 = true
           @prefix = $1
           @group = $2
-          @publisher = $3
+          @imprint = $3
           @article = $4
           @check = $5
         end
         
         #Check if Check Digit is correct
         if @isValid
-          if @check != _calcCheckDigit([@prefix, @group, @publisher, @article].join('')).to_s
+          if @check != _calcCheckDigit([@prefix, @group, @imprint, @article].join('')).to_s
             @isValid = false
           end
         end
@@ -156,7 +156,7 @@ module Isbnutil
           return nil
         end
         
-        return {"group" => arr[0], "publisher" => arr[1], "article" => arr[2], "check" => arr[3]}
+        return {"group" => arr[0], "imprint" => arr[1], "article" => arr[2], "check" => arr[3]}
       end
       
       def _getGroupRecord(isbn, groups)

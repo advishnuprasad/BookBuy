@@ -31,15 +31,14 @@
               <div style="position: relative;">
                 <table id="items" class="ui-jqgrid-btable" cellspacing="0" cellpadding="0" border="0" role="grid" style="width: 956px;">
                   <tbody>
-                    <% @worklist.workitems.collect {|workitem| workitem.referenceitem.enrichedtitle.publisher.publishername}.uniq.each do |publisher| %>
+                    <% @pubsupps.each do |entry| %>
                       <tr class="ui-widget-content jqgrow ui-row-ltr" role="row">
-                        <td aria-describedby="col_Publisher" role="gridcell" style="width: 25%;"><%= publisher %></td>
+                        <td aria-describedby="col_Publisher" role="gridcell" style="width: 25%;"><%= Publisher.find(entry[:publisher_id]).name %></td>
                         <td aria-describedby="col_Supplier" role="gridcell" style="width: 25%;"><%= select_tag "supplier_id", 
-                                            options_from_collection_for_select(Publisher.find_by_publishername(publisher).suppliers.map, 
-                                            :id, :name, @worklist.workitems.collect {|workitem| workitem.referenceitem.supplier_id}.uniq), 
-                                            {:class => 'select_supplier', :datasuppid => publisher, 
-                                            :datasupp => workitem.referenceitem.supplier_id, 
-                                            :value => workitem.referenceitem.supplier_id, :include_blank => true, :width => 5 } %></td>
+                                            options_from_collection_for_select(Publisher.find(entry[:publisher_id]).suppliers.map, 
+                                            :id, :name, entry[:supplier_id]), 
+                                            {:class => 'select_supplier', :dataid => entry[:publisher_id], :datasupp => entry[:supplier_id], 
+                                            :value => entry[:supplier_id], :include_blank => true, :width => 5 } %></td>
                       </tr>
                     <% end %>
                   </tbody>

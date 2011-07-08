@@ -13,7 +13,7 @@ class ImprintsController < ApplicationController
         @imprints = Imprint.to_fill
       end
     else
-      @imprints = Imprint.order("group_id").all
+      @imprints = Imprint.order("publisher_id").all
     end
 
     respond_to do |format|
@@ -90,6 +90,37 @@ class ImprintsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(imprints_url) }
       format.xml  { head :ok }
+    end
+  end
+  
+  def update_publishers
+    data = params[:data]
+    puts data.to_s
+    
+    result = true
+    data.each {|key, value|
+      imprint = Imprint.find(value["id"])
+      
+      if imprint
+        imprint.publisher_id = value["publisher_id"] unless value["publisher_id"].nil?
+        if imprint.changed?
+          unless imprint.save
+            result = false
+          end
+        end
+      else
+        result = false
+      end
+    }
+    
+    if result == true
+      flash[:success] = "Publishers have been Successfully Updated!"
+    else
+      flash[:error] = "Publishers updation failed!"
+    end
+    
+    respond_to do |format|
+      format.js
     end
   end
 end

@@ -14,13 +14,22 @@ class WorklistsController < ApplicationController
     elsif @worklist.description == "Procurement Items with No ISBN"
       render 'items_with_no_isbn'
     elsif @worklist.description == "Procurement Items with No Supplier Details"
-      render 'items_with_no_supplier_details'
-      #imprints = @worklist.workitems.collect {|workitem| workitem.referenceitem.enrichedtitle.imprint.publishername}.uniq
-      #@pubsupp = Array.new(imprints.count)[Hash.new]
-      #@pubsupp.each do |pub|
-        #@worklist.workitems.collect {|workitem| workitem.referenceitem.supplier_id}
-      #end
-      #render 'items_with_no_supplier_details_publisher_wise'
+      #render 'items_with_no_supplier_details'
+      @pubsupps = Array.new      
+      @worklist.workitems.collect {|workitem| workitem.referenceitem.enrichedtitle.imprint.publisher}.uniq.each do |publisher|
+        item_ids = @worklist.workitems.collect {|workitem| workitem.ref_id}
+        suppliers = Procurementitem.of_publisher_in_items(publisher.id, item_ids).collect {|item| item.supplier_id}.uniq
+        if suppliers.count ==1 
+          supplier_id = suppliers.first
+        else
+          supplier_id = nil
+        end
+        det = Hash.new
+        det = {:publisher_id => publisher.id, :supplier_id => supplier_id }
+        @pubsupps.push det
+      end
+      puts "Combos - " + @pubsupps.to_s
+      render 'items_with_no_supplier_details_publisher_wise'
     end
   end
   
@@ -119,25 +128,21 @@ class WorklistsController < ApplicationController
   
   def save_items_with_no_supplier_details_publisher_wise
     data = params[:data]
+    puts data.to_s
     id = params[:id]
-    items = Array.new
+    
+    worklist = Worklist.find(params[:id])
+    item_ids = worklist.workitems.collect {|workitem| workitem.ref_id}
     
     result = true
+    
     data.each {|key, value|
-      procurementitem = Procurementitem.find(value["id"])
-      procurementitem.quantity = value["quantity"] unless value["quantity"].nil?
-      procurementitem.supplier_id = value["supplier_id"] unless value["supplier_id"].nil?
-      procurementitem.availability = value["availability"] unless value["availability"].nil?
-      procurementitem.cancel_reason = value["cancel_reason"] unless value["cancel_reason"].nil?
-      procurementitem.deferred_by = value["deferred_by"] unless value["deferred_by"].nil?
-      
-      if !procurementitem.cancel_reason.nil?
-        procurementitem.status = 'Cancelled'
-      elsif !procurementitem.deferred_by.nil?
-        procurementitem.status = 'Deferred'
-      end
-      
-      if !procurementitem.save
+      begin
+        puts "Publisher - " + value["id"].to_s
+        item_ids_of_publisher = Procurementitem.of_publisher_in_items(value["id"], item_ids).collect {|item| item.id}
+        puts "Items to update - " + item_ids_of_publisher.to_s
+        Procurementitem.update_all({:supplier_id => value["supplier_id"]}, {:id => item_ids_of_publisher})
+      rescue
         result = false
       end
     }
@@ -167,9 +172,9 @@ class WorklistsController < ApplicationController
       enrichedtitle.verified = value["verified"] unless value["verified"].nil?
       enrichedtitle.price = value["price"] unless value["price"].nil?
       if !value["publisher"].nil?
-        publisher = Publisher.find_by_code(enrichedtitle.publisher.code)
-        publisher.name = value["publisher"]
-        publisher.save
+        imprint = Imprint.find(enrichedtitle.imprint.id)
+        imprint.publisher_id = value["publisher"]
+        imprint.save
       end
       
       procurementitem.cancel_reason = value["cancel_reason"] unless value["cancel_reason"].nil?

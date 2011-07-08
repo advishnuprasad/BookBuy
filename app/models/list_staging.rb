@@ -40,7 +40,7 @@ class ListStaging < ActiveRecord::Base
         error += 'invalid isbn;'
       end
       
-      if title.include?('+') or title.include?('.') or title.nil? or title.blank?
+      if title.nil? or title.blank?
         error += 'invalid title;'
       end
       

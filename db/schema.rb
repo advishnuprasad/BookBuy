@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110707070924) do
+ActiveRecord::Schema.define(:version => 20110707132120) do
 
   create_table "book_mig_log", :id => false, :force => true do |t|
     t.string    "book_no",    :limit => 20,                                :null => false
@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(:version => 20110707070924) do
     t.integer   "version",                       :precision => 38, :scale => 0
     t.integer   "title_id",                      :precision => 38, :scale => 0
     t.string    "title"
-    t.integer   "publisher_id",                  :precision => 38, :scale => 0
+    t.integer   "imprint_id",                    :precision => 38, :scale => 0
     t.string    "isbn"
     t.string    "language"
     t.string    "category"
@@ -136,11 +136,10 @@ ActiveRecord::Schema.define(:version => 20110707070924) do
 
   create_table "imprints", :force => true do |t|
     t.string    "code"
-    t.string    "imprintname"
-    t.timestamp "created_at",    :limit => 6
-    t.timestamp "updated_at",    :limit => 6
-    t.integer   "group_id",                   :precision => 38, :scale => 0
-    t.string    "publishername"
+    t.string    "name"
+    t.timestamp "created_at",   :limit => 6
+    t.timestamp "updated_at",   :limit => 6
+    t.integer   "publisher_id",              :precision => 38, :scale => 0
   end
 
   add_index "imprints", ["code"], :name => "index_publishers_on_code", :unique => true
@@ -313,6 +312,13 @@ ActiveRecord::Schema.define(:version => 20110707070924) do
     t.timestamp "created_at",   :limit => 6
     t.timestamp "updated_at",   :limit => 6
     t.string    "status"
+  end
+
+  create_table "publishers", :force => true do |t|
+    t.string   "name"
+    t.string   "country"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "publisherxrefs", :force => true do |t|

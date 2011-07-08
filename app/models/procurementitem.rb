@@ -57,7 +57,7 @@ class Procurementitem < ActiveRecord::Base
           enrichedtitles.verified = 'Y'
           AND enrichedtitles.isbn IS NOT NULL
           AND enrichedtitles.title IS NOT NULL
-          AND enrichedtitles.publisher_id IS NOT NULL
+          AND enrichedtitles.imprint_id IS NOT NULL
           AND enrichedtitles.author IS NOT NULL
           )
         AND procurementitems.po_number IS NULL").
@@ -65,9 +65,10 @@ class Procurementitem < ActiveRecord::Base
     }
   scope :cancelled, where(:status => 'Cancelled')
   scope :deferred, where(:status => 'Deferred')
-  scope :of_imprint, lambda { |group_id|
-      joins(:enrichedtitle => :imprint).
-      where(:imprints => {:group_id => group_id})
+  scope :of_publisher_in_items, lambda { |publisher_id, ids|
+      joins(:enrichedtitle => {:imprint => :publisher}).
+      where(:publishers => {:id => publisher_id}).
+      where(:id => ids)
     }
     
   #Assumptions

@@ -1,5 +1,7 @@
 BookBuy::Application.routes.draw do
 
+  resources :publishers
+
   resources :lists do
     member do
       post 'upload'
@@ -19,7 +21,9 @@ BookBuy::Application.routes.draw do
     end
   end
   resources :worklists
-  resources :imprints
+  resources :imprints do
+    post 'update_publishers', :on => :collection
+  end
   resources :suppliers
   resources :pos
   resources :invoices do

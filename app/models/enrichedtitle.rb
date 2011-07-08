@@ -56,10 +56,10 @@ class Enrichedtitle < ActiveRecord::Base
         
         #Imprint entry
         unless isbn.imprint.nil?
-          imp = Imprint.find_by_code(isbn.group + '-' + isbn.publisher)
+          imp = Imprint.find_by_code(isbn.group + '-' + isbn.imprint)
           if imp.nil?
             imp = Imprint.new
-            imp.code = isbn.group + '-' + isbn.publisher
+            imp.code = isbn.group + '-' + isbn.imprint
             imp.save
           end
           title.imprint_id = imp.id

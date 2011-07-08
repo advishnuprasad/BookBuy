@@ -32,7 +32,7 @@ class Procurement < ActiveRecord::Base
   
   def pending_imprint_updates_cnt
     #procurementitems.joins(:enrichedtitle => :imprint).where(:imprints => {:group_id => nil}).count
-    Publisher.to_fill_in_procurement(id).count
+    Imprint.to_fill_in_procurement(id).count
   end
   
   def pending_supplier_updates_cnt

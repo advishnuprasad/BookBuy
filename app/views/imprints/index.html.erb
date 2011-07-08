@@ -1,3 +1,7 @@
+<% content_for(:head) do %>
+  <%= javascript_include_tag 'imprints/index' %>
+<% end %>
+
 <h1>Imprints</h1>
 
 <%= link_to 'Back', request.referer %><br/><br/>
@@ -13,26 +17,29 @@
 </div>
 <!--Options -->
 
-<table>
+<%= link_to_function "Update Publishers","saveItems(); return false;", :id=>'saveItemsLink' %>
+<br />
+
+<table id="items">
   <tr>
     <th style="width: 10%;">Code</th>
-    <th style="width: 20%;">Imprintname</th>
-    <th style="width: 10%;">Group</th>
-    <th style="width: 20%;">Publishername</th>
-    <th style="width: 5%;"></th>
-    <th style="width: 5%;"></th>
+    <th style="width: 20%;">Name</th>
+    <th style="width: 40%;">Sample Title</th>
+    <th style="width: 30%;">Publisher</th>
     <th style="width: 5%;"></th>
   </tr>
 
 <% @imprints.each do |imprint| %>
   <tr>
     <td><%= imprint.code %></td>
-    <td><%= imprint.imprintname %></td>
-    <td><%= imprint.group_id %></td>
-    <td><%= imprint.publishername %></td>
-    <td><%= link_to 'Show', imprint %></td>
+    <td><%= imprint.name %></td>
+    <td><%= imprint.enrichedtitles.first.isbn + ' --- ' + imprint.enrichedtitles.first.title + ' --- ' + imprint.enrichedtitles.first.author %></td>
+    <td><%= select_tag "publisher_id", 
+      options_from_collection_for_select(Publisher.order("name").all, :id, :name, imprint.publisher_id), 
+      {:class => 'select_publisher', :dataimpid => imprint.id, 
+      :datapub => imprint.publisher_id, 
+      :value => imprint.publisher_id, :include_blank => true, :width => 30 } %></td>
     <td><%= link_to 'Edit', edit_imprint_path(imprint) %></td>
-    <td><%= link_to 'Destroy', imprint, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

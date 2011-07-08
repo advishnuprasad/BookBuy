@@ -37,6 +37,7 @@
 
 class Po < ActiveRecord::Base
   belongs_to :supplier
+  belongs_to :publisher
   belongs_to :branch
   belongs_to :procurement
   has_many :procurementitems, :inverse_of => "po"

@@ -43,10 +43,10 @@
                         <td aria-describedby="col_Title" role="gridcell" style="width: 30%;"><%= workitem.referenceitem.enrichedtitle.title %></td>
                         <td aria-describedby="col_Author" role="gridcell" style="width: 10%;"><%= workitem.referenceitem.enrichedtitle.author %></td>
                         <td aria-describedby="col_Publisher" role="gridcell" style="width: 7.5%;">
-                                            <%= workitem.referenceitem.enrichedtitle.publisher.publishername %></td>
+                                            <%= workitem.referenceitem.enrichedtitle.imprint.publisher.name %></td>
                         <td aria-describedby="col_ISBN" role="gridcell" style="width: 7.5%;"><%= workitem.referenceitem.isbn %></td>
                         <td aria-describedby="col_Supplier" role="gridcell" style="width: 7.5%;"><%= select_tag "supplier_id", 
-                                            options_from_collection_for_select(workitem.referenceitem.enrichedtitle.publisher.suppliers.map, 
+                                            options_from_collection_for_select(workitem.referenceitem.enrichedtitle.imprint.publisher.suppliers.map, 
                                             :id, :name, workitem.referenceitem.supplier_id), 
                                             {:class => 'select_supplier', :datasuppid => workitem.referenceitem.id, 
                                             :datasupp => workitem.referenceitem.supplier_id, 

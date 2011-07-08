@@ -4,8 +4,9 @@
 
 <h1>Supplier Discounts</h1>
 
-<%= link_to 'Back', request.referer %><br/><br/>
-
+<%= link_to 'Back', request.referer %> |
+<%= link_to 'New Discount', new_supplierdiscount_path %>
+<br/><br/>
 <!--Options -->
 <div>
   <table style="width: 10%">
@@ -24,8 +25,6 @@
   <tr>
     <th style="width: 20%;">Supplier</th>
     <th style="width: 15%;">Publisher</th>
-    <th style="width: 10%;">Group</th>
-    <th style="width: 15%;">Imprint</th>
     <th style="width: 7.5%;">Discount %</th>
     <th style="width: 7.5%;">Bulk Disc %</th>
   </tr>
@@ -33,9 +32,7 @@
 <% @supplierdiscounts.each do |supplierdiscount| %>
   <tr>
     <td><%= supplierdiscount.supplier.name %></td>
-    <td><%= supplierdiscount.publisher.publishername %></td>
-    <td><%= supplierdiscount.publisher.code %></td>
-    <td><%= tag(:input, {:class => 'input_imprintname', :dataid => supplierdiscount.id, :type => 'text', :size => 25, :dataimprintname => supplierdiscount.publisher.imprintname, :value => supplierdiscount.publisher.imprintname }, false, false) %></td>    
+    <td><%= supplierdiscount.publisher.name %></td>
     <td><%= tag(:input, {:class => 'input_discount', :dataid => supplierdiscount.id, :type => 'text', :size => 7.5, :datadiscount => supplierdiscount.discount, :value => supplierdiscount.discount }, false, false) %></td>
     <td><%= tag(:input, {:class => 'input_bulkdiscount', :dataid => supplierdiscount.id, :type => 'text', :size => 7.5, :databulkdiscount => supplierdiscount.bulkdiscount, :value => supplierdiscount.bulkdiscount }, false, false) %></td>
   </tr>

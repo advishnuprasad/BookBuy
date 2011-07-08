@@ -6,16 +6,16 @@ class SupplierdiscountsController < ApplicationController
     filter ||= 'all'
     if filter == 'to_fill'
       #Order by Supplier and Publisher (Group)
-      @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:imprints).order("imprints.group_id").to_fill
+      @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:publisher).order("publishers.id").to_fill
     elsif filter == 'for_procurement'
       if params[:procurement_id]
         @supplierdiscounts = Supplierdiscount.to_fill_in_procurement(params[:procurement_id])
       else
-        @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:imprints).order("imprints.group_id").to_fill
+        @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:publisher).order("publishers.id").to_fill
       end
     else
       #Order by Supplier and Publisher (Group)
-      @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:imprints).order("imprints.group_id").all
+      @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:publisher).order("publishers.id").all
     end
     
     respond_to do |format|
@@ -54,6 +54,7 @@ class SupplierdiscountsController < ApplicationController
   # POST /supplierdiscounts
   # POST /supplierdiscounts.xml
   def create
+    puts params[:supplierdiscount].to_s
     @supplierdiscount = Supplierdiscount.new(params[:supplierdiscount])
 
     respond_to do |format|
