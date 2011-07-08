@@ -54,7 +54,6 @@ class SupplierdiscountsController < ApplicationController
   # POST /supplierdiscounts
   # POST /supplierdiscounts.xml
   def create
-    puts params[:supplierdiscount].to_s
     @supplierdiscount = Supplierdiscount.new(params[:supplierdiscount])
 
     respond_to do |format|
@@ -98,7 +97,6 @@ class SupplierdiscountsController < ApplicationController
   
   def update_records
     data = params[:data]
-    puts data.to_s
     
     result = true
     data.each {|key, value|

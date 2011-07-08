@@ -95,7 +95,6 @@ class ImprintsController < ApplicationController
   
   def update_publishers
     data = params[:data]
-    puts data.to_s
     
     result = true
     data.each {|key, value|

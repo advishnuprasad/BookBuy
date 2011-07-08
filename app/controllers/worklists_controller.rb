@@ -28,7 +28,6 @@ class WorklistsController < ApplicationController
         det = {:publisher_id => publisher.id, :supplier_id => supplier_id }
         @pubsupps.push det
       end
-      puts "Combos - " + @pubsupps.to_s
       render 'items_with_no_supplier_details_publisher_wise'
     end
   end
@@ -128,7 +127,6 @@ class WorklistsController < ApplicationController
   
   def save_items_with_no_supplier_details_publisher_wise
     data = params[:data]
-    puts data.to_s
     id = params[:id]
     
     worklist = Worklist.find(params[:id])
@@ -138,9 +136,7 @@ class WorklistsController < ApplicationController
     
     data.each {|key, value|
       begin
-        puts "Publisher - " + value["id"].to_s
         item_ids_of_publisher = Procurementitem.of_publisher_in_items(value["id"], item_ids).collect {|item| item.id}
-        puts "Items to update - " + item_ids_of_publisher.to_s
         Procurementitem.update_all({:supplier_id => value["supplier_id"]}, {:id => item_ids_of_publisher})
       rescue
         result = false

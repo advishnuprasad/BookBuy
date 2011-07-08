@@ -50,18 +50,15 @@ class Procurement < ActiveRecord::Base
   
   def download
     if pos.count > 0
-      files = Array.new
-      zip_file_name = id.to_s + ".zip"
       t = Tempfile.new(id.to_s + "-#{Time.now}")
       Zip::ZipOutputStream.open(t.path) do |z|
         pos.each do |po|
           gen_file = plsql.po_generator.extract(po.code)
           z.put_next_entry(gen_file)
-          z.print IO.read('/home/subhash/db/dbbackups/' + gen_file)
+          z.write IO.read('/home/subhash/db/dbbackups/' + gen_file)
         end
       end
       temppathstr = t.path
-      puts temppathstr
       t.close
       return temppathstr
     end    
