@@ -8,8 +8,6 @@
     <th>Created by</th>
     <th>Modified by</th>
     <th></th>
-    <th></th>
-    <th></th>
   </tr>
 
 <% @procurements.each do |procurement| %>
@@ -17,11 +15,9 @@
     <td><%= procurement.source_id %></td>
     <td><%= procurement.description %></td>
     <td><%= procurement.requests_cnt %></td>
-    <td><%= procurement.created_by %></td>
-    <td><%= procurement.modified_by %></td>
+    <td><%= procurement.created_by_user.username unless procurement.created_by_user.nil? %></td>
+    <td><%= procurement.modified_by_user.username unless procurement.modified_by_user.nil? %></td>
     <td><%= link_to 'Show', procurement %></td>
-    <td><%= link_to 'Edit', edit_procurement_path(procurement) %></td>
-    <td><%= link_to 'Destroy', procurement, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

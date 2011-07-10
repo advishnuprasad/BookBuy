@@ -27,6 +27,7 @@
   <% if user_signed_in? -%>
     <div id="user_login_box" class="span-11 push-13 last">
       <span> <span id='current_branch'><%= current_user.current_branch.name if current_user.current_branch %></span> | <%= current_user.email %> |
+      <%= link_to 'Home', root_path %> |
       <%= link_to 'My info', edit_user_registration_path %> |
       <%= link_to 'Sign out', destroy_user_session_path %> </span>
     </div>

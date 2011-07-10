@@ -14,21 +14,19 @@ class WorklistsController < ApplicationController
     elsif @worklist.description == "Procurement Items with No ISBN"
       render 'items_with_no_isbn'
     elsif @worklist.description == "Procurement Items with No Supplier Details"
-      #render 'items_with_no_supplier_details'
-      @pubsupps = Array.new      
-      @worklist.workitems.collect {|workitem| workitem.referenceitem.enrichedtitle.imprint.publisher}.uniq.each do |publisher|
-        item_ids = @worklist.workitems.collect {|workitem| workitem.ref_id}
-        suppliers = Procurementitem.of_publisher_in_items(publisher.id, item_ids).collect {|item| item.supplier_id}.uniq
-        if suppliers.count ==1 
-          supplier_id = suppliers.first
-        else
-          supplier_id = nil
+      if @worklist.procurement.description == 'NENT'
+        render 'items_with_no_supplier_details'
+      else
+        #Fill Array of Hashes for Publisher and Supplier discount combinations
+        @pubsupps = Array.new      
+        @worklist.workitems.collect {|workitem| workitem.referenceitem.enrichedtitle.imprint.publisher}.uniq.each do |publisher|
+          item_ids = @worklist.workitems.collect {|workitem| workitem.ref_id}
+          suppliers = Procurementitem.of_publisher_in_items(publisher.id, item_ids).collect {|item| item.supplier_id}.uniq
+          supplier_id = suppliers.count == 1 ? suppliers.first : nil
+          @pubsupps.push Hash[:publisher_id => publisher.id, :supplier_id => supplier_id]
         end
-        det = Hash.new
-        det = {:publisher_id => publisher.id, :supplier_id => supplier_id }
-        @pubsupps.push det
+        render 'items_with_no_supplier_details_publisher_wise'
       end
-      render 'items_with_no_supplier_details_publisher_wise'
     end
   end
   

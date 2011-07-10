@@ -78,6 +78,10 @@ BEGIN
 END;
 
 BEGIN
+  PULL_PUBLISHER(4071);
+END;
+
+BEGIN
   WORKLIST_GENERATOR.pr_create_corelist_wl;
 END;
 

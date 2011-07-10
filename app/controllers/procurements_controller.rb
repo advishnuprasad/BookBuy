@@ -85,7 +85,7 @@ class ProcurementsController < ApplicationController
   
   def pull
     unless params[:pull].nil?
-      if params[:pull] == 'ibtrs'
+      if params[:pull] == 'ibtr'
         cnt = Procurement.pending_ibtr_items_exist
         
         if cnt > 0
@@ -100,6 +100,24 @@ class ProcurementsController < ApplicationController
       elsif params[:pull] == 'nent'
         List.yet_to_pull.of_kind('NENT').each do |list|
           id = Procurement.pull_nent_items(list.id)
+          
+          @procurement = Procurement.find(id)
+          
+          @procurement.created_by = current_user.id
+          @procurement.save
+        end
+      elsif params[:pull] == 'nstr'
+        List.yet_to_pull.of_kind('NSTR').each do |list|
+          id = Procurement.pull_nstr_items(list.id)
+          
+          @procurement = Procurement.find(id)
+          
+          @procurement.created_by = current_user.id
+          @procurement.save
+        end
+      elsif params[:pull] == 'whse'
+        List.yet_to_pull.of_kind('WHSE').each do |list|
+          id = Procurement.pull_whse_items(list.id)
           
           @procurement = Procurement.find(id)
           
@@ -149,6 +167,21 @@ class ProcurementsController < ApplicationController
       send_file temppathstr, :type => 'application/zip',
                                :disposition => 'attachment',
                                :filename => zip_file_name
+    end
+  end
+  
+  def close
+    @procurement = Procurement.find(params[:id])
+    @procurement.status = 'Closed'
+    
+    respond_to do |format|
+      if @procurement.save
+        format.html { redirect_to(@procurement, :notice => 'Procurement was successfully closed.') }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @procurement.errors, :status => :unprocessable_entity }
+      end
     end
   end
 end

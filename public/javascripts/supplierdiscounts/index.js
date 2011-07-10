@@ -19,23 +19,6 @@ function clearChangedCells() {
     changedCells = {};
 }
 
-$("#items .input_imprintname").live("change",function(event) {
-    if($(this).attr('dataimprintname') != this.value) {
-        if(changedCells[$(this).attr('dataid')]) {
-            changedCells[$(this).attr('dataid')]["imprintname"] = this.value;
-        }
-        else {
-            changedCells[$(this).attr('dataid')] = {}
-            changedCells[$(this).attr('dataid')]["id"] = $(this).attr('dataid');
-            changedCells[$(this).attr('dataid')]["imprintname"] = this.value;
-        }
-        alert(changedCells.toSource());
-    }
-    else
-        if(changedCells[$(this).attr('dataid')])
-            delete changedCells[$(this).attr('dataid')]["imprintname"];
-});
-
 $("#items .input_discount").live("change",function(event) {
     if($(this).attr('datadiscount') != this.value) {
         if(changedCells[$(this).attr('dataid')]) {
@@ -46,7 +29,6 @@ $("#items .input_discount").live("change",function(event) {
             changedCells[$(this).attr('dataid')]["id"] = $(this).attr('dataid');
             changedCells[$(this).attr('dataid')]["discount"] = this.value;
         }
-        alert(changedCells.toSource());
     }
     else
         if(changedCells[$(this).attr('dataid')])
@@ -63,7 +45,6 @@ $("#items .input_bulkdiscount").live("change",function(event) {
             changedCells[$(this).attr('dataid')]["id"] = $(this).attr('dataid');
             changedCells[$(this).attr('dataid')]["bulkdiscount"] = this.value;
         }
-        alert(changedCells.toSource());
     }
     else
         if(changedCells[$(this).attr('dataid')])
