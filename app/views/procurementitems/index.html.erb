@@ -18,7 +18,7 @@
     <td><%= procurementitem.isbn %></td>
     <td><%= procurementitem.enrichedtitle.title unless procurementitem.enrichedtitle.nil? %></td>
     <td><%= procurementitem.enrichedtitle.author unless procurementitem.enrichedtitle.nil? %></td>
-    <td><%= procurementitem.enrichedtitle.publisher.publishername unless procurementitem.enrichedtitle.nil? || procurementitem.enrichedtitle.publisher.nil? %></td>
+    <td><%= procurementitem.enrichedtitle.imprint.publisher.name unless procurementitem.enrichedtitle.nil? || procurementitem.enrichedtitle.imprint.publisher.nil? %></td>
     <td><%= procurementitem.supplier.name unless procurementitem.supplier.nil? %></td>
     <td><%= procurementitem.quantity %></td>
     <td><%= procurementitem.branch.name unless procurementitem.branch.nil? %></td>

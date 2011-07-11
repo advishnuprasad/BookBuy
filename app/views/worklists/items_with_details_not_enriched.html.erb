@@ -19,7 +19,7 @@
               <table class="ui-jqgrid-htable" cellspacing="0" cellpadding="0" border="0" role="grid">
                 <thead>
                   <tr class="ui-jqgrid-labels" role="rowheader">
-                    <th id="col_ISBN" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 15%;">ISBN</th>
+                    <th id="col_ISBN" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 7.5%;">ISBN</th>
                     <th id="col_Title" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 30%;">Title</th>
                     <th id="col_Author" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 15%;">Author</th>
                     <th id="col_Publisher" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 10%;">Publisher</th>
@@ -40,9 +40,9 @@
                   <tbody>
                     <% @worklist.workitems.each do |workitem| %>
                       <tr class="ui-widget-content jqgrow ui-row-ltr" role="row">
-                        <td aria-describedby="col_ISBN" role="gridcell" style="width: 15%;"><%= workitem.referenceitem.isbn %></td>
-                        <td aria-describedby="col_Title" role="gridcell" style="width: 30%;"><%= tag(:input, {:class => 'input_title', :dataid => workitem.referenceitem.id, :type => 'text', :size => 55, :datatitle => format_for_html(workitem.referenceitem.enrichedtitle.title), :value => format_for_html(workitem.referenceitem.enrichedtitle.title) }, false, false)  %></td>
-                        <td aria-describedby="col_Author" role="gridcell" style="width: 15%;"><%= tag(:input, {:class => 'input_author', :dataid => workitem.referenceitem.id, :type => 'text', :size => 25, :dataauthor => workitem.referenceitem.enrichedtitle.author, :value => workitem.referenceitem.enrichedtitle.author }, false, false) %></td>
+                        <td aria-describedby="col_ISBN" role="gridcell" style="width: 7.5%;"><%= workitem.referenceitem.isbn %></td>
+                        <td aria-describedby="col_Title" role="gridcell" style="width: 22%;"><%= tag(:input, {:class => 'input_title', :dataid => workitem.referenceitem.id, :type => 'text', :size => 40, :datatitle => format_for_html(workitem.referenceitem.enrichedtitle.title), :value => format_for_html(workitem.referenceitem.enrichedtitle.title) }, false, false)  %></td>
+                        <td aria-describedby="col_Author" role="gridcell" style="width: 10%;"><%= tag(:input, {:class => 'input_author', :dataid => workitem.referenceitem.id, :type => 'text', :size => 15, :dataauthor => workitem.referenceitem.enrichedtitle.author, :value => workitem.referenceitem.enrichedtitle.author }, false, false) %></td>
                         <td aria-describedby="col_Publisher" role="gridcell" style="width: 10%;">
                           <% if workitem.referenceitem.enrichedtitle.imprint.publisher.nil?%>
                             <%= select_tag "publishers", options_from_collection_for_select(Publisher.order("name").all, :id, :name, workitem.referenceitem.enrichedtitle.imprint.publisher_id),  {:class => 'select_publisher', :dataid => workitem.referenceitem.id, 

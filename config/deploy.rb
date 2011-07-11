@@ -35,8 +35,16 @@ role :db,  "74.86.131.195", :primary => true # This is where Rails migrations wi
     end
     after "deploy:update_code", "deploy:copy_mail_configuration"
   end
+  
+  namespace :deploy do
+    task :copy_environment_settings do 
+      production_environment_config = "/disk1/bookbuy/environment.rb" 
+      run "cp #{production_environment_config} #{release_path}/config/environment.rb"
+    end
+    after "deploy:update_code", "deploy:copy_environment_settings"
+  end
 
- namespace :deploy do
+  namespace :deploy do
    task :start do ; end
    task :stop do ; end
    task :restart, :roles => :app, :except => { :no_release => true } do

@@ -65,7 +65,7 @@ class Procurement < ActiveRecord::Base
         pos.each do |po|
           gen_file = plsql.po_generator.extract(po.code)
           z.put_next_entry(gen_file)
-          z.write IO.read('/home/subhash/db/dbbackups/' + gen_file)
+          z.write IO.read(Paths::PO_FILE_PATH + gen_file)
         end
       end
       temppathstr = t.path
