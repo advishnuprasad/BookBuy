@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110410134111
+# Schema version: 20110711085056
 #
 # Table name: suppliers
 #
@@ -11,6 +11,8 @@
 #  typeofshipping :integer(38)
 #  discount       :integer(38)
 #  creditperiod   :integer(38)
+#  created_at     :datetime
+#  updated_at     :datetime
 #
 
 class Supplier < ActiveRecord::Base

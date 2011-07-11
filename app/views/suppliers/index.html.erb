@@ -10,7 +10,6 @@
     <th style="width: 7.5%;">Discount</th>
     <th style="width: 7.5%;">Credit</th>
     <th style="width: 5%;"></th>
-    <th style="width: 5%;"></th>
   </tr>
 
 <% @suppliers.each do |supplier| %>
@@ -22,12 +21,7 @@
     <td><%= supplier.typeofshipping %></td>
     <td><%= supplier.discount %></td>
     <td><%= supplier.creditperiod %></td>
-    <td><%= link_to 'Show', supplier %></td>
     <td><%= link_to 'Edit', edit_supplier_path(supplier) %></td>
   </tr>
 <% end %>
 </table>
-
-<br />
-
-<%= link_to 'New Supplier', new_supplier_path %>

@@ -1,12 +1,11 @@
 # == Schema Information
-# Schema version: 20110707070924
+# Schema version: 20110711085056
 #
 # Table name: enrichedtitles
 #
 #  id          :integer(38)     not null, primary key
 #  title_id    :integer(38)
 #  title       :string(255)     not null
-#  imprint_id  :integer(38)
 #  isbn        :string(255)     not null
 #  language    :string(255)
 #  category    :string(255)
@@ -21,6 +20,7 @@
 #  listprice   :decimal(, )
 #  currency    :string(255)
 #  enriched    :string(255)
+#  imprint_id  :integer(38)
 #
 
 require 'isbnutil/isbn.rb'

@@ -1,13 +1,13 @@
 # == Schema Information
-# Schema version: 20110707072351
+# Schema version: 20110711085056
 #
 # Table name: publishers
 #
 #  id         :integer(38)     not null, primary key
-#  name       :string(255)
-#  country    :string(255)
 #  created_at :datetime
 #  updated_at :datetime
+#  name       :string(1020)
+#  country    :string(1020)
 #
 
 class Publisher < ActiveRecord::Base

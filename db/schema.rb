@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110707132120) do
+ActiveRecord::Schema.define(:version => 20110711085056) do
 
   create_table "book_mig_log", :id => false, :force => true do |t|
     t.string    "book_no",    :limit => 20,                                :null => false
@@ -94,7 +94,6 @@ ActiveRecord::Schema.define(:version => 20110707132120) do
     t.integer   "version",                       :precision => 38, :scale => 0
     t.integer   "title_id",                      :precision => 38, :scale => 0
     t.string    "title"
-    t.integer   "imprint_id",                    :precision => 38, :scale => 0
     t.string    "isbn"
     t.string    "language"
     t.string    "category"
@@ -108,6 +107,7 @@ ActiveRecord::Schema.define(:version => 20110707132120) do
     t.integer   "listprice",                     :precision => 38, :scale => 0
     t.string    "currency"
     t.string    "enriched"
+    t.integer   "imprint_id",                    :precision => 38, :scale => 0
   end
 
   add_index "enrichedtitle_versions", ["enrichedtitle_id"], :name => "i_enr_ver_enr_id"
@@ -115,7 +115,6 @@ ActiveRecord::Schema.define(:version => 20110707132120) do
   create_table "enrichedtitles", :force => true do |t|
     t.integer   "title_id",                 :precision => 38, :scale => 0
     t.string    "title",                                                   :null => false
-    t.integer   "imprint_id",               :precision => 38, :scale => 0
     t.string    "isbn",                                                    :null => false
     t.string    "language"
     t.string    "category"
@@ -130,6 +129,7 @@ ActiveRecord::Schema.define(:version => 20110707132120) do
     t.decimal   "listprice"
     t.string    "currency"
     t.string    "enriched"
+    t.integer   "imprint_id",               :precision => 38, :scale => 0
   end
 
   add_index "enrichedtitles", ["isbn"], :name => "enrichedtitles_isbn", :unique => true
@@ -141,8 +141,6 @@ ActiveRecord::Schema.define(:version => 20110707132120) do
     t.timestamp "updated_at",   :limit => 6
     t.integer   "publisher_id",              :precision => 38, :scale => 0
   end
-
-  add_index "imprints", ["code"], :name => "index_publishers_on_code", :unique => true
 
   create_table "invoiceitems", :force => true do |t|
     t.integer  "invoice_id",     :precision => 38, :scale => 0
@@ -227,6 +225,7 @@ ActiveRecord::Schema.define(:version => 20110707132120) do
     t.integer  "modified_by", :precision => 38, :scale => 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "description"
   end
 
   create_table "newarrivals_expanded", :force => true do |t|
@@ -315,10 +314,10 @@ ActiveRecord::Schema.define(:version => 20110707132120) do
   end
 
   create_table "publishers", :force => true do |t|
-    t.string   "name"
-    t.string   "country"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "name",       :limit => 1020
+    t.string   "country",    :limit => 1020
   end
 
   create_table "publisherxrefs", :force => true do |t|
@@ -338,14 +337,16 @@ ActiveRecord::Schema.define(:version => 20110707132120) do
   end
 
   create_table "suppliers", :id => false, :force => true do |t|
-    t.integer "id",                            :precision => 38, :scale => 0, :null => false
-    t.string  "name",           :limit => 100
-    t.string  "contact",        :limit => 100
-    t.string  "phone",          :limit => 100
-    t.string  "city",           :limit => 100
-    t.integer "typeofshipping",                :precision => 38, :scale => 0
-    t.integer "discount",                      :precision => 38, :scale => 0
-    t.integer "creditperiod",                  :precision => 38, :scale => 0
+    t.integer  "id",                            :precision => 38, :scale => 0, :null => false
+    t.string   "name",           :limit => 100
+    t.string   "contact",        :limit => 100
+    t.string   "phone",          :limit => 100
+    t.string   "city",           :limit => 100
+    t.integer  "typeofshipping",                :precision => 38, :scale => 0
+    t.integer  "discount",                      :precision => 38, :scale => 0
+    t.integer  "creditperiod",                  :precision => 38, :scale => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "title_mig_log", :primary_key => "title_id", :force => true do |t|
@@ -387,8 +388,8 @@ ActiveRecord::Schema.define(:version => 20110707132120) do
     t.integer   "procurement_id",              :precision => 38, :scale => 0
   end
 
+  add_synonym "users_seq", "users_seq@link_opac", :force => true
   add_synonym "authentications", "authentications@link_opac", :force => true
   add_synonym "users", "users@link_opac", :force => true
-  add_synonym "users_seq", "users_seq@link_opac", :force => true
 
 end
