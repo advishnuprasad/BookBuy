@@ -5,15 +5,15 @@ class ImprintsController < ApplicationController
     filter = params[:filter]
     filter ||= 'all'
     if filter == 'to_fill'
-      @imprints = Imprint.to_fill
+      @imprints = Imprint.to_fill.paginate(:per_page => 50, :page => params[:page])
     elsif filter == 'for_procurement'
       if params[:procurement_id]
-        @imprints = Imprint.to_fill_in_procurement(params[:procurement_id])
+        @imprints = Imprint.to_fill_in_procurement(params[:procurement_id]).paginate(:per_page => 50, :page => params[:page])
       else
-        @imprints = Imprint.to_fill
+        @imprints = Imprint.to_fill.paginate(:per_page => 50, :page => params[:page])
       end
     else
-      @imprints = Imprint.order("publisher_id").all
+      @imprints = Imprint.order("publisher_id").all.paginate(:per_page => 50, :page => params[:page])
     end
 
     respond_to do |format|

@@ -17,33 +17,37 @@
 </div>
 <!--Options -->
 
-<%= link_to_function "Update Publishers","saveItems(); return false;", :id=>'saveItemsLink' %>
-<br />
+<% if @imprints.count > 0 %>
+  <%= link_to_function "Update Publishers","saveItems(); return false;", :id=>'saveItemsLink' %>
+  <br />
+  <%= will_paginate :prev_label => '<< Previous', :next_label => 'Next >>', :class => 'pagination'%>
+  <table id="items">
+    <tr>
+      <th style="width: 10%;">Code</th>
+      <th style="width: 20%;">Name</th>
+      <th style="width: 40%;">Sample Title</th>
+      <th style="width: 30%;">Publisher</th>
+      <th style="width: 5%;"></th>
+    </tr>
 
-<table id="items">
-  <tr>
-    <th style="width: 10%;">Code</th>
-    <th style="width: 20%;">Name</th>
-    <th style="width: 40%;">Sample Title</th>
-    <th style="width: 30%;">Publisher</th>
-    <th style="width: 5%;"></th>
-  </tr>
-
-<% @imprints.each do |imprint| %>
-  <tr>
-    <td><%= imprint.code %></td>
-    <td><%= imprint.name %></td>
-    <td><%= imprint.enrichedtitles.first.isbn + ' --- ' + imprint.enrichedtitles.first.title + ' --- ' + imprint.enrichedtitles.first.author %></td>
-    <td><%= select_tag "publisher_id", 
-      options_from_collection_for_select(Publisher.order("name").all, :id, :name, imprint.publisher_id), 
-      {:class => 'select_publisher', :dataimpid => imprint.id, 
-      :datapub => imprint.publisher_id, 
-      :value => imprint.publisher_id, :include_blank => true, :width => 30 } %></td>
-    <td><%= link_to 'Edit', edit_imprint_path(imprint) %></td>
-  </tr>
+  <% @imprints.each do |imprint| %>
+    <tr>
+      <td><%= imprint.code %></td>
+      <td><%= imprint.name %></td>
+      <td><%= imprint.enrichedtitles.first.isbn + ' --- ' + imprint.enrichedtitles.first.title + ' --- ' + (imprint.enrichedtitles.first.author ||= '') %></td>
+      <td><%= select_tag "publisher_id", 
+        options_from_collection_for_select(Publisher.order("name").all, :id, :name, imprint.publisher_id), 
+        {:class => 'select_publisher', :dataimpid => imprint.id, 
+        :datapub => imprint.publisher_id, 
+        :value => imprint.publisher_id, :include_blank => true, :width => 30 } %></td>
+      <td><%= link_to 'Edit', edit_imprint_path(imprint) %></td>
+    </tr>
+  <% end %>
+  </table>
+  <%= will_paginate %>
+  <br />
+<% else %>  
+  <p>All Imprints have been mapped to their publishers.</p>
 <% end %>
-</table>
-
-<br />
 
 <%= link_to 'New Imprint', new_imprint_path %>
