@@ -44,8 +44,10 @@ class ListStaging < ActiveRecord::Base
         error += 'invalid title;'
       end
       
-      if author.include?('+') or author.nil? or author.blank?
-        error += 'invalid author;'
+      unless author.nil? 
+        if author.include?('+')
+          error += 'invalid author;'
+        end
       end
       
       if publisher.include?('+') or publisher.nil? or publisher.blank?
