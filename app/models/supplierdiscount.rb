@@ -23,10 +23,15 @@ class Supplierdiscount < ActiveRecord::Base
       where("supplierdiscounts.discount IS NULL OR supplierdiscounts.bulkdiscount IS NULL")
     }
   scope :to_fill_in_procurement, lambda {|procurement_id|
-      where(:id => to_fill_in_procurement_det(procurement_id).collect {|discount| discount.id}.uniq)
+      where(:id => to_fill_in_procurement_det(procurement_id).collect {|discount| discount.id}.uniq).
+      where(:publisher_id => Procurement.find(procurement_id).pos.collect {|po| po.publisher_id}.uniq)
     }
-  scope :of_procurement, lambda {|procurement_id|
+  scope :of_procurement_det, lambda {|procurement_id|
     joins([:supplier => {:procurementitems => :procurement}], [:publisher => {:imprints => {:enrichedtitles => {:procurementitems => :procurement}}}]).
       where(:procurements => {:id => procurement_id})
   }
+  scope :of_procurement, lambda {|procurement_id|
+      where(:id => of_procurement_det(procurement_id).collect {|discount| discount.id}.uniq).
+      where(:publisher_id => Procurement.find(procurement_id).pos.collect {|po| po.publisher_id}.uniq)
+    }
 end

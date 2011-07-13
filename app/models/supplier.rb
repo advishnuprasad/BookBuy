@@ -31,5 +31,5 @@ class Supplier < ActiveRecord::Base
   validates :phone,               :presence => true
   validates :city,                :presence => true
   
-  validates :email,               :email => true
+  #validates :email,               :email => true
 end

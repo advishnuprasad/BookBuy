@@ -1,0 +1,1 @@
+alter table "SUPPLIERS" add ( "EMAIL" VARCHAR2(1020) );
