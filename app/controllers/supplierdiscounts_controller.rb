@@ -13,6 +13,8 @@ class SupplierdiscountsController < ApplicationController
       else
         @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:publisher).order("publishers.id").to_fill
       end
+    elsif filter == 'of_procurement'
+      @supplierdiscounts = Supplierdiscount.of_procurement(params[:procurement_id])
     else
       #Order by Supplier and Publisher (Group)
       @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:publisher).order("publishers.id").all

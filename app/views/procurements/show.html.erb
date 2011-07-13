@@ -37,6 +37,7 @@
   <div>
     <span>No. of discounts to be updated: </span>
     <span><%= link_to @procurement.pending_discount_updates_cnt, supplierdiscounts_path(:filter => 'for_procurement', :procurement_id => @procurement.id) %></span>
+    (<span><%= link_to 'View all', supplierdiscounts_path(:filter => 'of_procurement', :procurement_id => @procurement.id) %></span>)
   </div>
   <div>
     <span>Items ready to be ordered:</span>

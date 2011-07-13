@@ -18,8 +18,11 @@
 class List < ActiveRecord::Base
   has_many :listitems
   has_many :list_stagings, :dependent => :delete_all
+  belongs_to :created_by_user, :foreign_key => "created_by", :class_name => "User"
+  belongs_to :modified_by_user, :foreign_key => "modified_by", :class_name => "User"
   
-  validates :description,              :presence => true
+  validates :name,              :presence => true
+  validates :description,       :presence => true
   
   before_create :generate_key
   before_create :set_defaults

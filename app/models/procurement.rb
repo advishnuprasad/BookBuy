@@ -21,6 +21,7 @@ class Procurement < ActiveRecord::Base
   has_many :procurementitems
   has_many :worklists
   has_many :pos
+  belongs_to :list, :foreign_key => "source_id", :class_name => "List"
   belongs_to :created_by_user, :foreign_key => "created_by", :class_name => "User"
   belongs_to :modified_by_user, :foreign_key => "modified_by", :class_name => "User"
   

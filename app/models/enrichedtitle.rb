@@ -46,12 +46,13 @@ class Enrichedtitle < ActiveRecord::Base
     return nil
   end
   
-  def self.validate(id, isbn)
+  def self.validate(id, isbnstr)
     title = Enrichedtitle.find(id)
     unless title.nil?
       #ISBN validity
-      isbn = Isbnutil::Isbn.parse(isbn, nil)
+      isbn = Isbnutil::Isbn.parse(isbnstr, nil)
       if isbn
+        title.isbn = isbnstr
         title.isbnvalid = 'Y'
         
         #Imprint entry
