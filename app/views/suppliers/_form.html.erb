@@ -13,23 +13,27 @@
 
   <div class="field">
     <%= f.label :name %><br />
-    <%= f.text_field :name %>
+    <%= f.text_field :name, :size => "50" %>
   </div>
   <div class="field">
     <%= f.label :contact %><br />
-    <%= f.text_field :contact %>
+    <%= f.text_field :contact, :size => "25" %>
   </div>
   <div class="field">
     <%= f.label :phone %><br />
-    <%= f.text_field :phone %>
+    <%= f.text_field :phone, :size => "15" %>
+  </div>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.text_field :email, :size => "25" %>
   </div>
   <div class="field">
     <%= f.label :city %><br />
-    <%= f.text_field :city %>
+    <%= f.text_field :city, :size => "25" %>
   </div>
   <div class="field">
     <%= f.label :typeofshipping %><br />
-    <%= f.text_field :typeofshipping %>
+    <%= f.text_field :typeofshipping, :size => "10" %>
   </div>
   <div class="field">
     <%= f.label :discount %><br />

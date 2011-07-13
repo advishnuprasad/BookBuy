@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110711085056
+# Schema version: 20110713050822
 #
 # Table name: suppliers
 #
@@ -13,12 +13,23 @@
 #  creditperiod   :integer(38)
 #  created_at     :datetime
 #  updated_at     :datetime
+#  email          :string(255)
 #
 
 class Supplier < ActiveRecord::Base
-  attr_accessible :publisher_ids
+  attr_accessible :name, :contact, :phone, :city, :typeofshipping, :discount, :creditperiod, :email
+  
   has_many :supplierdiscounts
   has_many :imprints, :through => :supplierdiscounts
   has_many :pos
   has_many :procurementitems
+  
+  validates :name,                :presence => true
+  validates :discount,            :presence => true
+  validates :creditperiod,        :presence => true
+  validates :contact,             :presence => true
+  validates :phone,               :presence => true
+  validates :city,                :presence => true
+  
+  validates :email,               :email => true
 end

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110617100008
+# Schema version: 20110713050822
 #
 # Table name: invoiceitems
 #
@@ -17,8 +17,8 @@
 #  discount       :decimal(, )
 #  net_amount     :decimal(, )
 #  user_id        :integer(38)
-#  created_at     :datetime
-#  updated_at     :datetime
+#  created_at     :timestamp(6)
+#  updated_at     :timestamp(6)
 #
 
 class Invoiceitem < ActiveRecord::Base

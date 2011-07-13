@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110630072124
+# Schema version: 20110713050822
 #
 # Table name: listitems
 #
@@ -17,8 +17,8 @@
 #  branch_id    :integer(38)
 #  created_by   :integer(38)
 #  modified_by  :integer(38)
-#  created_at   :datetime
-#  updated_at   :datetime
+#  created_at   :timestamp(6)
+#  updated_at   :timestamp(6)
 #  error        :string(255)
 #  pulled       :string(255)
 #  list_id      :integer(38)

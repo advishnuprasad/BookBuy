@@ -30,6 +30,7 @@
       <th style="width: 15%;">Publisher</th>
       <th style="width: 7.5%;">Discount %</th>
       <th style="width: 7.5%;">Bulk Disc %</th>
+      <th style="width: 2%;"></th>
     </tr>
 
   <% @supplierdiscounts.each do |supplierdiscount| %>
@@ -38,6 +39,7 @@
       <td><%= supplierdiscount.publisher.name %></td>
       <td><%= tag(:input, {:class => 'input_discount', :dataid => supplierdiscount.id, :type => 'text', :size => 7.5, :datadiscount => supplierdiscount.discount, :value => supplierdiscount.discount }, false, false) %></td>
       <td><%= tag(:input, {:class => 'input_bulkdiscount', :dataid => supplierdiscount.id, :type => 'text', :size => 7.5, :databulkdiscount => supplierdiscount.bulkdiscount, :value => supplierdiscount.bulkdiscount }, false, false) %></td>
+      <td><%= link_to 'Destroy', supplierdiscount, :confirm => 'Are you sure?', :method => :delete %></td>
     </tr>
   <% end %>
   </table>

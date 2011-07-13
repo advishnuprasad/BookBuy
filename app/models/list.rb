@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110711085056
+# Schema version: 20110713050822
 #
 # Table name: lists
 #
@@ -10,9 +10,9 @@
 #  pulled      :string(255)
 #  created_by  :integer(38)
 #  modified_by :integer(38)
-#  created_at  :datetime
-#  updated_at  :datetime
-#  description :string(255)
+#  created_at  :timestamp(6)
+#  updated_at  :timestamp(6)
+#  description :string(1020)
 #
 
 class List < ActiveRecord::Base

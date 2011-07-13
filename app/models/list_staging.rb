@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110630101137
+# Schema version: 20110713050822
 #
 # Table name: list_stagings
 #
@@ -16,8 +16,8 @@
 #  subcategory  :string(255)
 #  branch_id    :integer(38)
 #  error        :string(255)
-#  created_at   :datetime
-#  updated_at   :datetime
+#  created_at   :timestamp(6)
+#  updated_at   :timestamp(6)
 #  list_id      :integer(38)
 #  created_by   :integer(38)
 #
