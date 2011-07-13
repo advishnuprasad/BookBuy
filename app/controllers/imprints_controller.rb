@@ -12,6 +12,11 @@ class ImprintsController < ApplicationController
       else
         @imprints = Imprint.to_fill.paginate(:per_page => 50, :page => params[:page])
       end
+    elsif filter =='of_publisher'
+      if params[:publisher_id]
+        @publisher_id = params[:publisher_id]
+        @imprints = Imprint.of_publisher(params[:publisher_id]).paginate(:per_page => 50, :page => params[:page])
+      end
     else
       @imprints = Imprint.order("publisher_id").all.paginate(:per_page => 50, :page => params[:page])
     end
