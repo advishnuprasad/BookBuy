@@ -41,6 +41,18 @@ class Procurement < ActiveRecord::Base
     plsql.po_generator.generate(id, description)
   end
   
+  def pending_scan_cnt
+    Procurementitem.pending_scan(id).count
+  end
+  
+  def scan_titles
+    Enrichedtitle.scan_in_procurement(id)
+  end
+  
+  def invalid_isbn_cnt
+    Procurementitem.invalid_isbns(id).count
+  end
+  
   def pending_imprint_updates_cnt
     #procurementitems.joins(:enrichedtitle => :imprint).where(:imprints => {:group_id => nil}).count
     Imprint.to_fill_in_procurement(id).count

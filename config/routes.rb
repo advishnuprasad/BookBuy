@@ -18,6 +18,7 @@ BookBuy::Application.routes.draw do
       get 'generate_po'
       get 'download'
       get 'close'
+      get 'scan'
     end
   end
   resources :worklists

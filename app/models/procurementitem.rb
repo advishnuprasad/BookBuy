@@ -49,6 +49,16 @@ class Procurementitem < ActiveRecord::Base
   scope :of_procurement, lambda {|procurement_id|
       where(:procurement_id => procurement_id)
     }
+  scope :pending_scan, lambda {|procurement_id|
+      of_procurement(procurement_id).
+      joins(:enrichedtitle).
+      where(:enrichedtitles => {:isbnvalid => nil})
+    }
+  scope :invalid_isbns, lambda {|procurement_id|
+      of_procurement(procurement_id).
+      joins(:enrichedtitle).
+      where(:enrichedtitles => {:isbnvalid => 'N'})
+    }
   scope :to_order_in_procurement, lambda {|procurement_id|
       joins(:enrichedtitle).
       where("procurementitems.supplier_id IS NOT NULL

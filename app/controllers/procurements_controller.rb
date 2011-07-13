@@ -15,7 +15,7 @@ class ProcurementsController < ApplicationController
   def show
     @procurement = Procurement.find(params[:id])
 
-   respond_to do |format|
+    respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @procurement }
     end
@@ -182,6 +182,16 @@ class ProcurementsController < ApplicationController
         format.html { render :action => "edit" }
         format.xml  { render :xml => @procurement.errors, :status => :unprocessable_entity }
       end
+    end
+  end
+  
+  def scan
+    @procurement = Procurement.find(params[:id])
+    
+    @procurement.scan_titles
+    respond_to do |format|
+      format.html { render :action => "show" }
+      format.xml  { render :xml => @procurement }
     end
   end
 end
