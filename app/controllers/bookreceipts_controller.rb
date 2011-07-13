@@ -32,12 +32,12 @@ class BookreceiptsController < ApplicationController
     
     respond_to do |format|      
       if @bookreceipt.save
-        puts 'Successfully saved!'
+        @daily_count = Bookreceipt.of_user_for_today(current_user.id).count
         flash[:success] = "Cataloged Successfully!"
         format.html { redirect_to bookreceipts_path}
         format.xml
       else
-        if @bookreceipt.errors[:book_no] && @bookreceipt.errors[:book_no].first.include?("already been used")
+        if @bookreceipt.errors.count > 0 && @bookreceipt.errors.values.join("").include?("already been used")
           flash[:error] = "Cataloging failure!"
           format.html { render :new }
           format.xml { render :nothing => true, :status => :conflict }
@@ -59,6 +59,14 @@ class BookreceiptsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(bookreceipts_url) }
       format.xml  { head :ok }
+    end
+  end
+  
+  def daily_count_of_user
+    @daily_count = Bookreceipt.of_user_for_today(current_user.id).count
+    respond_to do |format|
+      format.html { redirect_to(bookreceipts_url) }
+      format.xml
     end
   end
 end

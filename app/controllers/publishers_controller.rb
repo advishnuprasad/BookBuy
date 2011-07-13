@@ -2,19 +2,7 @@ class PublishersController < ApplicationController
   # GET /publishers
   # GET /publishers.xml
   def index
-    filter = params[:filter]
-    filter ||= 'all'
-    if filter == 'to_fill'
-      @publishers = Publisher.to_fill
-    elsif filter == 'for_procurement'
-      if params[:procurement_id]
-        @publishers = Publisher.to_fill_in_procurement(params[:procurement_id])
-      else
-        @publishers = Publisher.to_fill
-      end
-    else
-      @publishers = Publisher.order("group_id").all
-    end
+    @publishers = Publisher.all
 
     respond_to do |format|
       format.html # index.html.erb

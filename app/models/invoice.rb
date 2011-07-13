@@ -1,9 +1,14 @@
 # == Schema Information
+<<<<<<< HEAD
 # Schema version: 20110614110459
+=======
+# Schema version: 20110630044015
+>>>>>>> 295d2549dc7ad1d1583b854141a9b198dee0ec27
 #
 # Table name: invoices
 #
 #  id              :integer(38)     not null, primary key
+<<<<<<< HEAD
 #  invoice_no      :string(255)
 #  po_id           :integer(38)
 #  date_of_receipt :datetime
@@ -13,6 +18,17 @@
 #  updated_at      :datetime
 #  boxes_cnt       :integer(38)
 #  date_of_invoice :datetime
+=======
+#  invoice_no      :string(255)     not null
+#  po_id           :integer(38)     not null
+#  date_of_receipt :timestamp(6)    not null
+#  quantity        :integer(38)     not null
+#  amount          :decimal(, )     not null
+#  created_at      :timestamp(6)
+#  updated_at      :timestamp(6)
+#  boxes_cnt       :integer(38)     not null
+#  date_of_invoice :timestamp(6)    not null
+>>>>>>> 295d2549dc7ad1d1583b854141a9b198dee0ec27
 #  created_by      :integer(38)
 #  modified_by     :integer(38)
 #
@@ -31,6 +47,7 @@ class Invoice < ActiveRecord::Base
   validates :amount,                  :presence => true
   validates :boxes_cnt,               :presence => true
   
+<<<<<<< HEAD
   has_many :invoiceitems
   has_many :bookreceipts
 
@@ -38,6 +55,15 @@ class Invoice < ActiveRecord::Base
 
   before_create :make_uppercase
   #after_create :generate_barcodes
+=======
+  validate  :po_val_greater_than_total_invoices_val
+  
+  has_many :invoiceitems
+  has_many :bookreceipts
+
+  before_create :clean_invoice_no
+  after_create :generate_barcodes
+>>>>>>> 295d2549dc7ad1d1583b854141a9b198dee0ec27
   
   scope :today, lambda { where("created_at >= ? and created_at <= ?",  Time.zone.today.to_time.beginning_of_day, Time.zone.today.to_time.end_of_day) }
   scope :created_on, lambda {|date| 
@@ -48,6 +74,13 @@ class Invoice < ActiveRecord::Base
     }
   scope :invoice_date_between, lambda {|startdate, enddate| 
       {:conditions => ['date_of_invoice >= ? AND date_of_invoice <= ?', startdate, enddate]}
+    }
+  scope :recent, lambda {
+      where('created_at >= ?', 7.days.ago).
+      order('id DESC')
+    }
+  scope :of_po_and_invoice, lambda { |po_id, invoice_no|
+      where('po_id = ? AND invoice_no = ?', po_id, invoice_no)
     }
   
   def formatted_po_name
@@ -148,7 +181,10 @@ class Invoice < ActiveRecord::Base
   
   def get_bookreceipts_invoiceitems
       
+<<<<<<< HEAD
     #bookreceipt_invoiceitems = Bookreceipt.joins("join invoiceitems on bookreceipts.invoice_id =  invoiceitems.invoice_id and trim(bookreceipts.isbn) = trim(invoiceitems.isbn)").where('invoiceitems.invoice_id = 10083')
+=======
+>>>>>>> 295d2549dc7ad1d1583b854141a9b198dee0ec27
     sql_stmt = "select b.isbn isbn, count(b.isbn) cnt, ii.isbn ii_isbn, ii.quantity quantity, "+
                               " decode( (count(b.isbn) - ii.quantity), 0, 'Same',-1, 'Over',1, 'Under', 'diff') diff" +
                               " from invoiceitems ii, bookreceipts b where ii.invoice_id = b.invoice_id " +
@@ -185,8 +221,8 @@ class Invoice < ActiveRecord::Base
   end
   
   private 
-    def make_uppercase
-      self.invoice_no = self.invoice_no.upcase
+    def clean_invoice_no
+      self.invoice_no = self.invoice_no.upcase.chomp.strip
     end
 
     def generate_barcodes
@@ -204,5 +240,17 @@ class Invoice < ActiveRecord::Base
         f.write invbarcode.to_png
       end
     end
-  
+    
+    def po_val_greater_than_total_invoices_val
+      po_temp = Po.find(po_id)
+      if po_temp
+        total_util_so_far = po_temp.invoices.collect{|x| x.amount}.sum
+        total_qty_so_far = po_temp.invoices.collect{|x| x.quantity}.sum
+        if total_util_so_far + amount > po_temp.netamt
+          errors.add(:amount, " - Total invoices amount exceeds PO value")
+        elsif total_qty_so_far + quantity > po_temp.copies_cnt
+          errors.add(:quantity, " - Total invoices quantity exceeds PO copies")
+        end
+      end
+    end
 end

@@ -22,6 +22,11 @@ class Crate < ActiveRecord::Base
   has_many :boxes
  
   after_create :generate_barcodes
+  
+  scope :recent, lambda {
+    where('created_at >= ?',3.days.ago).
+    order("id DESC")
+  }
 
   def formatted_crate_file_name
     'CR_' + id.to_s

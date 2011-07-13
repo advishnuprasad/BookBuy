@@ -1,26 +1,26 @@
 # == Schema Information
-# Schema version: 20110617100008
+# Schema version: 20110711085056
 #
 # Table name: enrichedtitles
 #
-#  id           :integer(38)     not null, primary key
-#  title_id     :integer(38)
-#  title        :string(255)     not null
-#  publisher_id :integer(38)
-#  isbn         :string(255)     not null
-#  language     :string(255)
-#  category     :string(255)
-#  subcategory  :string(255)
-#  isbn10       :string(255)
-#  created_at   :timestamp(6)
-#  updated_at   :timestamp(6)
-#  version      :integer(38)
-#  verified     :string(255)
-#  author       :string(255)
-#  isbnvalid    :string(255)
-#  listprice    :integer(38)
-#  currency     :string(255)
-#  enriched     :string(255)
+#  id          :integer(38)     not null, primary key
+#  title_id    :integer(38)
+#  title       :string(255)     not null
+#  isbn        :string(255)     not null
+#  language    :string(255)
+#  category    :string(255)
+#  subcategory :string(255)
+#  isbn10      :string(255)
+#  created_at  :timestamp(6)
+#  updated_at  :timestamp(6)
+#  version     :integer(38)
+#  verified    :string(255)
+#  author      :string(255)
+#  isbnvalid   :string(255)
+#  listprice   :decimal(, )
+#  currency    :string(255)
+#  enriched    :string(255)
+#  imprint_id  :integer(38)
 #
 
 require 'isbnutil/isbn.rb'
@@ -28,7 +28,7 @@ require 'isbnutil/isbn.rb'
 class Enrichedtitle < ActiveRecord::Base
   acts_as_versioned
   
-  belongs_to :publisher
+  belongs_to :imprint
   belongs_to :jbtitle, :foreign_key => "title_id", :class_name => "Title"
   has_many :procurementitems
   
@@ -46,35 +46,56 @@ class Enrichedtitle < ActiveRecord::Base
     return nil
   end
   
-  def self.validate(id, isbn)
+  def self.validate(id, isbnstr)
     title = Enrichedtitle.find(id)
     unless title.nil?
       #ISBN validity
-      isbn = Isbnutil::Isbn.parse(isbn, nil)
+      isbn = Isbnutil::Isbn.parse(isbnstr, nil)
       if isbn
+        title.isbn = isbnstr
         title.isbnvalid = 'Y'
         
-        #Publisher entry
-        unless isbn.publisher.nil?
-          pub = Publisher.find_by_code(isbn.group + '-' + isbn.publisher)
-          if pub.nil?
-            pub = Publisher.new
-            pub.code = isbn.group + '-' + isbn.publisher
-            pub.save
+        #Imprint entry
+        unless isbn.imprint.nil?
+          imp = Imprint.find_by_code(isbn.group + '-' + isbn.imprint)
+          if imp.nil?
+            imp = Imprint.new
+            imp.code = isbn.group + '-' + isbn.imprint
+            imp.save
           end
-          title.publisher_id = pub.id
+          title.imprint_id = imp.id
         end
         
-        #ISBN 13 generation
         if isbn.isIsbn10
           title.isbn10 = isbn.asIsbn10.gsub(/-/,'')
           title.isbn = isbn.asIsbn13.gsub(/-/,'')
-          
-          #Update Items if ISBN was updated to ISBN13
-          if procurementitems
-            procurementitems.each do |item|
-              item.isbn = title.isbn
-              item.save
+            
+          title_isbn13 = Enrichedtitle.find_by_isbn(isbn.asIsbn13.gsub(/-/,''))
+          if title_isbn13
+            #Update procurementitems to old enrichedtitle
+            if title.procurementitems
+              title.procurementitems.each do |item|
+                item.enrichedtitle_id = title_isbn13.id
+                item.isbn = title_isbn13.isbn
+                item.save
+              end
+            end
+            
+            #Update ISBN10 in old enrichedtitle if blank
+            title_isbn13.isbn10 = title.isbn10 if title_isbn13.isbn10.nil?
+            if title_isbn13.changed?
+              title_isbn13.save
+            end
+            
+            #Remove the ISBN10 that was replaced
+            title.destroy
+          else
+            #Update Items if ISBN was updated to ISBN13
+            if title.procurementitems
+              title.procurementitems.each do |item|
+                item.isbn = title.isbn
+                item.save
+              end
             end
           end
         end

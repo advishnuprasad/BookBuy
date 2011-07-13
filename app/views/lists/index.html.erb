@@ -1,0 +1,34 @@
+<h1>Lists</h1>
+
+<% if @lists.count > 0 %>
+  <%= will_paginate :prev_label => '<< Previous', :next_label => 'Next >>', :class => 'pagination'%>
+    <table>
+      <tr>
+        <th style="width: 30%;">Name</th>
+        <th style="width: 5%;">Kind</th>
+        <th style="width: 10%;">Key</th>
+        <th style="width: 5%;">Pulled</th>
+        <th style="width: 10%;">Created by</th>
+        <th style="width: 10%;">Modified by</th>
+        <th style="width: 5%;"></th>
+        <th style="width: 5%;"></th>
+      </tr>
+
+    <% @lists.each do |list| %>
+      <tr>
+        <td><%= link_to list.name, list %></td>
+        <td><%= list.kind %></td>
+        <td><%= list.key %></td>
+        <td><%= list.pulled %></td>
+        <td><%= list.created_by_user.username %></td>
+        <td><%= list.modified_by_user unless list.modified_by_user.nil? %></td>
+        <td><%= link_to 'Edit', edit_list_path(list) %></td>
+        <td><%= link_to 'Destroy', list, :confirm => 'Are you sure?', :method => :delete %></td>
+      </tr>
+    <% end %>
+    </table>
+  <%= will_paginate %>
+  <br />
+<% end %>
+
+<%= link_to 'New List', new_list_path %>

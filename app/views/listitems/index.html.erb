@@ -1,0 +1,49 @@
+<h1>Listing listitems</h1>
+
+<table>
+  <tr>
+    <th>Key</th>
+    <th>Isbn</th>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Publisher</th>
+    <th>Publisher</th>
+    <th>Quantity</th>
+    <th>Listprice</th>
+    <th>Currency</th>
+    <th>Category</th>
+    <th>Subcategory</th>
+    <th>Branch</th>
+    <th>Created by</th>
+    <th>Modified by</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @listitems.each do |listitem| %>
+  <tr>
+    <td><%= listitem.key %></td>
+    <td><%= listitem.isbn %></td>
+    <td><%= listitem.title %></td>
+    <td><%= listitem.author %></td>
+    <td><%= listitem.publisher %></td>
+    <td><%= listitem.publisher_id %></td>
+    <td><%= listitem.quantity %></td>
+    <td><%= listitem.listprice %></td>
+    <td><%= listitem.currency %></td>
+    <td><%= listitem.category %></td>
+    <td><%= listitem.subcategory %></td>
+    <td><%= listitem.branch_id %></td>
+    <td><%= listitem.created_by %></td>
+    <td><%= listitem.modified_by %></td>
+    <td><%= link_to 'Show', listitem %></td>
+    <td><%= link_to 'Edit', edit_listitem_path(listitem) %></td>
+    <td><%= link_to 'Destroy', listitem, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New listitem', new_listitem_path %>

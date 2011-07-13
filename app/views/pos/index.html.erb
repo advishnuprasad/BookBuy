@@ -1,4 +1,4 @@
-<h1>Purchase Orders</h1>
+<h2>Purchase Orders</h2>
 
 <%= will_paginate :prev_label => '<< Previous', :next_label => 'Next >>', :class => 'pagination'%>
   <table>
@@ -16,7 +16,7 @@
       <tr>
         <td><%= po.code %></td>
         <td><%= po.supplier.name %></td>
-        <td><%= po.publishername %></td>
+        <td><%= po.publisher.name %></td>
         <td><%= po.branch.name %></td>
         <td><%= po.currency %></td>
         <td><%= po.copies_cnt %></td>

@@ -34,7 +34,6 @@ $("#items .input_isbn").live("change",function(event) {
             changedCells[$(this).attr('dataid')]["id"] = $(this).attr('dataid');
             changedCells[$(this).attr('dataid')]["isbn"] = this.value;
         }
-        alert(changedCells.toSource());
     }
     else
         if(changedCells[$(this).attr('dataid')])

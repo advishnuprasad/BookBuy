@@ -17,20 +17,24 @@ class TitlereceiptsController < ApplicationController
     
     respond_to do |format|
       if @titlereceipt.save
-        flash[:success] = "Title Receipt captured successfully!"
-        format.html { redirect_to titlereceipts_path}
-        format.xml
-      else
-        #TODO - is there a better way of doing this??
-        if @titlereceipt.errors[:po_no].first && @titlereceipt.errors[:po_no].first.include?("order quantity")
+        if @titlereceipt.error == "Order Quantity Exceeded"
           flash[:error] = "Order quantity exceeded!"
           format.html { render :new }
           format.xml { render :nothing => true, :status => :precondition_failed }
-        else
+        elsif @titlereceipt.error == "ISBN not found in PO"
           flash[:error] = "Validations failed!"
           format.html { render :new }
           format.xml { render :nothing => true, :status => :not_found }
+        else
+          @pending_cnt = Invoice.of_po_and_invoice(Po.find_by_code(@titlereceipt.po_no).id, @titlereceipt.invoice_no).first.quantity - Titlereceipt.of_po(@titlereceipt.po_no).count
+          flash[:success] = "Title Receipt captured successfully!"
+          format.html { redirect_to titlereceipts_path}
+          format.xml
         end
+      else
+        flash[:error] = "Some error occured!"
+        format.html { render :new }
+        format.xml { render :nothing => true, :status => :not_found }
       end
     end
   end

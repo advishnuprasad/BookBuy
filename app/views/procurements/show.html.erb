@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Procurement Basket - <%= @procurement.id %> (<%= @procurement.status %>)</h1>
+<h2>Procurement - <%= @procurement.id %> (<%= @procurement.status %>)</h2>
 
 <div>
   <%= link_to 'Back', request.referer %> |
@@ -8,7 +8,7 @@
   <%= link_to "Mark Close", close_procurement_path %>
 </div>
 <br/>
-
+<hr>
 <div>
 <b><%= @procurement.description %></b> of <b><%= @procurement.requests_cnt %></b> items
 (Created on: <%= @procurement.created_at.strftime('%d-%b-%Y') %>)
@@ -23,10 +23,12 @@
 </div>
 <br/>
 
+<hr>
+
 <div>
   <div>
-    <span>No. of publishers to be updated: </span>
-    <span><%= link_to @procurement.pending_publisher_updates_cnt, publishers_path(:filter => 'for_procurement', :procurement_id => @procurement.id)%></span>
+    <span>No. of imprints to be updated: </span>
+    <span><%= link_to @procurement.pending_imprint_updates_cnt, imprints_path(:filter => 'for_procurement', :procurement_id => @procurement.id)%></span>
   </div>
   <div>
     <span>No. of suppliers to be updated: </span>
@@ -35,6 +37,7 @@
   <div>
     <span>No. of discounts to be updated: </span>
     <span><%= link_to @procurement.pending_discount_updates_cnt, supplierdiscounts_path(:filter => 'for_procurement', :procurement_id => @procurement.id) %></span>
+    (<span><%= link_to 'View all', supplierdiscounts_path(:filter => 'of_procurement', :procurement_id => @procurement.id) %></span>)
   </div>
   <div>
     <span>Items ready to be ordered:</span>
@@ -51,7 +54,8 @@
               :procurement_id => @procurement.id, :status => 'Cancelled') %></span>
   </div>
 </div>
-<br/><br/>
+<br/>
+<hr>
 
 <div><b><h3>Worklists</h3></b>(<%= link_to "Refresh Worklists", refresh_procurement_path %>)</div>
 <br/>
@@ -72,3 +76,5 @@
     <% end %>
   <% end %>
 </div>
+
+<hr>

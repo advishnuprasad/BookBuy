@@ -1,0 +1,33 @@
+<%= form_for(@imprint) do |f| %>
+  <% if @imprint.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@imprint.errors.count, "error") %> prohibited this imprint from being saved:</h2>
+
+      <ul>
+      <% @imprint.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :code %><br />
+    <%= f.text_field :code %>
+  </div>
+  <div class="field">
+    <%= f.label :imprintname %><br />
+    <%= f.text_field :imprintname %>
+  </div>
+  <div class="field">
+    <%= f.label :group_id %><br />
+    <%= f.text_field :group_id %>
+  </div>
+  <div class="field">
+    <%= f.label :publishername %><br />
+    <%= f.text_field :publishername %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

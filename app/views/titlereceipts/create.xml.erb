@@ -5,11 +5,5 @@
   <isbn><%= @titlereceipt.isbn %></isbn>
   <box_no><%= @titlereceipt.box_no %></box_no>
   <title><%= title_for_isbn(@titlereceipt.isbn) %></title>
-  <% if @titlereceipt.errors %>
-    <errors>
-      <% @titlereceipt.errors.full_messages.each do |msg| %>
-        <message><%= msg %></message>
-      <% end %>
-    </errors>
-  <% end %>
+  <pending_cnt><%= @pending_cnt %></pending_cnt>
 </titlereceipt>

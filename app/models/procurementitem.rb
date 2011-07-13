@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110617100008
+# Schema version: 20110623145106
 #
 # Table name: procurementitems
 #
@@ -25,6 +25,7 @@
 #  availability     :string(1020)
 #  title_id         :integer(38)
 #  procurement_id   :integer(38)
+#  received_cnt     :integer(38)
 #
 
 class Procurementitem < ActiveRecord::Base
@@ -55,8 +56,8 @@ class Procurementitem < ActiveRecord::Base
         AND (
           enrichedtitles.verified = 'Y'
           AND enrichedtitles.isbn IS NOT NULL
-          AND enrichedtitles.title_id IS NOT NULL
-          AND enrichedtitles.publisher_id IS NOT NULL
+          AND enrichedtitles.title IS NOT NULL
+          AND enrichedtitles.imprint_id IS NOT NULL
           AND enrichedtitles.author IS NOT NULL
           )
         AND procurementitems.po_number IS NULL").
@@ -64,6 +65,11 @@ class Procurementitem < ActiveRecord::Base
     }
   scope :cancelled, where(:status => 'Cancelled')
   scope :deferred, where(:status => 'Deferred')
+  scope :of_publisher_in_items, lambda { |publisher_id, ids|
+      joins(:enrichedtitle => {:imprint => :publisher}).
+      where(:publishers => {:id => publisher_id}).
+      where(:id => ids)
+    }
     
   #Assumptions
   # Branch ID is the same

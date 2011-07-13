@@ -6,16 +6,18 @@ class SupplierdiscountsController < ApplicationController
     filter ||= 'all'
     if filter == 'to_fill'
       #Order by Supplier and Publisher (Group)
-      @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:publisher).order("publishers.group_id").to_fill
+      @supplierdiscounts = Supplierdiscount.includes(:supplier).order("suppliers.name").includes(:publisher).order("publishers.name").to_fill
     elsif filter == 'for_procurement'
       if params[:procurement_id]
         @supplierdiscounts = Supplierdiscount.to_fill_in_procurement(params[:procurement_id])
       else
-        @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:publisher).order("publishers.group_id").to_fill
+        @supplierdiscounts = Supplierdiscount.includes(:supplier).order("suppliers.name").includes(:publisher).order("publishers.name").to_fill
       end
+    elsif filter == 'of_procurement'
+      @supplierdiscounts = Supplierdiscount.of_procurement(params[:procurement_id])
     else
       #Order by Supplier and Publisher (Group)
-      @supplierdiscounts = Supplierdiscount.order("supplier_id").includes(:publisher).order("publishers.group_id").all
+      @supplierdiscounts = Supplierdiscount.includes(:supplier).order("suppliers.name").includes(:publisher).order("publishers.name").all
     end
     
     respond_to do |format|
@@ -97,7 +99,6 @@ class SupplierdiscountsController < ApplicationController
   
   def update_records
     data = params[:data]
-    puts data.to_s
     
     result = true
     data.each {|key, value|

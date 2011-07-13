@@ -2,26 +2,20 @@
 
 <table>
   <tr>
-    <th>Source</th>
-    <th>Description</th>
-    <th>Requests cnt</th>
-    <th>Created by</th>
-    <th>Modified by</th>
-    <th></th>
-    <th></th>
-    <th></th>
+    <th style="width: 40%;">List</th>
+    <th style="width: 10%;">Type</th>
+    <th style="width: 10%;">Requests count</th>
+    <th style="width: 10%;">Created by</th>
+    <th style="width: 10%;">Modified by</th>
   </tr>
 
 <% @procurements.each do |procurement| %>
   <tr>
-    <td><%= procurement.source_id %></td>
+    <td><%= link_to procurement.list.name, procurement %></td>
     <td><%= procurement.description %></td>
     <td><%= procurement.requests_cnt %></td>
-    <td><%= procurement.created_by %></td>
-    <td><%= procurement.modified_by %></td>
-    <td><%= link_to 'Show', procurement %></td>
-    <td><%= link_to 'Edit', edit_procurement_path(procurement) %></td>
-    <td><%= link_to 'Destroy', procurement, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= procurement.created_by_user.username unless procurement.created_by_user.nil? %></td>
+    <td><%= procurement.modified_by_user.username unless procurement.modified_by_user.nil? %></td>
   </tr>
 <% end %>
 </table>
@@ -34,5 +28,6 @@
 <h2>Pull items</h2>
 
 <div id='left-nav' style="width:100%">
-  <span><%= link_to "IBT Requests", pull_procurements_path(:pull => 'ibtrs') %></span>
+  <span><%= link_to "IBT Requests", pull_procurements_path(:pull => 'ibtr') %></span> | 
+  <span><%= link_to "New Arrivals", pull_procurements_path(:pull => 'nent') %></span>
 </div>

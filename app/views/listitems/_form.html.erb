@@ -1,0 +1,73 @@
+<%= form_for(@listitem) do |f| %>
+  <% if @listitem.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@listitem.errors.count, "error") %> prohibited this listitem from being saved:</h2>
+
+      <ul>
+      <% @listitem.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :key %><br />
+    <%= f.text_field :key %>
+  </div>
+  <div class="field">
+    <%= f.label :isbn %><br />
+    <%= f.text_field :isbn %>
+  </div>
+  <div class="field">
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :author %><br />
+    <%= f.text_field :author %>
+  </div>
+  <div class="field">
+    <%= f.label :publisher %><br />
+    <%= f.text_field :publisher %>
+  </div>
+  <div class="field">
+    <%= f.label :publisher_id %><br />
+    <%= f.text_field :publisher_id %>
+  </div>
+  <div class="field">
+    <%= f.label :quantity %><br />
+    <%= f.text_field :quantity %>
+  </div>
+  <div class="field">
+    <%= f.label :listprice %><br />
+    <%= f.text_field :listprice %>
+  </div>
+  <div class="field">
+    <%= f.label :currency %><br />
+    <%= f.text_field :currency %>
+  </div>
+  <div class="field">
+    <%= f.label :category %><br />
+    <%= f.text_field :category %>
+  </div>
+  <div class="field">
+    <%= f.label :subcategory %><br />
+    <%= f.text_field :subcategory %>
+  </div>
+  <div class="field">
+    <%= f.label :branch_id %><br />
+    <%= f.text_field :branch_id %>
+  </div>
+  <div class="field">
+    <%= f.label :created_by %><br />
+    <%= f.text_field :created_by %>
+  </div>
+  <div class="field">
+    <%= f.label :modified_by %><br />
+    <%= f.text_field :modified_by %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

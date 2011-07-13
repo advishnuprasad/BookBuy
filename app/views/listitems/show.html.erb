@@ -1,0 +1,75 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Key:</b>
+  <%= @listitem.key %>
+</p>
+
+<p>
+  <b>Isbn:</b>
+  <%= @listitem.isbn %>
+</p>
+
+<p>
+  <b>Title:</b>
+  <%= @listitem.title %>
+</p>
+
+<p>
+  <b>Author:</b>
+  <%= @listitem.author %>
+</p>
+
+<p>
+  <b>Publisher:</b>
+  <%= @listitem.publisher %>
+</p>
+
+<p>
+  <b>Publisher:</b>
+  <%= @listitem.publisher_id %>
+</p>
+
+<p>
+  <b>Quantity:</b>
+  <%= @listitem.quantity %>
+</p>
+
+<p>
+  <b>Listprice:</b>
+  <%= @listitem.listprice %>
+</p>
+
+<p>
+  <b>Currency:</b>
+  <%= @listitem.currency %>
+</p>
+
+<p>
+  <b>Category:</b>
+  <%= @listitem.category %>
+</p>
+
+<p>
+  <b>Subcategory:</b>
+  <%= @listitem.subcategory %>
+</p>
+
+<p>
+  <b>Branch:</b>
+  <%= @listitem.branch_id %>
+</p>
+
+<p>
+  <b>Created by:</b>
+  <%= @listitem.created_by %>
+</p>
+
+<p>
+  <b>Modified by:</b>
+  <%= @listitem.modified_by %>
+</p>
+
+
+<%= link_to 'Edit', edit_listitem_path(@listitem) %> |
+<%= link_to 'Back', listitems_path %>

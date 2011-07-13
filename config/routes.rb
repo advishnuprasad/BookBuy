@@ -1,7 +1,15 @@
 BookBuy::Application.routes.draw do
 
+  resources :publishers
   resources :regionaltitles
 
+  resources :lists do
+    member do
+      post 'upload'
+      post 'import'
+    end
+  end
+  resources :listitems
   resources :procurementitems
   resources :invoiceitems
   resources :procurements do
@@ -13,22 +21,23 @@ BookBuy::Application.routes.draw do
       get 'close'
     end
   end
-  match  'discrepency' => 'invoices#discrepency', :as => 'discrepency'
   resources :worklists
-  resources :publishers
+  resources :imprints do
+    post 'update_publishers', :on => :collection
+  end
   resources :suppliers
   resources :pos
   resources :invoices do
     get 'regenerate', :on => :member
-    
     collection do
       get 'autocomplete'
       get 'filter_by_invoice_date'
       get 'filter_by_entry_date'
-        
     end
   end
-  resources :bookreceipts
+  resources :bookreceipts do
+    get 'daily_count_of_user', :on => :collection
+  end
   resources :titlereceipts
   resources :crates do
     member do
@@ -43,6 +52,7 @@ BookBuy::Application.routes.draw do
   get "csv/import" , :as => 'import_csv'
   post "csv/import" => 'csv#upload'
   post "csv/save" => 'csv#save', :as =>'item_save'
+  match  'discrepency' => 'invoices#discrepency', :as => 'discrepency'
   
   match 'removeitems' => 'invoiceitems#destroy', :as => 'remove_items'
   
@@ -52,6 +62,7 @@ BookBuy::Application.routes.draw do
   match 'worklist_save_items_with_no_isbn'                  => 'worklists#save_items_with_no_isbn'
   match 'worklist_save_items_with_details_not_enriched'     => 'worklists#save_items_with_details_not_enriched'
   match 'worklist_save_items_with_no_supplier_details'      => 'worklists#save_items_with_no_supplier_details'
+  match 'worklist_save_items_with_no_supplier_details_publisher_wise'      => 'worklists#save_items_with_no_supplier_details_publisher_wise'
   
   match 'bookreceipts/fetch' => 'bookreceipts#fetch', :method => :post
   match 'pos/fetch_by_po_no/:po_no' => 'pos#fetch_by_po_no'

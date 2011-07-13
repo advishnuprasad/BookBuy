@@ -14,7 +14,19 @@ class WorklistsController < ApplicationController
     elsif @worklist.description == "Procurement Items with No ISBN"
       render 'items_with_no_isbn'
     elsif @worklist.description == "Procurement Items with No Supplier Details"
-      render 'items_with_no_supplier_details'
+      if @worklist.procurement.description == 'IBTR'
+        render 'items_with_no_supplier_details'
+      else
+        #Fill Array of Hashes for Publisher and Supplier discount combinations
+        @pubsupps = Array.new      
+        @worklist.workitems.collect {|workitem| workitem.referenceitem.enrichedtitle.imprint.publisher}.uniq.each do |publisher|
+          item_ids = @worklist.workitems.collect {|workitem| workitem.ref_id}
+          suppliers = Procurementitem.of_publisher_in_items(publisher.id, item_ids).collect {|item| item.supplier_id}.uniq
+          supplier_id = suppliers.count == 1 ? suppliers.first : nil
+          @pubsupps.push Hash[:publisher_id => publisher.id, :supplier_id => supplier_id]
+        end
+        render 'items_with_no_supplier_details_publisher_wise'
+      end
     end
   end
   
@@ -111,6 +123,35 @@ class WorklistsController < ApplicationController
     end
   end
   
+  def save_items_with_no_supplier_details_publisher_wise
+    data = params[:data]
+    id = params[:id]
+    
+    worklist = Worklist.find(params[:id])
+    item_ids = worklist.workitems.collect {|workitem| workitem.ref_id}
+    
+    result = true
+    
+    data.each {|key, value|
+      begin
+        item_ids_of_publisher = Procurementitem.of_publisher_in_items(value["id"], item_ids).collect {|item| item.id}
+        Procurementitem.update_all({:supplier_id => value["supplier_id"]}, {:id => item_ids_of_publisher})
+      rescue
+        result = false
+      end
+    }
+    
+    if result == true
+      flash[:success] = "Items have been Successfully Updated!"
+    else
+      flash[:error] = "Items updation failed!"
+    end
+    
+    respond_to do |format|
+      format.js
+    end
+  end
+  
   def save_items_with_details_not_enriched
     data = params[:data]
     id = params[:id]
@@ -125,9 +166,9 @@ class WorklistsController < ApplicationController
       enrichedtitle.verified = value["verified"] unless value["verified"].nil?
       enrichedtitle.price = value["price"] unless value["price"].nil?
       if !value["publisher"].nil?
-        publisher = Publisher.find_by_code(enrichedtitle.publisher.code)
-        publisher.name = value["publisher"]
-        publisher.save
+        imprint = Imprint.find(enrichedtitle.imprint.id)
+        imprint.publisher_id = value["publisher"]
+        imprint.save
       end
       
       procurementitem.cancel_reason = value["cancel_reason"] unless value["cancel_reason"].nil?

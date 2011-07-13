@@ -20,7 +20,7 @@
 </div>
 <%= form_for @invoice do |f| %>
   <p>
-    PO No: <%= f.collection_select(:po_id, Po.pos_for_supplier(@supplier.id), :id, :code, {:include_blank => 'Select PO No.'} ) %>
+    PO No: <%= f.collection_select(:po_id, Po.pos_for_supplier(@supplier.id).order("code"), :id, :code, {:include_blank => 'Select PO No.'} ) %>
   </p>
   <p>
     Invoice No: <%= f.text_field :invoice_no %>

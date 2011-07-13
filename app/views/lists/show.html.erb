@@ -1,0 +1,99 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @list.name %>
+</p>
+
+<p>
+  <b>Kind:</b>
+  <%= @list.kind %>
+</p>
+
+<p>
+  <b>Key:</b>
+  <%= @list.key %>
+</p>
+
+<p>
+  <b>Created by:</b>
+  <%= @list.created_by %>
+</p>
+
+<p>
+  <b>Modified by:</b>
+  <%= @list.modified_by %>
+</p>
+
+<% if @list.list_stagings.count > 0 %>
+  <!-- Items have been staged, and have errors -->
+  <% if @list.listitems.count == 0 and @list.list_stagings.in_error.count > 0 %>
+    <h4> File has <%= pluralize(@list.list_stagings.in_error.count,'error') %>. Correct and upload again. </h4>
+  <% end %>
+  
+  <!-- Items have been staged, and have no errors - Ready to import -->
+  <% if @list.list_stagings.count > 0 and @list.list_stagings.in_error.count == 0 and @list.listitems.count == 0%>
+    <%= form_tag import_list_path, :method => "post" do  -%>
+      <div>
+        <%= pluralize(@list.list_stagings.count,'row') %>
+        <%=  submit_tag "Save details", :disable_with => 'Saving...' %>
+      </div>
+    <% end -%>
+  <% end %>
+  <!-- Items that have been staged or imported -->
+  <% if @list.list_stagings.count > 0 or @list.listitems.count > 0 %>
+    <hr>
+      <table>
+        <tr>
+          <th style="width: 10%;">ISBN</th>
+          <th style="width: 20%;">Title</th>
+          <th style="width: 15%;">Author</th>
+          <th style="width: 10%;">Publisher</th>
+          <th style="width: 3%;">Code</th>
+          <th style="width: 5%;">Qty</th>
+          <th style="width: 5%;">Price</th>
+          <th style="width: 5%;">CCY</th>
+          <th style="width: 5%;">Brn</th>
+        </tr>
+        <% if @list.list_stagings.count > 0 %>
+          <% @list.list_stagings.each do |row| %>
+            <tr <% unless row.error.nil? %> style="color: red;" <% end %> >
+              <td><%= row.isbn %></td>
+              <td><%= row.title %></td>
+              <td><%= row.author %></td>
+              <td><%= row.publisher %></td>
+              <td><%= row.publisher_id %></td>
+              <td><%= row.quantity %></td>
+              <td><%= row.listprice %></td>
+              <td><%= row.currency %></td>
+              <td><%= row.branch_id %></td>
+            </tr>
+          <% end %>
+        <% elsif  @list.listitems.count > 0 %>
+          <% @list.listitems.each do |row| %>
+            <tr>
+              <td><%= row.isbn %></td>
+              <td><%= row.title %></td>
+              <td><%= row.author %></td>
+              <td><%= row.publisher %></td>
+              <td><%= row.publisher_id %></td>
+              <td><%= row.quantity %></td>
+              <td><%= row.listprice %></td>
+              <td><%= row.currency %></td>
+              <td><%= row.branch_id %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </table>
+    <hr>
+  <% end %>
+<% else %>
+  <!-- Items have not yet been staged -->
+  <%= form_for :list, :url => { :action => "upload" }, :html => { :multipart => true } do |f| -%>
+    <%= f.file_field :csv %>
+    <%= f.submit "Preview", :disable_with => 'Uploading...' %>
+  <% end -%>
+<% end %>
+
+<%= link_to 'Edit', edit_list_path(@list) %> |
+<%= link_to 'Back', lists_path %>

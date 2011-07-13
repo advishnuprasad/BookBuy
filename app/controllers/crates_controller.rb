@@ -1,6 +1,6 @@
 class CratesController < ApplicationController
   def index
-    @crates = Crate.paginate(:per_page => 10, :page => params[:page])
+    @crates = Crate.recent.paginate(:per_page => 10, :page => params[:page])
   end
 
   def show
@@ -49,7 +49,7 @@ class CratesController < ApplicationController
     respond_to do |format|
       if @crate
         format.html # show.html.erb
-        format.xml  { render :xml => @crate }
+        format.xml # fetch_by_crate_no.xml.erb
       else
         flash[:error] = "Could not find Crate!"
         format.html { render :index }

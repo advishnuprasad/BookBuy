@@ -2,6 +2,7 @@ BEGIN
   EXPAND_NEWARRIVALS_ITEMS(17);
 END;
 
+select count(*) from corelist where key_id=53
 SELECT count(*) FROM newarrivals_expanded WHERE key_id=14
 SELECT sum(qty) FROM newarrivals_expanded WHERE key_id=14
 SELECT sum(qty) FROM CORELIST WHERE key_id = 19
@@ -38,13 +39,13 @@ BEGIN
 end;
 
 BEGIN
-  REMOVE_DUPS_IN_CL(18);
+  REMOVE_DUPS_IN_CL(53);
 end;
 
 SELECT key_id, count(*) FROM newarrivals_expanded WHERE isbn='9780330545266' GROUP BY key_id
 
 BEGIN
-  DATA_PULL.PR_PULL_CORELIST_ITEMS(19);
+  DATA_PULL.PR_PULL_CORELIST_ITEMS(53);
 END;
 
 BEGIN
@@ -74,6 +75,10 @@ select * from procurementitems where supplier_id not in (select id from supplier
 
 BEGIN
   PULL_SUPPLIER(1312);
+END;
+
+BEGIN
+  PULL_PUBLISHER(4071);
 END;
 
 BEGIN
