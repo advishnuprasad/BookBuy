@@ -1,0 +1,21 @@
+<h1>Listing regionaltitles</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @regionaltitles.each do |regionaltitle| %>
+  <tr>
+    <td><%= link_to 'Show', regionaltitle %></td>
+    <td><%= link_to 'Edit', edit_regionaltitle_path(regionaltitle) %></td>
+    <td><%= link_to 'Destroy', regionaltitle, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Regionaltitle', new_regionaltitle_path %>

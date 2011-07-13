@@ -17,8 +17,8 @@
 #  modified_by     :integer(38)
 #
 
-require 'barby'
-require 'barby/outputter/png_outputter'
+#require 'barby'
+#require 'barby/outputter/png_outputter'
 
 class Invoice < ActiveRecord::Base
   belongs_to :po, :counter_cache => true
@@ -34,8 +34,10 @@ class Invoice < ActiveRecord::Base
   has_many :invoiceitems
   has_many :bookreceipts
 
+	#attr_accessible  :invoiceitems_attributes
+
   before_create :make_uppercase
-  after_create :generate_barcodes
+  #after_create :generate_barcodes
   
   scope :today, lambda { where("created_at >= ? and created_at <= ?",  Time.zone.today.to_time.beginning_of_day, Time.zone.today.to_time.end_of_day) }
   scope :created_on, lambda {|date| 
@@ -61,7 +63,7 @@ class Invoice < ActiveRecord::Base
   end
   
   def regenerate
-    generate_barcodes
+    #generate_barcodes
   end
   
   def self.filter_by_invoice_date(params)
@@ -146,6 +148,7 @@ class Invoice < ActiveRecord::Base
   
   def get_bookreceipts_invoiceitems
       
+    #bookreceipt_invoiceitems = Bookreceipt.joins("join invoiceitems on bookreceipts.invoice_id =  invoiceitems.invoice_id and trim(bookreceipts.isbn) = trim(invoiceitems.isbn)").where('invoiceitems.invoice_id = 10083')
     sql_stmt = "select b.isbn isbn, count(b.isbn) cnt, ii.isbn ii_isbn, ii.quantity quantity, "+
                               " decode( (count(b.isbn) - ii.quantity), 0, 'Same',-1, 'Over',1, 'Under', 'diff') diff" +
                               " from invoiceitems ii, bookreceipts b where ii.invoice_id = b.invoice_id " +
@@ -191,8 +194,8 @@ class Invoice < ActiveRecord::Base
       pofilename = formatted_po_file_name
       invstr = formatted_invoice_name
       
-      pobarcode = Barby::Code128B.new(postr)
-      invbarcode = Barby::Code128B.new(invoice_no)
+      #pobarcode = Barby::Code128B.new(postr)
+      #invbarcode = Barby::Code128B.new(invoice_no)
 
       File.open('public/images/' + pofilename + '.png', 'wb') do |f|
         f.write pobarcode.to_png

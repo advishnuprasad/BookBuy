@@ -1,5 +1,7 @@
 BookBuy::Application.routes.draw do
 
+  resources :regionaltitles
+
   resources :procurementitems
   resources :invoiceitems
   resources :procurements do
