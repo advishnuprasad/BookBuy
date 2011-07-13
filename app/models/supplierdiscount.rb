@@ -32,6 +32,6 @@ class Supplierdiscount < ActiveRecord::Base
   }
   scope :of_procurement, lambda {|procurement_id|
       where(:id => of_procurement_det(procurement_id).collect {|discount| discount.id}.uniq).
-      where(:publisher_id => Procurement.find(procurement_id).pos.collect {|po| po.publisher_id}.uniq)
+      where(:publisher_id => Procurement.find(procurement_id).procurementitems.collect {|item| item.enrichedtitle.imprint.publisher.id}.uniq)
     }
 end
