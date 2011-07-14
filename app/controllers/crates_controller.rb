@@ -74,8 +74,10 @@ class CratesController < ApplicationController
         format.html # show.html.erb
         format.xml # fetch_by_crate_no.xml.erb
       else
-        flash[:error] = "Could not find Crate!"
-        format.html { render :index }
+        format.html {
+          flash[:error] = "Could not find Crate!"
+          render :index 
+        }
         format.xml { render :nothing => true, :status => :not_found }
       end
     end

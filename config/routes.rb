@@ -1,7 +1,5 @@
 BookBuy::Application.routes.draw do
-
-  resources :publishers
-
+  resources :publishers, :only => [:index, :new, :show, :edit]
   resources :lists do
     member do
       post 'upload'

@@ -71,7 +71,10 @@ class SupplierdiscountsController < ApplicationController
 
     respond_to do |format|
       if @supplierdiscount.save
-        format.html { redirect_to(@supplierdiscount, :notice => 'Supplierdiscount was successfully created.') }
+        format.html { 
+          flash[:success] = 'Supplierdiscount was successfully created.'
+          redirect_to(@supplierdiscount) 
+        }
         format.xml  { render :xml => @supplierdiscount, :status => :created, :location => @supplierdiscount }
       else
         format.html { render :action => "new" }
@@ -87,7 +90,10 @@ class SupplierdiscountsController < ApplicationController
 
     respond_to do |format|
       if @supplierdiscount.update_attributes(params[:supplierdiscount])
-        format.html { redirect_to(@supplierdiscount, :notice => 'Supplierdiscount was successfully updated.') }
+        format.html { 
+          flash[:success] = 'Supplierdiscount was successfully updated.'
+          redirect_to(@supplierdiscount) 
+        }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

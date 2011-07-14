@@ -57,7 +57,10 @@ class InvoicesController < ApplicationController
     
     respond_to do |format|
       if @invoice.update_attributes(params[:invoice])
-        format.html { redirect_to(@invoice, :notice => 'Invoice was successfully updated.') }
+        format.html { 
+          flash[:success] = 'Invoice was successfully updated.'
+          redirect_to(@invoice) 
+        }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -75,8 +78,10 @@ class InvoicesController < ApplicationController
         format.html { redirect_to(invoices_url) }
         format.xml  { head :ok }
       else
-        flash[:error] = "Invoice cannot be deleted. Items in it have already been received."
-        format.html { redirect_to(@invoice, :notice => 'Invoice cannot be deleted. Items in it have already been received.') }
+        format.html {
+          flash[:error] = "Invoice cannot be deleted. Items in it have already been received."
+          redirect_to(@invoice)
+        }
         format.xml  { render :xml => @invoice.errors, :status => :unprocessable_entity }
       end
     end
@@ -104,9 +109,11 @@ class InvoicesController < ApplicationController
       unless @invoice.nil?
         format.html # show.html.erb
         format.xml  { render :xml => @invoice, :dasherize => false }
-      else
-        flash[:error] = "Could not find invoice!"
-        format.html { render :index }
+      else        
+        format.html { 
+          flash[:error] = "Could not find invoice!" 
+          render :index 
+        }
         format.xml { render :nothing => true, :status => :not_found }
       end
     end

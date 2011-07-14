@@ -72,7 +72,10 @@ class ImprintsController < ApplicationController
 
     respond_to do |format|
       if @imprint.save
-        format.html { redirect_to(@imprint, :notice => 'Imprint was successfully created.') }
+        format.html { 
+          flash[:success] = 'Imprint was successfully created.'
+          redirect_to(@imprint) 
+        }
         format.xml  { render :xml => @imprint, :status => :created, :location => @imprint }
       else
         format.html { render :action => "new" }
@@ -88,7 +91,10 @@ class ImprintsController < ApplicationController
 
     respond_to do |format|
       if @imprint.update_attributes(params[:imprint])
-        format.html { redirect_to(@imprint, :notice => 'Imprint was successfully updated.') }
+        format.html { 
+          flash[:success] = 'Imprint was successfully updated.'
+          redirect_to(@imprint) 
+        }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

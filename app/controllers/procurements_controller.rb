@@ -56,7 +56,10 @@ class ProcurementsController < ApplicationController
     
     respond_to do |format|
       if @procurement.save
-        format.html { redirect_to(@procurement, :notice => 'Procurement was successfully created.') }
+        format.html {
+          flash[:success] = 'Procurement was successfully created.'
+          redirect_to(@procurement) 
+        }
         format.xml  { render :xml => @procurement, :status => :created, :location => @procurement }
       else
         format.html { render :action => "new" }
@@ -73,7 +76,10 @@ class ProcurementsController < ApplicationController
     
     respond_to do |format|
       if @procurement.update_attributes(params[:procurement])
-        format.html { redirect_to(@procurement, :notice => 'Procurement was successfully updated.') }
+        format.html { 
+          flash[:success] = 'Procurement was successfully updated.'
+          redirect_to(@procurement) 
+        }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -140,7 +146,10 @@ class ProcurementsController < ApplicationController
     
     respond_to do |format|
       if id
-        format.html { redirect_to(@procurement, :notice => 'Procurement was successfully created.') }
+        format.html { 
+          flash[:success] = 'Procurement was successfully created.'
+          redirect_to(@procurement)
+        }
         format.xml  { render :xml => @procurement, :status => :created, :location => @procurement }
       else
         format.html { redirect_to(procurements_url, :notice => 'No pending IBTR Requests!') }
@@ -152,9 +161,12 @@ class ProcurementsController < ApplicationController
   def refresh
     @procurement = Procurement.find(params[:id])
     @procurement.refresh_worklists
-    
+        
     respond_to do |format|
-      format.html { redirect_to(@procurement, :notice => 'Worklists regenerated.') }
+      format.html { 
+        flash[:success] = 'Worklists regenerated.'
+        redirect_to(@procurement)
+      }
       format.xml  { render :xml => @procurement }
     end
   end
@@ -164,7 +176,10 @@ class ProcurementsController < ApplicationController
     cnt = @procurement.generate_pos
     
     respond_to do |format|
-      format.html { redirect_to(@procurement, :notice => cnt.to_s + ' POs generated!') }
+      format.html { 
+        flash[:success] = cnt.to_s + ' POs generated!'
+        redirect_to(@procurement) 
+      }
       format.xml  { render :xml => @procurement }
     end
   end
@@ -187,7 +202,10 @@ class ProcurementsController < ApplicationController
     
     respond_to do |format|
       if @procurement.save
-        format.html { redirect_to(@procurement, :notice => 'Procurement was successfully closed.') }
+        format.html { 
+          flash[:success] = 'Procurement was successfully closed.'
+          redirect_to(@procurement) 
+        }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

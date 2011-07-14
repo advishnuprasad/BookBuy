@@ -2,7 +2,7 @@ class PublishersController < ApplicationController
   # GET /publishers
   # GET /publishers.xml
   def index
-    @publishers = Publisher.all
+    @publishers = Publisher.order("name").all
 
     breadcrumbs.add 'Publishers'
     
@@ -55,7 +55,10 @@ class PublishersController < ApplicationController
 
     respond_to do |format|
       if @publisher.save
-        format.html { redirect_to(@publisher, :notice => 'Publisher was successfully created.') }
+        format.html { 
+          flash[:success] = 'Publisher was successfully created.'
+          redirect_to(@publisher) 
+        }
         format.xml  { render :xml => @publisher, :status => :created, :location => @publisher }
       else
         format.html { render :action => "new" }
@@ -71,7 +74,10 @@ class PublishersController < ApplicationController
 
     respond_to do |format|
       if @publisher.update_attributes(params[:publisher])
-        format.html { redirect_to(@publisher, :notice => 'Publisher was successfully updated.') }
+        format.html { 
+          flash[:success] = 'Publisher was successfully updated.' 
+          redirect_to(@publisher)
+        }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

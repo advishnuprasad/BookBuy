@@ -168,7 +168,8 @@ class WorklistsController < ApplicationController
       procurementitem = Procurementitem.find(value["id"])
       enrichedtitle = procurementitem.enrichedtitle
       enrichedtitle.title = value["title"] unless value["title"].nil?
-      enrichedtitle.author = value["author"] unless value["author"].nil?
+      enrichedtitle.author = value["author"] unless value["author"].nil? or value["author"].blank?
+      enrichedtitle.author ||= 'No Author'
       enrichedtitle.verified = value["verified"] unless value["verified"].nil?
       enrichedtitle.price = value["price"] unless value["price"].nil?
       if !value["publisher"].nil?

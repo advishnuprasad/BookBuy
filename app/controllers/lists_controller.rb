@@ -57,7 +57,10 @@ class ListsController < ApplicationController
     
     respond_to do |format|
       if @list.save
-        format.html { redirect_to(@list, :notice => 'List was successfully created.') }
+        format.html { 
+          flash[:success] = 'List was successfully created.'
+          redirect_to(@list)   
+        }
         format.xml  { render :xml => @list, :status => :created, :location => @list }
       else
         format.html { render :action => "new" }
@@ -73,7 +76,10 @@ class ListsController < ApplicationController
 
     respond_to do |format|
       if @list.update_attributes(params[:list])
-        format.html { redirect_to(@list, :notice => 'List was successfully updated.') }
+        format.html { 
+          flash[:success] = 'List was successfully updated.'
+          redirect_to(@list) 
+        }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
