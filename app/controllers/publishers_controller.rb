@@ -4,6 +4,8 @@ class PublishersController < ApplicationController
   def index
     @publishers = Publisher.all
 
+    breadcrumbs.add 'Publishers'
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @publishers }
@@ -14,6 +16,9 @@ class PublishersController < ApplicationController
   # GET /publishers/1.xml
   def show
     @publisher = Publisher.find(params[:id])
+
+    breadcrumbs.add 'Publishers', publishers_path
+    breadcrumbs.add @publisher.id
 
     respond_to do |format|
       format.html # show.html.erb
@@ -26,6 +31,9 @@ class PublishersController < ApplicationController
   def new
     @publisher = Publisher.new
 
+    breadcrumbs.add 'Publishers', publishers_path
+    breadcrumbs.add 'New'
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @publisher }
@@ -35,6 +43,9 @@ class PublishersController < ApplicationController
   # GET /publishers/1/edit
   def edit
     @publisher = Publisher.find(params[:id])
+    
+    breadcrumbs.add 'Publishers', publishers_path
+    breadcrumbs.add @publisher.id
   end
 
   # POST /publishers

@@ -20,6 +20,8 @@ class SupplierdiscountsController < ApplicationController
       @supplierdiscounts = Supplierdiscount.includes(:supplier).order("suppliers.name").includes(:publisher).order("publishers.name").all
     end
     
+    breadcrumbs.add 'Supplier Discounts'
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @supplierdiscounts }
@@ -30,6 +32,9 @@ class SupplierdiscountsController < ApplicationController
   # GET /supplierdiscounts/1.xml
   def show
     @supplierdiscount = Supplierdiscount.find(params[:id])
+
+    breadcrumbs.add 'Supplier Discounts', supplierdiscounts_path
+    breadcrumbs.add @supplierdiscount.id
 
     respond_to do |format|
       format.html # show.html.erb
@@ -42,6 +47,9 @@ class SupplierdiscountsController < ApplicationController
   def new
     @supplierdiscount = Supplierdiscount.new
 
+    breadcrumbs.add 'Supplier Discounts', supplierdiscounts_path
+    breadcrumbs.add 'New'
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @supplierdiscount }
@@ -51,6 +59,9 @@ class SupplierdiscountsController < ApplicationController
   # GET /supplierdiscounts/1/edit
   def edit
     @supplierdiscount = Supplierdiscount.find(params[:id])
+    
+    breadcrumbs.add 'Supplier Discounts', supplierdiscounts_path
+    breadcrumbs.add @supplierdiscount.id
   end
 
   # POST /supplierdiscounts

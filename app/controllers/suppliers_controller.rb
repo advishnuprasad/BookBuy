@@ -4,6 +4,8 @@ class SuppliersController < ApplicationController
   def index
     @suppliers = Supplier.order("id").all
 
+    breadcrumbs.add 'Suppliers'
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @suppliers }
@@ -14,7 +16,10 @@ class SuppliersController < ApplicationController
   # GET /suppliers/1.xml
   def show
     @supplier = Supplier.find(params[:id])
-
+  
+    breadcrumbs.add 'Suppliers', suppliers_path
+    breadcrumbs.add @supplier.id
+    
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @supplier }
@@ -35,6 +40,9 @@ class SuppliersController < ApplicationController
   # GET /suppliers/1/edit
   def edit
     @supplier = Supplier.find(params[:id])
+    
+    breadcrumbs.add 'Suppliers', suppliers_path
+    breadcrumbs.add @supplier.id
   end
 
   # POST /suppliers

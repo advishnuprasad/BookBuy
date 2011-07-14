@@ -1,14 +1,37 @@
 class CratesController < ApplicationController
   def index
     @crates = Crate.recent.paginate(:per_page => 10, :page => params[:page])
+    
+    breadcrumbs.add 'Crates'
+    
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @crates }
+    end
   end
 
   def show
     @crate = Crate.find(params[:id])
+    
+    breadcrumbs.add 'Crates', crates_path
+    breadcrumbs.add @crate.id
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @crate }
+    end
   end
 
   def new
     @crate = Crate.new
+    
+    breadcrumbs.add 'Crates', crates_path
+    breadcrumbs.add 'New'
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @crate }
+    end
   end
   
   def create

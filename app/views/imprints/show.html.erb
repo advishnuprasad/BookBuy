@@ -7,19 +7,13 @@
 
 <p>
   <b>Imprintname:</b>
-  <%= @imprint.imprintname %>
+  <%= @imprint.name %>
 </p>
 
 <p>
-  <b>Group:</b>
-  <%= @imprint.group_id %>
+  <b>Publisher:</b>
+  <%= @imprint.publisher.name %>
 </p>
-
-<p>
-  <b>Publishername:</b>
-  <%= @imprint.publishername %>
-</p>
-
 
 <%= link_to 'Edit', edit_imprint_path(@imprint) %> |
 <%= link_to 'Back', imprints_path %>

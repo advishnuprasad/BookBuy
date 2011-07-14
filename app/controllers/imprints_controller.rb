@@ -21,6 +21,8 @@ class ImprintsController < ApplicationController
       @imprints = Imprint.order("publisher_id").all.paginate(:per_page => 50, :page => params[:page])
     end
 
+    breadcrumbs.add 'Imprints'
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @imprints }
@@ -32,6 +34,9 @@ class ImprintsController < ApplicationController
   def show
     @imprint = Imprint.find(params[:id])
 
+    breadcrumbs.add 'Imprints', imprints_path
+    breadcrumbs.add @imprint.id
+        
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @imprint }
@@ -42,6 +47,9 @@ class ImprintsController < ApplicationController
   # GET /imprints/new.xml
   def new
     @imprint = Imprint.new
+    
+    breadcrumbs.add 'Imprints', imprints_path
+    breadcrumbs.add 'New'
 
     respond_to do |format|
       format.html # new.html.erb
@@ -52,6 +60,9 @@ class ImprintsController < ApplicationController
   # GET /imprints/1/edit
   def edit
     @imprint = Imprint.find(params[:id])
+    
+    breadcrumbs.add 'Imprints', imprints_path
+    breadcrumbs.add @imprint.id
   end
 
   # POST /imprints
@@ -102,25 +113,27 @@ class ImprintsController < ApplicationController
     data = params[:data]
     
     result = true
-    data.each {|key, value|
-      imprint = Imprint.find(value["id"])
-      
-      if imprint
-        imprint.publisher_id = value["publisher_id"] unless value["publisher_id"].nil?
-        if imprint.changed?
-          unless imprint.save
-            result = false
+    if data.size > 0
+      data.each {|key, value|
+        imprint = Imprint.find(value["id"])
+        
+        if imprint
+          imprint.publisher_id = value["publisher_id"] unless value["publisher_id"].nil?
+          if imprint.changed?
+            unless imprint.save
+              result = false
+            end
           end
+        else
+          result = false
         end
-      else
-        result = false
-      end
-    }
+      }
     
-    if result == true
-      flash[:success] = "Publishers have been Successfully Updated!"
-    else
-      flash[:error] = "Publishers updation failed!"
+      if result == true
+        flash[:success] = "Publishers have been Successfully Updated!"
+      else
+        flash[:error] = "Publishers updation failed!"
+      end
     end
     
     respond_to do |format|

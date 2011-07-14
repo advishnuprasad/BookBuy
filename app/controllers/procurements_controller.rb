@@ -4,6 +4,8 @@ class ProcurementsController < ApplicationController
   def index
     @procurements = Procurement.all
     
+    breadcrumbs.add 'Procurements'
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @procurements }
@@ -14,6 +16,9 @@ class ProcurementsController < ApplicationController
   # GET /procurements/1.xml
   def show
     @procurement = Procurement.find(params[:id])
+    
+    breadcrumbs.add 'Procurements', procurements_path
+    breadcrumbs.add @procurement.id
 
     respond_to do |format|
       format.html # show.html.erb
@@ -26,6 +31,9 @@ class ProcurementsController < ApplicationController
   def new
     @procurement = Procurement.new
 
+    breadcrumbs.add 'Procurements', procurements_path
+    breadcrumbs.add 'New'
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @procurement }
@@ -35,6 +43,9 @@ class ProcurementsController < ApplicationController
   # GET /procurements/1/edit
   def edit
     @procurement = Procurement.find(params[:id])
+    
+    breadcrumbs.add 'Procurements', procurements_path
+    breadcrumbs.add @procurement.id
   end
 
   # POST /procurements

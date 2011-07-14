@@ -5,6 +5,8 @@ class ListsController < ApplicationController
   def index
     @lists = List.order("id DESC").all.paginate(:per_page => 15, :page => params[:page])
 
+    breadcrumbs.add 'Lists'
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @lists }
@@ -15,6 +17,9 @@ class ListsController < ApplicationController
   # GET /lists/1.xml
   def show
     @list = List.find(params[:id])
+
+    breadcrumbs.add 'Lists', lists_path
+    breadcrumbs.add @list.id
 
     respond_to do |format|
       format.html # show.html.erb
@@ -27,6 +32,9 @@ class ListsController < ApplicationController
   def new
     @list = List.new
 
+    breadcrumbs.add 'Lists', lists_path
+    breadcrumbs.add 'New'
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @list }
@@ -36,6 +44,9 @@ class ListsController < ApplicationController
   # GET /lists/1/edit
   def edit
     @list = List.find(params[:id])
+    
+    breadcrumbs.add 'Lists', lists_path
+    breadcrumbs.add @list.id
   end
 
   # POST /lists

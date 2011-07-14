@@ -67,6 +67,10 @@ select {
     width: 125px
 }
 
+.select_publisher_wide {
+    width: 200px
+}
+
 .select_cancel {
     width: 50px
 }

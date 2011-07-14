@@ -45,6 +45,8 @@ GEM
     barby (0.4.2)
     barcode (0.2)
     bcrypt-ruby (2.1.4)
+    breadcrumbs (0.1.6)
+      i18n
     builder (2.1.2)
     columnize (0.3.2)
     devise (1.1.7)
@@ -199,6 +201,7 @@ DEPENDENCIES
   autotest-rails
   barby
   barcode
+  breadcrumbs
   devise (= 1.1.7)
   factory_girl_rails (= 1.0)
   hoe (= 2.8.0)

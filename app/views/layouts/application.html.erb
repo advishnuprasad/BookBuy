@@ -34,6 +34,9 @@
   <% end -%>
 	
 	<div class="clear"></div>
+	
+	<%= breadcrumbs.render(:format => :inline, :separator => ' > ') %>
+		
 	<div id="flash_messages">
     <%= render 'layouts/flash' %>	
   </div>

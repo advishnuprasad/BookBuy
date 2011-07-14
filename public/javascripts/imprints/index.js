@@ -19,7 +19,7 @@ function clearChangedCells() {
     changedCells = {};
 }
 
-$("#items .select_publisher").live("change",function(event) {
+$("#items .select_publisher_wide").live("change",function(event) {
     if($(this).attr('datapub') != this.value) {
         if(changedCells[$(this).attr('dataimpid')]) {
             changedCells[$(this).attr('dataimpid')]["publisher_id"] = this.value;

@@ -2,7 +2,7 @@
   <%= javascript_include_tag 'imprints/index' %>
 <% end %>
 
-<h1>Imprints</h1>
+<h2>Imprints</h2>
 
 <%= link_to 'Back', request.referer %><br/><br/>
 
@@ -26,10 +26,10 @@
   <table id="items">
     <tr>
       <th style="width: 10%;">Code</th>
-      <th style="width: 20%;">Name</th>
-      <th style="width: 40%;">Sample Title</th>
-      <th style="width: 30%;">Publisher</th>
-      <th style="width: 5%;"></th>
+      <th style="width: 10%;">Name</th>
+      <th style="width: 50%;">Sample Title</th>
+      <th style="width: 20%;">Publisher</th>
+      <th style="width: 1%;"></th>
     </tr>
 
   <% @imprints.each do |imprint| %>
@@ -39,7 +39,7 @@
       <td><%= imprint.enrichedtitles.first.isbn + ' --- ' + imprint.enrichedtitles.first.title + ' --- ' + (imprint.enrichedtitles.first.author ||= '') %></td>
       <td><%= select_tag "publisher_id", 
         options_from_collection_for_select(Publisher.order("name").all, :id, :name, imprint.publisher_id), 
-        {:class => 'select_publisher', :dataimpid => imprint.id, 
+        {:class => 'select_publisher_wide', :dataimpid => imprint.id, 
         :datapub => imprint.publisher_id, 
         :value => imprint.publisher_id, :include_blank => true, :width => 30 } %></td>
       <td><%= link_to 'Edit', edit_imprint_path(imprint) %></td>
