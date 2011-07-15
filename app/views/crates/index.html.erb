@@ -9,8 +9,6 @@
           <table style="width: 100%;">
             <tr>
               <td style="width: 15%;"><%= link_to crate.id, crate_path(crate.id) %></td>            
-              <td style="width: 15%;"><%= crate.po_no %></td>
-              <td style="width: 20%;"><%= crate.invoice_no %></td>
               <td style="width: 10%;"><%= crate.total_cnt %></td>
               <td style="width: 10%;"><%= crate.created_at.strftime('%d-%b-%Y') %></td>
             </tr>
