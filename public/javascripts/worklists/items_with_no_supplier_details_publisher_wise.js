@@ -24,7 +24,7 @@ function clearChangedCells() {
     changedCells = {};
 }
 
-$("#items .select_supplier").live("change",function(event) {
+$("#items .select_supplier_wide").live("change",function(event) {
     if($(this).attr('datasupp') != this.value) {
         if(changedCells[$(this).attr('dataid')]) {
             changedCells[$(this).attr('dataid')]["supplier_id"] = this.value;

@@ -63,6 +63,10 @@ select {
     width: 75px
 }
 
+.select_supplier_wide {
+    width: 150px
+}
+
 .select_publisher {
     width: 125px
 }

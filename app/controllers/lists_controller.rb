@@ -143,7 +143,7 @@ class ListsController < ApplicationController
       flash[:error] = "Invoice details already exists or csv has error"  
     else  
       @list.pull_items_from_staging_area(current_user.id)
-      if @list.listitems != @list.list_stagings
+      if @list.listitems.count != @list.list_stagings.count
         flash[:error] = "Failed to save List items"
       end
     end
