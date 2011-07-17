@@ -1,4 +1,6 @@
 BookBuy::Application.routes.draw do
+  
+  resources :currencies
   resources :publishers, :only => [:index, :new, :show, :edit]
   resources :lists do
     member do

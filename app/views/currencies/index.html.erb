@@ -1,0 +1,28 @@
+<h2>Currencies</h2>
+
+<hr>
+<table style="width: 75%;">
+  <tr>
+    <th style="width: 20%;">Name</th>
+    <th style="width: 10%;">Code</th>
+    <th style="width: 10%;">Created by</th>
+    <th style="width: 10%;">Modified by</th>
+    <th style="width: 5%;"></th>
+    <th style="width: 5%;"></th>
+  </tr>
+
+<% @currencies.each do |currency| %>
+  <tr>
+    <td><%= currency.name %></td>
+    <td><%= currency.code %></td>
+    <td><%= currency.created_by_user.username %></td>
+    <td><%= currency.modified_by %></td>
+    <td><%= link_to 'Edit', edit_currency_path(currency) %></td>
+    <td><%= link_to 'Destroy', currency, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<hr>
+<%= link_to 'New Currency', new_currency_path %>
