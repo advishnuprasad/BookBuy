@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Code1:</b>
+  <%= @currencyrate.code1 %>
+</p>
+
+<p>
+  <b>Code2:</b>
+  <%= @currencyrate.code2 %>
+</p>
+
+<p>
+  <b>Rate:</b>
+  <%= @currencyrate.rate %>
+</p>
+
+<p>
+  <b>Effective from:</b>
+  <%= @currencyrate.effective_from %>
+</p>
+
+<p>
+  <b>Created by:</b>
+  <%= @currencyrate.created_by_user.username %>
+</p>
+
+<p>
+  <b>Modified by:</b>
+  <%= @currencyrate.modified_by_user.username unless @currencyrate.modified_by.nil? %>
+</p>
+
+
+<%= link_to 'Edit', edit_currencyrate_path(@currencyrate) %> |
+<%= link_to 'Back', currencyrates_path %>

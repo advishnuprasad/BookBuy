@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110717102531) do
+ActiveRecord::Schema.define(:version => 20110717105125) do
 
   create_table "book_mig_log", :id => false, :force => true do |t|
     t.string    "book_no",    :limit => 20,                                :null => false
@@ -94,6 +94,19 @@ ActiveRecord::Schema.define(:version => 20110717102531) do
     t.string   "code"
     t.integer  "created_by",  :precision => 38, :scale => 0
     t.integer  "modified_by", :precision => 38, :scale => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "currencies", ["code"], :name => "index_currencies_on_code", :unique => true
+
+  create_table "currencyrates", :force => true do |t|
+    t.string   "code1"
+    t.string   "code2"
+    t.decimal  "rate"
+    t.datetime "effective_from"
+    t.integer  "created_by",     :precision => 38, :scale => 0
+    t.integer  "modified_by",    :precision => 38, :scale => 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
