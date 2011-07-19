@@ -19,7 +19,7 @@
       <td><%= currencyrate.code1 %></td>
       <td><%= currencyrate.code2 %></td>
       <td><%= currencyrate.rate %></td>
-      <td><%= currencyrate.effective_from %></td>
+      <td><%= currencyrate.effective_from.strftime('%d-%b-%Y') %></td>
       <td><%= currencyrate.created_by_user.username %></td>
       <td><%= currencyrate.modified_by_user.username unless currencyrate.modified_by_user.nil? %></td>
       <td><%= link_to 'Edit', edit_currencyrate_path(currencyrate) %></td>

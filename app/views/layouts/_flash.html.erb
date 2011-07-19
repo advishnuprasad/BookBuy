@@ -1,13 +1,13 @@
 <% if flash %>
   <% flash.each do |key, value| %>
     <div style="margin-top: 20px; padding: 0pt 0.7em;">
-<p>
-<span style="float: left; margin-right: 0.3em;"></span>
-        <strong><%= content_tag(:div, value, :class => "flash #{key}") %></strong>
-        <% if defined?(flush_flash) and flush_flash == true %>
-<% flash.clear %>
-<% end %>
-      </p>
+    <p>
+      <span style="float: left; margin-right: 0.3em;"></span>
+              <strong><%= content_tag(:div, value, :class => "flash #{key}") %></strong>
+      <% if defined?(flush_flash) and flush_flash == true %>
+        <% flash.clear %>
+      <% end %>
+    </p>
     </div>
   <% end %>
 <% end %>

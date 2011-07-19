@@ -36,7 +36,10 @@
 	<div class="clear"></div>
 	
 	<%= breadcrumbs.render(:format => :inline, :separator => ' > ') %>
-	<hr>	
+	<div id="flash_messages">
+    <%= render 'layouts/flash' %>
+  </div>
+	<hr/>	
 	<section class="round">
     <% flash.each do |key, value| %>
       <div style="margin-top: 20px; padding: 0pt 0.7em;"> 

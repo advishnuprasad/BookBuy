@@ -72,7 +72,8 @@ class CurrenciesController < ApplicationController
   # PUT /currencies/1.xml
   def update
     @currency = Currency.find(params[:id])
-
+    @currency.modified_by = current_user.id
+    
     respond_to do |format|
       if @currency.update_attributes(params[:currency])
         format.html { 

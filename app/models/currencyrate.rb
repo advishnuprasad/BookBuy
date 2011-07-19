@@ -31,6 +31,11 @@ class Currencyrate < ActiveRecord::Base
       {:conditions => ['((code1 = ? and code2 = ?) OR (code1 = ? and code2 = ?)) AND effective_from = ?', 
         code1, code2, code2, code1, effective_from] }
     }
+  scope :get_rate, lambda {|code1, code2, effective_from|
+      {:conditions => ['((code1 = ? and code2 = ?) OR (code1 = ? and code2 = ?)) ' +
+        'AND effective_from = (SELECT MAX(effective_from) FROM currencyrates WHERE effective_from <= ?)', 
+        code1, code2, code2, code1, effective_from] }
+    }
   
   private
     def set_defaults
@@ -40,14 +45,14 @@ class Currencyrate < ActiveRecord::Base
     
     def combination_should_be_unique
       rate = Currencyrate.fetch(code1, code2, effective_from)
-      unless rate.nil?
-        errors.add(:code1, "Rates entry for the mentioned combination and date already exists!");
+      unless rate.size == 0
+        errors.add(:rate, " entry for the mentioned combination and date already exists!");
       end
     end
     
     def code1_and_code2_should_be_different
       if code1 == code2
-        errors.add(:code1, "Code 1 and Code 2 cannot be the same!");
+        errors.add(:code1, " and Code 2 cannot be the same!");
       end
     end
 end

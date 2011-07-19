@@ -8,7 +8,7 @@
   <%= form_tag( { :autocomplete => :off } ) do -%>
     <span style="display: none;" id="worklist-id"><%= @worklist.id %></span>
     <%= link_to_function "Update Items","saveItems(); return false;", :id=>'saveItemsLink' %>
-    <table style="width: 50%">
+    <table id="items" style="width: 50%">
     <tr>
       <th style="width: 25%;">Publisher</th>
       <th style="width: 25%;">Supplier</th>

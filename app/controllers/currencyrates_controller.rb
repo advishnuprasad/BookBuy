@@ -2,7 +2,7 @@ class CurrencyratesController < ApplicationController
   # GET /currencyrates
   # GET /currencyrates.xml
   def index
-    @currencyrates = Currencyrate.all.paginate(:per_page => 15, :page => params[:page])
+    @currencyrates = Currencyrate.order('code1').order('code2').all.paginate(:per_page => 15, :page => params[:page])
 
     breadcrumbs.add 'Currency Rates'
     
@@ -52,7 +52,8 @@ class CurrencyratesController < ApplicationController
   # POST /currencyrates.xml
   def create
     @currencyrate = Currencyrate.new(params[:currencyrate])
-
+    @currencyrate.created_by = current_user.id
+    
     respond_to do |format|
       if @currencyrate.save
         format.html { 
@@ -71,7 +72,8 @@ class CurrencyratesController < ApplicationController
   # PUT /currencyrates/1.xml
   def update
     @currencyrate = Currencyrate.find(params[:id])
-
+    @currencyrate.modified_by = current_user.id
+    
     respond_to do |format|
       if @currencyrate.update_attributes(params[:currencyrate])
         format.html { 
