@@ -1,11 +1,11 @@
 # == Schema Information
-# Schema version: 20110617100008
+# Schema version: 20110410134111
 #
 # Table name: supplierdiscounts
 #
 #  id           :integer(38)     not null, primary key
-#  publisher_id :integer(38)
-#  supplier_id  :integer(38)
+#  publisher_id :integer(38)     not null
+#  supplier_id  :integer(38)     not null
 #  discount     :decimal(, )
 #  created_at   :timestamp(6)
 #  updated_at   :timestamp(6)
@@ -32,6 +32,6 @@ class Supplierdiscount < ActiveRecord::Base
   }
   scope :of_procurement, lambda {|procurement_id|
       where(:id => of_procurement_det(procurement_id).collect {|discount| discount.id}.uniq).
-      where(:publisher_id => Procurement.find(procurement_id).procurementitems.collect {|item| item.enrichedtitle.imprint.publisher.id}.uniq)
+      where(:publisher_id => Procurementitem.to_order_in_procurement(procurement_id).collect {|item| item.enrichedtitle.imprint.publisher.id}.uniq)
     }
 end

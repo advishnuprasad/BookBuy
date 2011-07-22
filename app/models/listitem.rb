@@ -1,17 +1,17 @@
 # == Schema Information
-# Schema version: 20110713050822
+# Schema version: 20110410134111
 #
 # Table name: listitems
 #
 #  id           :integer(38)     not null, primary key
-#  isbn         :string(255)
-#  title        :string(255)
+#  isbn         :string(255)     not null
+#  title        :string(255)     not null
 #  author       :string(255)
-#  publisher    :string(255)
-#  publisher_id :integer(38)
+#  publisher    :string(255)     not null
+#  publisher_id :integer(38)     not null
 #  quantity     :integer(38)
-#  listprice    :decimal(, )
-#  currency     :string(255)
+#  listprice    :decimal(, )     not null
+#  currency     :string(255)     not null
 #  category     :string(255)
 #  subcategory  :string(255)
 #  branch_id    :integer(38)
@@ -21,7 +21,7 @@
 #  updated_at   :timestamp(6)
 #  error        :string(255)
 #  pulled       :string(255)
-#  list_id      :integer(38)
+#  list_id      :integer(38)     not null
 #
 
 class Listitem < ActiveRecord::Base

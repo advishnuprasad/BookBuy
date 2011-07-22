@@ -1,10 +1,10 @@
 # == Schema Information
-# Schema version: 20110707073346
+# Schema version: 20110410134111
 #
 # Table name: imprints
 #
 #  id           :integer(38)     not null, primary key
-#  code         :string(255)
+#  code         :string(255)     not null
 #  name         :string(255)
 #  created_at   :timestamp(6)
 #  updated_at   :timestamp(6)

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110711085056
+# Schema version: 20110410134111
 #
 # Table name: enrichedtitles
 #
@@ -17,8 +17,8 @@
 #  verified    :string(255)
 #  author      :string(255)
 #  isbnvalid   :string(255)
-#  listprice   :decimal(, )
-#  currency    :string(255)
+#  listprice   :decimal(, )     not null
+#  currency    :string(255)     not null
 #  enriched    :string(255)
 #  imprint_id  :integer(38)
 #

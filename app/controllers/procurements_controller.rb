@@ -2,7 +2,7 @@ class ProcurementsController < ApplicationController
   # GET /procurements
   # GET /procurements.xml
   def index
-    @procurements = Procurement.all
+    @procurements = Procurement.order("id DESC").all
     
     breadcrumbs.add 'Procurements'
     

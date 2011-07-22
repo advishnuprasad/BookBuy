@@ -1,11 +1,9 @@
 # == Schema Information
-# Schema version: 20110617100008
+# Schema version: 20110410134111
 #
 # Table name: crates
 #
 #  id          :integer(38)     not null, primary key
-#  po_no       :string(255)
-#  invoice_no  :string(255)
 #  total_cnt   :integer(38)
 #  created_at  :timestamp(6)
 #  updated_at  :timestamp(6)

@@ -1,11 +1,11 @@
 # == Schema Information
-# Schema version: 20110617100008
+# Schema version: 20110410134111
 #
 # Table name: pos
 #
 #  id             :integer(38)     not null, primary key
-#  code           :string(255)
-#  supplier_id    :integer(38)
+#  code           :string(255)     not null
+#  supplier_id    :integer(38)     not null
 #  branch_id      :integer(38)
 #  raised_on      :timestamp(6)
 #  titles_cnt     :integer(38)

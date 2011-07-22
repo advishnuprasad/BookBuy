@@ -4,7 +4,7 @@ class ProcurementitemsController < ApplicationController
   def index
     filter = params[:filter]
     filter ||= 'all'
-    if filter.starts_with("of_procurement")
+    if filter.starts_with?("of_procurement")
       if filter == 'of_procurement_to_order' && params[:procurement_id]
         @procurementitems = Procurementitem.to_order_in_procurement(params[:procurement_id])
       elsif filter == 'of_procurement' && params[:procurement_id]
@@ -55,6 +55,10 @@ class ProcurementitemsController < ApplicationController
   # GET /procurementitems/1/edit
   def edit
     @procurementitem = Procurementitem.find(params[:id])
+    branch_ids = @procurementitem.distributions.collect { |dist| dist.branch_id }
+    Branch.parent_branches.order("id").each do |branch| 
+      @procurementitem.distributions.build(:branch_id => branch.id) unless branch_ids.include?(branch.id)
+    end
   end
 
   # POST /procurementitems
@@ -77,7 +81,6 @@ class ProcurementitemsController < ApplicationController
   # PUT /procurementitems/1.xml
   def update
     @procurementitem = Procurementitem.find(params[:id])
-
     respond_to do |format|
       if @procurementitem.update_attributes(params[:procurementitem])
         format.html { redirect_to(@procurementitem, :notice => 'Procurementitem was successfully updated.') }
