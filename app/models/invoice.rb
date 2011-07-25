@@ -1,24 +1,9 @@
 # == Schema Information
-<<<<<<< HEAD
-# Schema version: 20110614110459
-=======
 # Schema version: 20110630044015
->>>>>>> 295d2549dc7ad1d1583b854141a9b198dee0ec27
 #
 # Table name: invoices
 #
 #  id              :integer(38)     not null, primary key
-<<<<<<< HEAD
-#  invoice_no      :string(255)
-#  po_id           :integer(38)
-#  date_of_receipt :datetime
-#  quantity        :integer(38)
-#  amount          :decimal(, )
-#  created_at      :datetime
-#  updated_at      :datetime
-#  boxes_cnt       :integer(38)
-#  date_of_invoice :datetime
-=======
 #  invoice_no      :string(255)     not null
 #  po_id           :integer(38)     not null
 #  date_of_receipt :timestamp(6)    not null
@@ -28,15 +13,16 @@
 #  updated_at      :timestamp(6)
 #  boxes_cnt       :integer(38)     not null
 #  date_of_invoice :timestamp(6)    not null
->>>>>>> 295d2549dc7ad1d1583b854141a9b198dee0ec27
 #  created_by      :integer(38)
 #  modified_by     :integer(38)
 #
 
-#require 'barby'
-#require 'barby/outputter/png_outputter'
+require 'barby'
+require 'barby/outputter/png_outputter'
 
 class Invoice < ActiveRecord::Base
+
+  
   belongs_to :po, :counter_cache => true
   
   validates :invoice_no,              :presence => true
@@ -46,16 +32,7 @@ class Invoice < ActiveRecord::Base
   validates :quantity,                :presence => true
   validates :amount,                  :presence => true
   validates :boxes_cnt,               :presence => true
-  
-<<<<<<< HEAD
-  has_many :invoiceitems
-  has_many :bookreceipts
-
-	#attr_accessible  :invoiceitems_attributes
-
-  before_create :make_uppercase
-  #after_create :generate_barcodes
-=======
+  validates :has_isbn,                :presence => true  
   validate  :po_val_greater_than_total_invoices_val
   
   has_many :invoiceitems
@@ -63,7 +40,6 @@ class Invoice < ActiveRecord::Base
 
   before_create :clean_invoice_no
   after_create :generate_barcodes
->>>>>>> 295d2549dc7ad1d1583b854141a9b198dee0ec27
   
   scope :today, lambda { where("created_at >= ? and created_at <= ?",  Time.zone.today.to_time.beginning_of_day, Time.zone.today.to_time.end_of_day) }
   scope :created_on, lambda {|date| 
@@ -83,6 +59,12 @@ class Invoice < ActiveRecord::Base
       where('po_id = ? AND invoice_no = ?', po_id, invoice_no)
     }
   
+  def isbn_invoice?
+    has_isbn.eql?('YES')
+  end
+  def nls_invoice?
+    !isbn_invoice?
+  end
   def formatted_po_name
     po.code[0..po.code.index('/',5)-1]
   end
@@ -96,7 +78,7 @@ class Invoice < ActiveRecord::Base
   end
   
   def regenerate
-    #generate_barcodes
+    generate_barcodes
   end
   
   def self.filter_by_invoice_date(params)
@@ -181,10 +163,6 @@ class Invoice < ActiveRecord::Base
   
   def get_bookreceipts_invoiceitems
       
-<<<<<<< HEAD
-    #bookreceipt_invoiceitems = Bookreceipt.joins("join invoiceitems on bookreceipts.invoice_id =  invoiceitems.invoice_id and trim(bookreceipts.isbn) = trim(invoiceitems.isbn)").where('invoiceitems.invoice_id = 10083')
-=======
->>>>>>> 295d2549dc7ad1d1583b854141a9b198dee0ec27
     sql_stmt = "select b.isbn isbn, count(b.isbn) cnt, ii.isbn ii_isbn, ii.quantity quantity, "+
                               " decode( (count(b.isbn) - ii.quantity), 0, 'Same',-1, 'Over',1, 'Under', 'diff') diff" +
                               " from invoiceitems ii, bookreceipts b where ii.invoice_id = b.invoice_id " +
@@ -230,8 +208,8 @@ class Invoice < ActiveRecord::Base
       pofilename = formatted_po_file_name
       invstr = formatted_invoice_name
       
-      #pobarcode = Barby::Code128B.new(postr)
-      #invbarcode = Barby::Code128B.new(invoice_no)
+      pobarcode = Barby::Code128B.new(postr)
+      invbarcode = Barby::Code128B.new(invoice_no)
 
       File.open('public/images/' + pofilename + '.png', 'wb') do |f|
         f.write pobarcode.to_png

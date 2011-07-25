@@ -51,7 +51,7 @@ BookBuy::Application.routes.draw do
   
   get "csv/import" , :as => 'import_csv'
   post "csv/import" => 'csv#upload'
-  post "csv/save" => 'csv#save', :as =>'item_save'
+  post "invoiceitems/save" => 'invoiceitems#save', :as =>'item_save'
   match  'discrepency' => 'invoices#discrepency', :as => 'discrepency'
   
   match 'removeitems' => 'invoiceitems#destroy', :as => 'remove_items'
