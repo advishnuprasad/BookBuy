@@ -24,17 +24,27 @@
 
 class CsvStage < ActiveRecord::Base
   
-  
+  belongs_to :invoice
   before_save :set_error
+  
   def set_error
     error = ""
     if quantity.nil? or quantity.blank? or quantity < 0 or quantity > 1000
       error += 'invalid quantity;'
     end
-    if isbn.include?('+') or isbn.include?('.') or isbn.nil? or isbn.blank?
+    
+    if invoice.isbn_invoice? and  (isbn.nil? or isbn.blank?)
+      error += 'ISBN required;'
+    end
+    if !isbn.nil? and  (isbn.include?('+') or isbn.include?('.'))
       error += 'invalid isbn;'
     end
-    
+    if invoice.nls_invoice? and (nls_title.nil? or nls_title.blank?)
+      error += 'NLS Title required;'
+    end 
+    if invoice.nls_invoice? and (language.nil? or language.blank?)
+      error += 'Language required;'
+    end 
     if currency.nil? or currency.blank?
       error += 'invalid currency;'
     end

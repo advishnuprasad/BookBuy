@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <script type="text/javascript">
   function setPrinterDiv(id){
     document.getElementById(id).style.display = 'block';
@@ -66,73 +65,4 @@
       <% end %>
     <% end %>
   </div>
-=======
-<script type="text/javascript">
-  function setPrinterDiv(id){
-    document.getElementById(id).style.display = 'block';
-
-    $('#barcode').printElement({
-      overrideElementCSS:['print.css', { href:'print.css', media:'print'}],
-      leaveOpen:true,
-      printMode:'popup'
-    });
-}
-</script>
-<p id="notice"><%= notice %></p>
-<div>
-  <h4>    
-    <span><%= link_to 'Edit', edit_invoice_path(@invoice) %> |
-      <%= link_to 'Back', invoices_path %> |
-      <%= link_to "Regenerate Barcodes", regenerate_invoice_path %> |
-      <%= link_to "Load Invoice Details", import_csv_path(:invoice_id => @invoice.id) %> | 
-      <%= link_to "View Invoice Details", invoiceitems_path(:invoice_id=>@invoice.id) %>
-    </span>
-  </h4>
-<div>
-<div class='span-10'>
-  <p>Invoice No.:<%= @invoice.invoice_no %></p>
-  <p>PO No.:<%= @invoice.po.code %></p>
-  <p>Invoice Date:<%= @invoice.date_of_invoice.strftime('%d-%b-%Y') unless @invoice.date_of_invoice.nil?%></p>
-  <p>Quantity:<%= @invoice.quantity %></p>
-  <p>Amount:<%= @invoice.amount %></p>  
-  <p>Date of Receipt:<%= @invoice.date_of_receipt.strftime('%d-%b-%Y') unless @invoice.date_of_receipt.nil?%></p>
-  <p>Boxes:<%= @invoice.boxes_cnt %></p>
-</div>
-<div class='span-10' id='barcode'>
-  <span>PO: <b><%= @invoice.po.code %></b></span>
-  <div>Branch: <b><%= @invoice.po.branch.name %></b></div>
-  <div>Supplier: <b><%= @invoice.po.supplier.name %></b></div>
-  <div><%= image_tag(@invoice.formatted_po_file_name + ".png") %> </div>
-  <p></p>
-  <div>Invoice: <b><%= @invoice.invoice_no %></b></div>
-  <div>No. of Books: <b><%= @invoice.quantity %></b></div>
-  <div>No. of Boxes: <b><%= @invoice.boxes_cnt %></b></div>
-  <div><%= image_tag(@invoice.formatted_invoice_name + ".png") %> </div>
-</div>
-<%= button_to_function 'Print Barcodes', "setPrinterDiv('barcode')" %> 
-
-<div class='span-24'>
-  <div class="span-11">
-    <%= field_set_tag 'Invoice details summary' do %>
-
-      <% if @invoice.invoiceitems.blank? %>
-        <p> Invoice details not loaded </p>
-      <% else %>
-        <p> Total quantity : <%= @invoice.invoiceitems.collect{|x| x.quantity}.sum %> </p>
-        <p> Total Amount : INR <%= @invoice.invoiceitems.collect{|x| x.net_amount}.sum.to_f%> </p>
-        <%= link_to "check for discrepencies", discrepency_path(:id => @invoice.id) %>
-      <% end %>
-    <% end %>
-  </div>
-  <div class="span-11">
-    <%= field_set_tag 'Book receipts summary' do %>
-
-      <% if @invoice.bookreceipts.blank? %>
-        <p> Books not catalogued  </p>
-      <% else %>
-        <p> Total Books : <%= @invoice.bookreceipts.size %> </p>
-      <% end %>
-    <% end %>
-  </div>
->>>>>>> 295d2549dc7ad1d1583b854141a9b198dee0ec27
 </div>

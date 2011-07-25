@@ -51,6 +51,11 @@
       <th>Rate</th>
       <th>Discount</th>
       <th>Net Amount</th>
+      <%if @invoice.nls_invoice? %>
+      <th>NLS Title</th>
+      <th>Language</th>
+      <th>NLS Author</th>
+      <% end %>
       <th>Error</th>
     </tr>
     <% @csvdata.each do |row| %>
@@ -67,6 +72,11 @@
       <td> <%= row.conv_rate  %> </td>
       <td> <%= row.discount %> </td>
       <td> <%= row.net_amount %> </td>
+      <%if @invoice.nls_invoice? %>
+        <td><%= row.nls_title %> </td>
+        <td><%= row.language %> </td>
+        <td><%= row.nls_author %> </td>
+      <% end %>
       <td> <%= row.error %> </td>
       
     </tr>
