@@ -1,11 +1,9 @@
 # == Schema Information
-# Schema version: 20110617100008
+# Schema version: 20110410134111
 #
 # Table name: crates
 #
 #  id          :integer(38)     not null, primary key
-#  po_no       :string(255)
-#  invoice_no  :string(255)
 #  total_cnt   :integer(38)
 #  created_at  :timestamp(6)
 #  updated_at  :timestamp(6)
@@ -22,6 +20,9 @@ class Crate < ActiveRecord::Base
   has_many :boxes
  
   after_create :generate_barcodes
+  
+  belongs_to :created_by_user, :foreign_key => "created_by", :class_name => "User"
+  belongs_to :modified_by_user, :foreign_key => "modified_by", :class_name => "User"
   
   scope :recent, lambda {
     where('created_at >= ?',3.days.ago).

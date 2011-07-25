@@ -1,18 +1,18 @@
 # == Schema Information
-# Schema version: 20110713050822
+# Schema version: 20110410134111
 #
 # Table name: lists
 #
 #  id          :integer(38)     not null, primary key
-#  name        :string(255)
-#  kind        :string(255)
+#  name        :string(255)     not null
+#  kind        :string(255)     not null
 #  key         :integer(38)
 #  pulled      :string(255)
 #  created_by  :integer(38)
 #  modified_by :integer(38)
 #  created_at  :timestamp(6)
 #  updated_at  :timestamp(6)
-#  description :string(1020)
+#  description :string(1020)    not null
 #
 
 class List < ActiveRecord::Base

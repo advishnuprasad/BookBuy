@@ -1,0 +1,37 @@
+<%= form_for(@currencyrate) do |f| %>
+  <% if @currencyrate.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@currencyrate.errors.count, "error") %> prohibited this currencyrate from being saved:</h2>
+
+      <ul>
+      <% @currencyrate.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :code1 %><br />
+    <%= f.select :code1,
+        options_from_collection_for_select(Currency.order("code").all, :code, :code, @currencyrate.code1), 
+        {:class => 'select_currency', :include_blank => true} %>
+  </div>
+  <div class="field">
+    <%= f.label :code2 %><br />
+    <%= f.select :code2,
+        options_from_collection_for_select(Currency.order("code").all, :code, :code, @currencyrate.code2), 
+        {:class => 'select_currency', :include_blank => true} %>
+  </div>
+  <div class="field">
+    <%= f.label :rate %><br />
+    <%= f.text_field :rate, :size => "10" %>
+  </div>
+  <div class="field">
+    <%= f.label :effective_from %><br />
+    <%= f.date_select :effective_from, :order => [:day, :month, :year] %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

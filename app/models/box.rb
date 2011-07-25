@@ -1,12 +1,12 @@
 # == Schema Information
-# Schema version: 20110617100008
+# Schema version: 20110410134111
 #
 # Table name: boxes
 #
 #  id         :integer(38)     not null, primary key
-#  box_no     :integer(38)
-#  po_no      :string(255)
-#  invoice_no :string(255)
+#  box_no     :integer(38)     not null
+#  po_no      :string(255)     not null
+#  invoice_no :string(255)     not null
 #  total_cnt  :integer(38)
 #  created_at :timestamp(6)
 #  updated_at :timestamp(6)

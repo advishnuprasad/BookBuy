@@ -1,4 +1,4 @@
-<h1>Procurementitems</h1>
+<h2>Procurementitems</h2>
 
 <%= link_to 'Back', request.referer %><br/><br/>
 
@@ -9,8 +9,9 @@
     <th style="width: 15%;">Author</th>
     <th style="width: 15%;">Publisher</th>
     <th style="width: 15%;">Supplier</th>
-    <th style="width: 5%;">Qty</th>
+    <th style="width: 3%;">Qty</th>
     <th style="width: 10%;">Branch</th>
+    <th style="width: 5%;"></th>
   </tr>
 
 <% @procurementitems.each do |procurementitem| %>
@@ -22,6 +23,7 @@
     <td><%= procurementitem.supplier.name unless procurementitem.supplier.nil? %></td>
     <td><%= procurementitem.quantity %></td>
     <td><%= procurementitem.branch.name unless procurementitem.branch.nil? %></td>
+    <td><%= link_to 'Distribute', edit_procurementitem_path(procurementitem) %></td>
   </tr>
 <% end %>
 </table>

@@ -11,28 +11,23 @@
 </p>
 
 <p>
-  <b>Author:</b>
-  <%= @procurementitem.author %>
-</p>
-
-<p>
   <b>Publisher:</b>
-  <%= @procurementitem.publisher %>
+  <%= @procurementitem.enrichedtitle.imprint.publisher.name %>
 </p>
 
 <p>
   <b>Supplier:</b>
-  <%= @procurementitem.supplier %>
+  <%= @procurementitem.supplier.name %>
 </p>
 
 <p>
   <b>Qty:</b>
-  <%= @procurementitem.qty %>
+  <%= @procurementitem.quantity %>
 </p>
 
 <p>
   <b>Branch:</b>
-  <%= @procurementitem.branch %>
+  <%= @procurementitem.branch.name %>
 </p>
 
 

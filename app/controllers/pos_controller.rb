@@ -12,6 +12,8 @@ class PosController < ApplicationController
       @pos = Po.paginate(:per_page => 100, :page => params[:page])
     end
     
+    breadcrumbs.add 'POs'
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @procurementitems }
@@ -20,10 +22,21 @@ class PosController < ApplicationController
 
   def show
     @po = Po.find(params[:id])
+    
+    breadcrumbs.add 'POs', pos_path
+    breadcrumbs.add @po.id
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @po }
+    end
   end
 
   def edit
     @po = Po.find(params[:id])
+    
+    breadcrumbs.add 'POs', pos_path
+    breadcrumbs.add @po.id
   end
   
   def update

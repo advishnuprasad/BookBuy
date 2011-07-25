@@ -74,7 +74,7 @@ SELECT COUNT(*) FROM enrichedtitles WHERE nvl(enriched,'N') = 'N'
 select * from procurementitems where supplier_id not in (select id from suppliers)
 
 BEGIN
-  PULL_SUPPLIER(1312);
+  PULL_SUPPLIER(2544);
 END;
 
 BEGIN

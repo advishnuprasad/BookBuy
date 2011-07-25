@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110711085056
+# Schema version: 20110410134111
 #
 # Table name: enrichedtitles
 #
@@ -17,8 +17,8 @@
 #  verified    :string(255)
 #  author      :string(255)
 #  isbnvalid   :string(255)
-#  listprice   :decimal(, )
-#  currency    :string(255)
+#  listprice   :decimal(, )     not null
+#  currency    :string(255)     not null
 #  enriched    :string(255)
 #  imprint_id  :integer(38)
 #
@@ -32,7 +32,24 @@ class Enrichedtitle < ActiveRecord::Base
   belongs_to :jbtitle, :foreign_key => "title_id", :class_name => "Title"
   has_many :procurementitems
   
-  named_scope :unscanned, :conditions => ["isbnvalid IS NULL"]
+  scope :unscanned, where(:isbnvalid => nil)
+  
+  scope :of_procurement, lambda {|procurement_id|
+      joins(:procurementitems).
+      where(:procurementitems => {:procurement_id => procurement_id})
+    }
+    
+  def self.scan_in_procurement(procurement_id)
+    Enrichedtitle.of_procurement(procurement_id).unscanned.limit(1000).each do |title|
+      if title.isbn.nil?
+        title.isbnvalid = 'N'
+        title.save
+      else
+        validate(title.id, title.isbn)
+      end
+    end
+    return nil
+  end
   
   def self.scan
     Enrichedtitle.unscanned.limit(1000).each do |title|

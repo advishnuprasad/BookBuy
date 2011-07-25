@@ -39,6 +39,12 @@ class Procurementitem < ActiveRecord::Base
   belongs_to :branch
   belongs_to :po, :foreign_key => "po_number", :primary_key => "po_number", :class_name => "Po"
   
+  has_many   :distributions
+  has_many   :branches, :through => :distributions, :dependent => :delete_all
+  accepts_nested_attributes_for :distributions, :allow_destroy => :true, :reject_if => lambda { |a| a[:quantity].blank? }
+  
+  #validate :distribution_qty_cnt_is_equal_to_total_qty
+  
   scope :mapped, joins(:enrichedtitle).where("enrichedtitles.title_id IS NOT NULL")
   scope :yet_to_order, where("po_number IS NULL")
   scope :to_be_procured, lambda { |isbn, po_nos|
@@ -48,6 +54,16 @@ class Procurementitem < ActiveRecord::Base
     }
   scope :of_procurement, lambda {|procurement_id|
       where(:procurement_id => procurement_id)
+    }
+  scope :pending_scan, lambda {|procurement_id|
+      of_procurement(procurement_id).
+      joins(:enrichedtitle).
+      where(:enrichedtitles => {:isbnvalid => nil})
+    }
+  scope :invalid_isbns, lambda {|procurement_id|
+      of_procurement(procurement_id).
+      joins(:enrichedtitle).
+      where(:enrichedtitles => {:isbnvalid => 'N'})
     }
   scope :to_order_in_procurement, lambda {|procurement_id|
       joins(:enrichedtitle).
@@ -70,7 +86,13 @@ class Procurementitem < ActiveRecord::Base
       where(:publishers => {:id => publisher_id}).
       where(:id => ids)
     }
-    
+  
+  def distribution_qty_cnt_is_equal_to_total_qty
+    unless distributions.sum(:quantity) <= quantity
+      errors.add(:distributions, " total quantity should not be greater than quantity ordered!")
+    end
+  end
+  
   #Assumptions
   # Branch ID is the same
   def self.generatePOFromWorklist(worklist_id)

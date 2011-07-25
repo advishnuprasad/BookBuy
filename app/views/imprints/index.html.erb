@@ -2,21 +2,23 @@
   <%= javascript_include_tag 'imprints/index' %>
 <% end %>
 
-<h1>Imprints</h1>
+<h2>Imprints</h2>
 
 <%= link_to 'Back', request.referer %><br/><br/>
 
 <!--Options -->
-<div>
-  <table style="width: 10%">
-    <tr>
-      <td><%= link_to "All", imprints_path(:filter => 'all') %></a></td>
-      <td><%= link_to "To Fill", imprints_path(:filter => 'to_fill') %></td>
-    </tr>
-  </table>  
-</div>
+<b> Filter: </b>
+<%= link_to "All", imprints_path(:filter => 'all') %> |
+<%= link_to "To Fill", imprints_path(:filter => 'to_fill') %>
+<% form_for :imprint, :url => imprints_path, :html => {:method => :get} do |f| %>
+  <%= hidden_field_tag 'filter', 'of_publisher'  %>
+  Of Publisher: <%= select_tag :publisher_id, options_from_collection_for_select(Publisher.order("name").all, "id", "name", @publisher_id),
+  { :value => @publisher_id, :onchange => "this.form.submit();"} %>
+<% end %>
 <!--Options -->
 
+<br/><br/>
+<hr>
 <% if @imprints.count > 0 %>
   <%= link_to_function "Update Publishers","saveItems(); return false;", :id=>'saveItemsLink' %>
   <br />
@@ -24,10 +26,10 @@
   <table id="items">
     <tr>
       <th style="width: 10%;">Code</th>
-      <th style="width: 20%;">Name</th>
-      <th style="width: 40%;">Sample Title</th>
-      <th style="width: 30%;">Publisher</th>
-      <th style="width: 5%;"></th>
+      <th style="width: 10%;">Name</th>
+      <th style="width: 50%;">Sample Title</th>
+      <th style="width: 20%;">Publisher</th>
+      <th style="width: 1%;"></th>
     </tr>
 
   <% @imprints.each do |imprint| %>
@@ -37,7 +39,7 @@
       <td><%= imprint.enrichedtitles.first.isbn + ' --- ' + imprint.enrichedtitles.first.title + ' --- ' + (imprint.enrichedtitles.first.author ||= '') %></td>
       <td><%= select_tag "publisher_id", 
         options_from_collection_for_select(Publisher.order("name").all, :id, :name, imprint.publisher_id), 
-        {:class => 'select_publisher', :dataimpid => imprint.id, 
+        {:class => 'select_publisher_wide', :dataimpid => imprint.id, 
         :datapub => imprint.publisher_id, 
         :value => imprint.publisher_id, :include_blank => true, :width => 30 } %></td>
       <td><%= link_to 'Edit', edit_imprint_path(imprint) %></td>
@@ -49,5 +51,5 @@
 <% else %>  
   <p>All Imprints have been mapped to their publishers.</p>
 <% end %>
-
+<hr>
 <%= link_to 'New Imprint', new_imprint_path %>

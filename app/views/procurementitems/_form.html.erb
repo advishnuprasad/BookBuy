@@ -11,35 +11,44 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <!--<div class="field">
     <%= f.label :isbn %><br />
     <%= f.text_field :isbn %>
   </div>
   <div class="field">
-    <%= f.label :title %><br />
-    <%= f.text_field :title %>
-  </div>
-  <div class="field">
-    <%= f.label :author %><br />
-    <%= f.text_field :author %>
-  </div>
-  <div class="field">
-    <%= f.label :publisher %><br />
-    <%= f.text_field :publisher %>
-  </div>
-  <div class="field">
-    <%= f.label :supplier %><br />
-    <%= f.text_field :supplier %>
-  </div>
-  <div class="field">
-    <%= f.label :qty %><br />
-    <%= f.text_field :qty %>
-  </div>
-  <div class="field">
-    <%= f.label :branch %><br />
-    <%= f.text_field :branch %>
-  </div>
-  <div class="actions">
+    <%= f.label :quantity %><br />
+    <%= f.text_field :quantity %>
+  </div>-->
+  
+  <p>
+    <b>Isbn:</b>
+    <%= @procurementitem.isbn %>
+  </p>
+
+  <p>
+    <b>Title:</b>
+    <%= @procurementitem.enrichedtitle.title %>
+  </p>
+
+  <p>
+    <b>Author:</b>
+    <%= @procurementitem.enrichedtitle.author %>
+  </p>
+  
+  <p>
+    <b>Publisher:</b>
+    <%= @procurementitem.enrichedtitle.imprint.publisher.name unless @procurementitem.enrichedtitle.imprint.nil? or @procurementitem.enrichedtitle.imprint.publisher.nil? %>
+  </p>
+  
+  <!-- Distributions -->
+  <table id='distributions_table' class='form' style="width:35%">
+		<tr><th style="width:25%">Branch</th><th style="width:5%">Quantity</th><th style="width:5%">Remove</th></tr>
+		<%= f.fields_for :distributions do |builder| -%>
+			<%= render 'distribution_fields', :f => builder %>
+		<% end -%>
+	</table>
+	
+	<div class="actions">
     <%= f.submit %>
   </div>
 <% end %>

@@ -16,16 +16,14 @@
     <%= f.text_field :code %>
   </div>
   <div class="field">
-    <%= f.label :imprintname %><br />
-    <%= f.text_field :imprintname %>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :group_id %><br />
-    <%= f.text_field :group_id %>
-  </div>
-  <div class="field">
-    <%= f.label :publishername %><br />
-    <%= f.text_field :publishername %>
+    <%= f.label :publisher_id %><br />
+    <%= f.select :publisher_id,
+        options_from_collection_for_select(Publisher.order("name").all, :id, :name, @imprint.publisher_id), 
+        {:class => 'select_publisher_wide', :include_blank => true} %>
   </div>
   <div class="actions">
     <%= f.submit %>

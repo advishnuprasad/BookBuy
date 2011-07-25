@@ -3,10 +3,16 @@ class WorklistsController < ApplicationController
   
   def index
     @worklists = Worklist.paginate(:per_page => 10, :page => params[:page])
+    
+    breadcrumbs.add 'Worklists'
   end
   
   def show
     @worklist = Worklist.find(params[:id])
+    
+    breadcrumbs.add 'Worklists', worklists_path
+    breadcrumbs.add @worklist.id
+
     if @worklist.description == "Procurement Items with Invalid ISBN"
       render 'items_with_invalid_isbn'
     elsif @worklist.description == "Procurement Items with Details Not Verified"
@@ -162,7 +168,8 @@ class WorklistsController < ApplicationController
       procurementitem = Procurementitem.find(value["id"])
       enrichedtitle = procurementitem.enrichedtitle
       enrichedtitle.title = value["title"] unless value["title"].nil?
-      enrichedtitle.author = value["author"] unless value["author"].nil?
+      enrichedtitle.author = value["author"] unless value["author"].nil? or value["author"].blank?
+      enrichedtitle.author ||= 'No Author'
       enrichedtitle.verified = value["verified"] unless value["verified"].nil?
       enrichedtitle.price = value["price"] unless value["price"].nil?
       if !value["publisher"].nil?

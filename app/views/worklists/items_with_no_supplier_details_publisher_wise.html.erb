@@ -8,47 +8,21 @@
   <%= form_tag( { :autocomplete => :off } ) do -%>
     <span style="display: none;" id="worklist-id"><%= @worklist.id %></span>
     <%= link_to_function "Update Items","saveItems(); return false;", :id=>'saveItemsLink' %>
-    <div id="grid">
-      <div id="gridbox" class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
-        <div id="gridview" class="ui-jqgrid-view">
-          <div class="clear"></div>
-          
-          <!--Table Header -->
-          <div id="gridheader" class="ui-state-default ui-jqgrid-hdiv" style="width: 956px;">
-            <div class="ui-jqgrid-hbox" style="width: 956px;">
-              <table class="ui-jqgrid-htable" cellspacing="0" cellpadding="0" border="0" role="grid">
-                <thead>
-                  <tr class="ui-jqgrid-labels" role="rowheader">
-                    <th id="col_Publisher" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 25%;">Publisher</th>
-                    <th id="col_Supplier" class="ui-state-default ui-th-column ui-th-ltr" role="columnheader" style="width: 25%;">Supplier</th>
-                  </tr>
-                </thead>
-              </table>
-            </div>
-            
-            <!--Table body -->
-            <div class="ui-jqgrid-bdiv" style="height: auto; width: 956px;">
-              <div style="position: relative;">
-                <table id="items" class="ui-jqgrid-btable" cellspacing="0" cellpadding="0" border="0" role="grid" style="width: 956px;">
-                  <tbody>
-                    <% @pubsupps.each do |entry| %>
-                      <tr class="ui-widget-content jqgrow ui-row-ltr" role="row">
-                        <td aria-describedby="col_Publisher" role="gridcell" style="width: 25%;"><%= Publisher.find(entry[:publisher_id]).name %></td>
-                        <td aria-describedby="col_Supplier" role="gridcell" style="width: 25%;"><%= select_tag "supplier_id", 
-                                            options_from_collection_for_select(Publisher.find(entry[:publisher_id]).suppliers.map, 
-                                            :id, :name, entry[:supplier_id]), 
-                                            {:class => 'select_supplier', :dataid => entry[:publisher_id], :datasupp => entry[:supplier_id], 
-                                            :value => entry[:supplier_id], :include_blank => true, :width => 5 } %></td>
-                      </tr>
-                    <% end %>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <table id="items" style="width: 50%">
+    <tr>
+      <th style="width: 25%;">Publisher</th>
+      <th style="width: 25%;">Supplier</th>
+    </tr>
+    <% @pubsupps.each do |entry| %>
+      <tr class="ui-widget-content jqgrow ui-row-ltr" role="row">
+        <td aria-describedby="col_Publisher" role="gridcell" style="width: 25%;"><%= Publisher.find(entry[:publisher_id]).name %></td>
+        <td aria-describedby="col_Supplier" role="gridcell" style="width: 25%;"><%= select_tag "supplier_id", 
+                            options_from_collection_for_select(Publisher.find(entry[:publisher_id]).suppliers.map, 
+                            :id, :name, entry[:supplier_id]), 
+                            {:class => 'select_supplier_wide', :dataid => entry[:publisher_id], :datasupp => entry[:supplier_id], 
+                            :value => entry[:supplier_id], :include_blank => true, :width => 5 } %></td>
+      </tr>
+    <% end %>
   <% end -%>
 <% end %>
 

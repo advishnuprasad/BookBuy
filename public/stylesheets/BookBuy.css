@@ -63,8 +63,16 @@ select {
     width: 75px
 }
 
+.select_supplier_wide {
+    width: 150px
+}
+
 .select_publisher {
     width: 125px
+}
+
+.select_publisher_wide {
+    width: 200px
 }
 
 .select_cancel {

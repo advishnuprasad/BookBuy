@@ -1,10 +1,10 @@
 # == Schema Information
-# Schema version: 20110713050822
+# Schema version: 20110410134111
 #
 # Table name: invoiceitems
 #
 #  id             :integer(38)     not null, primary key
-#  invoice_id     :integer(38)
+#  invoice_id     :integer(38)     not null
 #  quantity       :integer(38)
 #  author         :string(255)
 #  title          :string(255)

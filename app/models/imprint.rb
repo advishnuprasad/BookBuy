@@ -1,10 +1,10 @@
 # == Schema Information
-# Schema version: 20110707073346
+# Schema version: 20110410134111
 #
 # Table name: imprints
 #
 #  id           :integer(38)     not null, primary key
-#  code         :string(255)
+#  code         :string(255)     not null
 #  name         :string(255)
 #  created_at   :timestamp(6)
 #  updated_at   :timestamp(6)
@@ -25,6 +25,9 @@ class Imprint < ActiveRecord::Base
     }
   scope :to_fill_in_procurement, lambda {|procurement_id|
       where(:id => to_fill_in_procurement_det(procurement_id).collect {|imprint| imprint.id}.uniq)
+    }
+  scope :of_publisher, lambda { |publisher_id|
+      where(:publisher_id => publisher_id)
     }
     
   def self.get_publisher_name(publisher_id)

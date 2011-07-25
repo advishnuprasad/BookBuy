@@ -1,8 +1,9 @@
 BookBuy::Application.routes.draw do
-
-  resources :publishers
-  resources :regionaltitles
-
+  
+  resources :distributions
+  resources :currencyrates
+  resources :currencies
+  resources :publishers, :only => [:index, :new, :show, :edit]
   resources :lists do
     member do
       post 'upload'
@@ -19,6 +20,7 @@ BookBuy::Application.routes.draw do
       get 'generate_po'
       get 'download'
       get 'close'
+      get 'scan'
     end
   end
   resources :worklists

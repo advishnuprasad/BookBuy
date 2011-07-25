@@ -1,0 +1,15 @@
+<tr>
+	<td>
+	  <%= text_field_tag :branch_name, Branch.find(f.object.branch_id).name, :size => 25, :disabled => true %>
+	  <%= f.hidden_field :branch_id, :value => f.object.branch_id %>
+	</td>
+	<td>
+	  <%= f.text_field :quantity, :size => 5 %>
+	</td>
+	<td>
+	  <% unless f.object.new_record? %>
+      <!-- For existing records we add a checkbox to be able to delete records. -->
+      <%= f.check_box :_destroy %>
+    <% end %>
+  </td>
+</tr>

@@ -1,0 +1,35 @@
+<h1>Currency Rates</h1>
+
+<% if @currencyrates.count > 0 %>
+  <hr>
+  <table>
+    <tr>
+      <th style="width: 20%;">Code1</th>
+      <th style="width: 20%;">Code2</th>
+      <th style="width: 10%;">Rate</th>
+      <th style="width: 10%;">Effective from</th>
+      <th style="width: 10%;">Created by</th>
+      <th style="width: 10%;">Modified by</th>
+      <th style="width: 5%;"></th>
+      <th style="width: 5%;"></th>
+    </tr>
+
+  <% @currencyrates.each do |currencyrate| %>
+    <tr>
+      <td><%= currencyrate.code1 %></td>
+      <td><%= currencyrate.code2 %></td>
+      <td><%= currencyrate.rate %></td>
+      <td><%= currencyrate.effective_from.strftime('%d-%b-%Y') %></td>
+      <td><%= currencyrate.created_by_user.username %></td>
+      <td><%= currencyrate.modified_by_user.username unless currencyrate.modified_by_user.nil? %></td>
+      <td><%= link_to 'Edit', edit_currencyrate_path(currencyrate) %></td>
+      <td><%= link_to 'Destroy', currencyrate, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </table>
+
+  <br />
+  <hr>
+<% end %>
+
+<%= link_to 'New Currency Rate', new_currencyrate_path %>

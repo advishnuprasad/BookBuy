@@ -21,6 +21,11 @@ class Branch < ActiveRecord::Base
   has_many :satellites, :foreign_key => "parent_id", :class_name => "Branch"
   belongs_to :parent, :foreign_key => "parent_id", :class_name => "Branch"
   
+  has_many   :distributions
+  has_many   :procurementitems, :through => :distributions
+  
+  scope :parent_branches, where(:category => 'P')
+  
   def isEventBranch
     if self.category =='T'
       true

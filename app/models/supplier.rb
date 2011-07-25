@@ -1,10 +1,10 @@
 # == Schema Information
-# Schema version: 20110713050822
+# Schema version: 20110410134111
 #
 # Table name: suppliers
 #
 #  id             :integer(38)     not null, primary key
-#  name           :string(100)
+#  name           :string(100)     not null
 #  contact        :string(100)
 #  phone          :string(100)
 #  city           :string(100)
@@ -13,7 +13,7 @@
 #  creditperiod   :integer(38)
 #  created_at     :datetime
 #  updated_at     :datetime
-#  email          :string(255)
+#  email          :string(1020)
 #
 
 class Supplier < ActiveRecord::Base
@@ -31,5 +31,5 @@ class Supplier < ActiveRecord::Base
   validates :phone,               :presence => true
   validates :city,                :presence => true
   
-  validates :email,               :email => true
+  #validates :email,               :email => true
 end

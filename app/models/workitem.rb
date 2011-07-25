@@ -1,10 +1,10 @@
 # == Schema Information
-# Schema version: 20110617100008
+# Schema version: 20110410134111
 #
 # Table name: workitems
 #
 #  id          :integer(38)     not null, primary key
-#  worklist_id :integer(38)
+#  worklist_id :integer(38)     not null
 #  item_type   :string(255)
 #  ref_id      :integer(38)
 #  status      :string(255)

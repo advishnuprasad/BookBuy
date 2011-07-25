@@ -2,8 +2,10 @@ class PublishersController < ApplicationController
   # GET /publishers
   # GET /publishers.xml
   def index
-    @publishers = Publisher.all
+    @publishers = Publisher.order("name").all
 
+    breadcrumbs.add 'Publishers'
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @publishers }
@@ -14,6 +16,9 @@ class PublishersController < ApplicationController
   # GET /publishers/1.xml
   def show
     @publisher = Publisher.find(params[:id])
+
+    breadcrumbs.add 'Publishers', publishers_path
+    breadcrumbs.add @publisher.id
 
     respond_to do |format|
       format.html # show.html.erb
@@ -26,6 +31,9 @@ class PublishersController < ApplicationController
   def new
     @publisher = Publisher.new
 
+    breadcrumbs.add 'Publishers', publishers_path
+    breadcrumbs.add 'New'
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @publisher }
@@ -35,6 +43,9 @@ class PublishersController < ApplicationController
   # GET /publishers/1/edit
   def edit
     @publisher = Publisher.find(params[:id])
+    
+    breadcrumbs.add 'Publishers', publishers_path
+    breadcrumbs.add @publisher.id
   end
 
   # POST /publishers
@@ -44,7 +55,10 @@ class PublishersController < ApplicationController
 
     respond_to do |format|
       if @publisher.save
-        format.html { redirect_to(@publisher, :notice => 'Publisher was successfully created.') }
+        format.html { 
+          flash[:success] = 'Publisher was successfully created.'
+          redirect_to(@publisher) 
+        }
         format.xml  { render :xml => @publisher, :status => :created, :location => @publisher }
       else
         format.html { render :action => "new" }
@@ -60,7 +74,10 @@ class PublishersController < ApplicationController
 
     respond_to do |format|
       if @publisher.update_attributes(params[:publisher])
-        format.html { redirect_to(@publisher, :notice => 'Publisher was successfully updated.') }
+        format.html { 
+          flash[:success] = 'Publisher was successfully updated.' 
+          redirect_to(@publisher)
+        }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

@@ -5,6 +5,8 @@ class ListsController < ApplicationController
   def index
     @lists = List.order("id DESC").all.paginate(:per_page => 15, :page => params[:page])
 
+    breadcrumbs.add 'Lists'
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @lists }
@@ -15,6 +17,9 @@ class ListsController < ApplicationController
   # GET /lists/1.xml
   def show
     @list = List.find(params[:id])
+
+    breadcrumbs.add 'Lists', lists_path
+    breadcrumbs.add @list.id
 
     respond_to do |format|
       format.html # show.html.erb
@@ -27,6 +32,9 @@ class ListsController < ApplicationController
   def new
     @list = List.new
 
+    breadcrumbs.add 'Lists', lists_path
+    breadcrumbs.add 'New'
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @list }
@@ -36,6 +44,9 @@ class ListsController < ApplicationController
   # GET /lists/1/edit
   def edit
     @list = List.find(params[:id])
+    
+    breadcrumbs.add 'Lists', lists_path
+    breadcrumbs.add @list.id
   end
 
   # POST /lists
@@ -46,7 +57,10 @@ class ListsController < ApplicationController
     
     respond_to do |format|
       if @list.save
-        format.html { redirect_to(@list, :notice => 'List was successfully created.') }
+        format.html { 
+          flash[:success] = 'List was successfully created.'
+          redirect_to(@list)   
+        }
         format.xml  { render :xml => @list, :status => :created, :location => @list }
       else
         format.html { render :action => "new" }
@@ -62,7 +76,10 @@ class ListsController < ApplicationController
 
     respond_to do |format|
       if @list.update_attributes(params[:list])
-        format.html { redirect_to(@list, :notice => 'List was successfully updated.') }
+        format.html { 
+          flash[:success] = 'List was successfully updated.'
+          redirect_to(@list) 
+        }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -126,7 +143,7 @@ class ListsController < ApplicationController
       flash[:error] = "Invoice details already exists or csv has error"  
     else  
       @list.pull_items_from_staging_area(current_user.id)
-      if @list.listitems != @list.list_stagings
+      if @list.listitems.count != @list.list_stagings.count
         flash[:error] = "Failed to save List items"
       end
     end
