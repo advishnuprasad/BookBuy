@@ -33,6 +33,7 @@ class Enrichedtitle < ActiveRecord::Base
   has_many :procurementitems
   
   scope :unscanned, where(:isbnvalid => nil)
+  scope :valid, where(:isbnvalid => 'Y')
   
   scope :of_procurement, lambda {|procurement_id|
       joins(:procurementitems).
@@ -69,66 +70,65 @@ class Enrichedtitle < ActiveRecord::Base
       #ISBN validity
       isbn = Isbnutil::Isbn.parse(isbnstr, nil)
       if isbn
-        title.isbn = isbnstr
-        title.isbnvalid = 'Y'
-        
-        #Imprint entry
-        unless isbn.imprint.nil?
-          imp = Imprint.find_by_code(isbn.group + '-' + isbn.imprint)
-          if imp.nil?
-            imp = Imprint.new
-            imp.code = isbn.group + '-' + isbn.imprint
-            imp.save
+        #Check if ISBN already exists and is valid
+        title_isbn13 = Enrichedtitle.valid.find_by_isbn(isbn.asIsbn13.gsub(/-/,''))
+        if title_isbn13
+          #Title record exists
+          #Update procurementitems to old enrichedtitle
+          if title.procurementitems
+            title.procurementitems.each do |item|
+              item.enrichedtitle_id = title_isbn13.id
+              item.isbn = title_isbn13.isbn
+              item.save
+            end
           end
-          title.imprint_id = imp.id
-        end
-        
-        if isbn.isIsbn10
+          
+          #Update ISBN10 in old enrichedtitle if blank
+          title_isbn13.isbn10 = isbn.asIsbn10 if title_isbn13.isbn10.nil?
+          
+          if title_isbn13.changed?
+            title_isbn13.save
+          end
+          
+          #Remove the ISBN10 that was replaced
+          title.destroy
+          return true
+        else
+          #title record does not exist
           title.isbn10 = isbn.asIsbn10.gsub(/-/,'')
           title.isbn = isbn.asIsbn13.gsub(/-/,'')
-            
-          title_isbn13 = Enrichedtitle.find_by_isbn(isbn.asIsbn13.gsub(/-/,''))
-          if title_isbn13
-            #Update procurementitems to old enrichedtitle
-            if title.procurementitems
-              title.procurementitems.each do |item|
-                item.enrichedtitle_id = title_isbn13.id
-                item.isbn = title_isbn13.isbn
-                item.save
-              end
+          title.isbnvalid = 'Y'
+          #Imprint entry
+          unless isbn.imprint.nil?
+            imp = Imprint.find_by_code(isbn.group + '-' + isbn.imprint)
+            if imp.nil?
+              imp = Imprint.new
+              imp.code = isbn.group + '-' + isbn.imprint
+              imp.save
             end
-            
-            #Update ISBN10 in old enrichedtitle if blank
-            title_isbn13.isbn10 = title.isbn10 if title_isbn13.isbn10.nil?
-            if title_isbn13.changed?
-              title_isbn13.save
+            title.imprint_id = imp.id
+          end
+          
+          #Update Items if ISBN was updated to ISBN13
+          if title.procurementitems
+            title.procurementitems.each do |item|
+              item.isbn = title.isbn
+              item.save
             end
-            
-            #Remove the ISBN10 that was replaced
-            title.destroy
-          else
-            #Update Items if ISBN was updated to ISBN13
-            if title.procurementitems
-              title.procurementitems.each do |item|
-                item.isbn = title.isbn
-                item.save
-              end
-            end
+          end
+          
+          if title.save
+            return true
           end
         end
       else
+        #ISBN Invalid
         title.isbnvalid = 'N'
-      end
-      
-      if title.changed?
         if title.save
           return true
-        else
-          puts "Errors - " + title.errors
-          return false
         end
       end
     end
+    return false
   end
-  
 end
