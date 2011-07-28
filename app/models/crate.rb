@@ -11,8 +11,8 @@
 #  modified_by :integer(38)
 #
 
-#require 'barby'
-#require 'barby/outputter/png_outputter'
+require 'barby'
+require 'barby/outputter/png_outputter'
 
 class Crate < ActiveRecord::Base
   CAPACITY    = 100;
@@ -47,10 +47,10 @@ class Crate < ActiveRecord::Base
   private 
 
     def generate_barcodes
-      #cratebarcode = Barby::Code128B.new(id)
+      cratebarcode = Barby::Code128B.new(id)
 
-      #File.open('public/images/' + formatted_crate_file_name + '.png', 'wb') do |f|
-      #  f.write cratebarcode.to_png
-      #end
+      File.open('public/images/' + formatted_crate_file_name + '.png', 'wb') do |f|
+        f.write cratebarcode.to_png
+      end
     end
 end
