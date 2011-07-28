@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110717105125
+# Schema version: 20110728072757
 #
 # Table name: currencyrates
 #
@@ -7,11 +7,11 @@
 #  code1          :string(255)
 #  code2          :string(255)
 #  rate           :decimal(, )
-#  effective_from :datetime
+#  effective_from :timestamp(6)
 #  created_by     :integer(38)
 #  modified_by    :integer(38)
-#  created_at     :datetime
-#  updated_at     :datetime
+#  created_at     :timestamp(6)
+#  updated_at     :timestamp(6)
 #
 
 class Currencyrate < ActiveRecord::Base

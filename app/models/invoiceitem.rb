@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110410134111
+# Schema version: 20110728072757
 #
 # Table name: invoiceitems
 #
@@ -19,6 +19,9 @@
 #  user_id        :integer(38)
 #  created_at     :timestamp(6)
 #  updated_at     :timestamp(6)
+#  nls_title      :string(750)
+#  language       :string(50)
+#  nls_author     :string(750)
 #
 
 class Invoiceitem < ActiveRecord::Base

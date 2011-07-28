@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110719064359) do
+ActiveRecord::Schema.define(:version => 20110728072757) do
 
   create_table "book_mig_log", :id => false, :force => true do |t|
     t.string    "book_no",    :limit => 20,                                :null => false
@@ -71,8 +71,8 @@ ActiveRecord::Schema.define(:version => 20110719064359) do
   end
 
   create_table "csv_stages", :force => true do |t|
-    t.integer   "invoice_id",                  :precision => 38, :scale => 0
-    t.integer   "quantity",                    :precision => 38, :scale => 0
+    t.integer   "invoice_id",                    :precision => 38, :scale => 0
+    t.integer   "quantity",                      :precision => 38, :scale => 0
     t.string    "author"
     t.string    "title"
     t.string    "isbn"
@@ -83,32 +83,35 @@ ActiveRecord::Schema.define(:version => 20110719064359) do
     t.decimal   "conv_rate"
     t.decimal   "discount"
     t.decimal   "net_amount"
-    t.integer   "user_id",                     :precision => 38, :scale => 0
+    t.integer   "user_id",                       :precision => 38, :scale => 0
     t.string    "error"
     t.timestamp "created_at",     :limit => 6
     t.timestamp "updated_at",     :limit => 6
+    t.string    "nls_title",      :limit => 750
+    t.string    "language",       :limit => 50
+    t.string    "nls_author",     :limit => 750
   end
 
   create_table "currencies", :force => true do |t|
-    t.string   "name"
-    t.string   "code"
-    t.integer  "created_by",  :precision => 38, :scale => 0
-    t.integer  "modified_by", :precision => 38, :scale => 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string    "name"
+    t.string    "code"
+    t.integer   "created_by",               :precision => 38, :scale => 0
+    t.integer   "modified_by",              :precision => 38, :scale => 0
+    t.timestamp "created_at",  :limit => 6
+    t.timestamp "updated_at",  :limit => 6
   end
 
   add_index "currencies", ["code"], :name => "index_currencies_on_code", :unique => true
 
   create_table "currencyrates", :force => true do |t|
-    t.string   "code1"
-    t.string   "code2"
-    t.decimal  "rate"
-    t.datetime "effective_from"
-    t.integer  "created_by",     :precision => 38, :scale => 0
-    t.integer  "modified_by",    :precision => 38, :scale => 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string    "code1"
+    t.string    "code2"
+    t.decimal   "rate"
+    t.timestamp "effective_from", :limit => 6
+    t.integer   "created_by",                  :precision => 38, :scale => 0
+    t.integer   "modified_by",                 :precision => 38, :scale => 0
+    t.timestamp "created_at",     :limit => 6
+    t.timestamp "updated_at",     :limit => 6
   end
 
   create_table "distributions", :force => true do |t|
@@ -176,8 +179,8 @@ ActiveRecord::Schema.define(:version => 20110719064359) do
   end
 
   create_table "invoiceitems", :force => true do |t|
-    t.integer   "invoice_id",                  :precision => 38, :scale => 0, :null => false
-    t.integer   "quantity",                    :precision => 38, :scale => 0
+    t.integer   "invoice_id",                    :precision => 38, :scale => 0, :null => false
+    t.integer   "quantity",                      :precision => 38, :scale => 0
     t.string    "author"
     t.string    "title"
     t.string    "isbn"
@@ -188,23 +191,27 @@ ActiveRecord::Schema.define(:version => 20110719064359) do
     t.decimal   "conv_rate"
     t.decimal   "discount"
     t.decimal   "net_amount"
-    t.integer   "user_id",                     :precision => 38, :scale => 0
+    t.integer   "user_id",                       :precision => 38, :scale => 0
     t.timestamp "created_at",     :limit => 6
     t.timestamp "updated_at",     :limit => 6
+    t.string    "nls_title",      :limit => 750
+    t.string    "language",       :limit => 50
+    t.string    "nls_author",     :limit => 750
   end
 
   create_table "invoices", :force => true do |t|
-    t.string    "invoice_no",                                                  :null => false
-    t.integer   "po_id",                        :precision => 38, :scale => 0, :null => false
-    t.timestamp "date_of_receipt", :limit => 6,                                :null => false
-    t.integer   "quantity",                     :precision => 38, :scale => 0, :null => false
-    t.decimal   "amount",                                                      :null => false
+    t.string    "invoice_no",                                                                      :null => false
+    t.integer   "po_id",                         :precision => 38, :scale => 0,                    :null => false
+    t.timestamp "date_of_receipt", :limit => 6,                                                    :null => false
+    t.integer   "quantity",                      :precision => 38, :scale => 0,                    :null => false
+    t.decimal   "amount",                                                                          :null => false
     t.timestamp "created_at",      :limit => 6
     t.timestamp "updated_at",      :limit => 6
-    t.integer   "boxes_cnt",                    :precision => 38, :scale => 0, :null => false
-    t.timestamp "date_of_invoice", :limit => 6,                                :null => false
-    t.integer   "created_by",                   :precision => 38, :scale => 0
-    t.integer   "modified_by",                  :precision => 38, :scale => 0
+    t.integer   "boxes_cnt",                     :precision => 38, :scale => 0,                    :null => false
+    t.timestamp "date_of_invoice", :limit => 6,                                                    :null => false
+    t.integer   "created_by",                    :precision => 38, :scale => 0
+    t.integer   "modified_by",                   :precision => 38, :scale => 0
+    t.string    "has_isbn",        :limit => 20,                                :default => "YES"
   end
 
   add_index "invoices", ["invoice_no", "po_id"], :name => "invoices_unq", :unique => true
@@ -335,7 +342,7 @@ ActiveRecord::Schema.define(:version => 20110719064359) do
     t.integer   "received_cnt",                     :precision => 38, :scale => 0
   end
 
-  add_index "procurementitems", ["po_number", "isbn", "branch_id"], :name => "unq_po_isbn", :unique => true
+  add_index "procurementitems", ["po_number", "isbn", "branch_id", "procurement_id"], :name => "unq_po_isbn", :unique => true
 
   create_table "procurements", :force => true do |t|
     t.integer   "source_id",                 :precision => 38, :scale => 0
@@ -346,6 +353,7 @@ ActiveRecord::Schema.define(:version => 20110719064359) do
     t.timestamp "created_at",   :limit => 6
     t.timestamp "updated_at",   :limit => 6
     t.string    "status"
+    t.string    "kind"
   end
 
   create_table "publishers", :force => true do |t|

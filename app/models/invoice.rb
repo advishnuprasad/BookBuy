@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110630044015
+# Schema version: 20110728072757
 #
 # Table name: invoices
 #
@@ -15,14 +15,13 @@
 #  date_of_invoice :timestamp(6)    not null
 #  created_by      :integer(38)
 #  modified_by     :integer(38)
+#  has_isbn        :string(20)      default("YES")
 #
 
 require 'barby'
 require 'barby/outputter/png_outputter'
 
 class Invoice < ActiveRecord::Base
-
-  
   belongs_to :po, :counter_cache => true
   
   validates :invoice_no,              :presence => true
@@ -62,9 +61,11 @@ class Invoice < ActiveRecord::Base
   def isbn_invoice?
     has_isbn.eql?('YES')
   end
+  
   def nls_invoice?
     !isbn_invoice?
   end
+  
   def formatted_po_name
     po.code[0..po.code.index('/',5)-1]
   end
@@ -162,31 +163,25 @@ class Invoice < ActiveRecord::Base
   end
   
   def get_bookreceipts_invoiceitems
-      
     sql_stmt = "select b.isbn isbn, count(b.isbn) cnt, ii.isbn ii_isbn, ii.quantity quantity, "+
                               " decode( (count(b.isbn) - ii.quantity), 0, 'Same',-1, 'Over',1, 'Under', 'diff') diff" +
                               " from invoiceitems ii, bookreceipts b where ii.invoice_id = b.invoice_id " +
                               " and trim(ii.isbn) = trim(b.isbn) "+
                               " and b.invoice_id= #{self.id.to_s} and ii.invoice_id= #{self.id.to_s} group by b.isbn, ii.isbn, ii.quantity "
     bookreceipt_invoiceitems = Bookreceipt.find_by_sql(sql_stmt)
-
   end
   
   def get_extra_bookreceipts 
-  
     sql_stmt =  "SELECT '' isbn, 0 cnt, ii.isbn ii_isbn, ii.quantity quantity, 'Over' diff" +
                     " FROM invoiceitems ii " +
                     " WHERE (ii.invoice_id , trim(ii.isbn) ) NOT IN "+
                       "(SELECT  invoice_id, trim(isbn) FROM bookreceipts WHERE invoice_id = #{self.id.to_s}) "+
                        " AND invoice_id = #{self.id.to_s} "+ 
-                    " GROUP BY '', 0, ii.isbn, ii.quantity "
-                    
-      bookreceipts = Invoiceitem.find_by_sql(sql_stmt)
-
+                    " GROUP BY '', 0, ii.isbn, ii.quantity "                
+    bookreceipts = Invoiceitem.find_by_sql(sql_stmt)
   end
   
   def get_extra_invoiceitems
-  
     sql_stmt =  "SELECT b.isbn isbn, COUNT(b.isbn) cnt,'' ii_isbn, 0 quantity, 'Under' diff"+
                 " FROM Bookreceipts b  WHERE (b.invoice_id , trim(b.isbn) ) NOT IN "+
                 " (select  invoice_id, trim(isbn) FROM invoiceitems WHERE "+
@@ -195,7 +190,6 @@ class Invoice < ActiveRecord::Base
                 " GROUP BY  b.isbn, '',0 " +
                 " ORDER BY 2 DESC "
     bookreceipts = Bookreceipt.find_by_sql(sql_stmt)
-    
   end
   
   private 
@@ -221,9 +215,21 @@ class Invoice < ActiveRecord::Base
     
     def po_val_greater_than_total_invoices_val
       po_temp = Po.find(po_id)
+      unless id.nil?
+        inv = Invoice.find(id) #Fetch the already saved record if any
+      end
       if po_temp
-        total_util_so_far = po_temp.invoices.collect{|x| x.amount}.sum
-        total_qty_so_far = po_temp.invoices.collect{|x| x.quantity}.sum
+        #Take current invoice value into consideration
+        unless inv.nil?
+          #Existing Invoice entry
+          total_util_so_far = po_temp.invoices.collect{|x| x.amount}.sum - inv.amount
+          total_qty_so_far = po_temp.invoices.collect{|x| x.quantity}.sum - inv.quantity
+        else
+          #New Invoice entry
+          total_util_so_far = po_temp.invoices.collect{|x| x.amount}.sum
+          total_qty_so_far = po_temp.invoices.collect{|x| x.quantity}.sum
+        end
+        
         if total_util_so_far + amount > po_temp.netamt
           errors.add(:amount, " - Total invoices amount exceeds PO value")
         elsif total_qty_so_far + quantity > po_temp.copies_cnt

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110713050822
+# Schema version: 20110728072757
 #
 # Table name: csv_stages
 #
@@ -20,6 +20,9 @@
 #  error          :string(255)
 #  created_at     :timestamp(6)
 #  updated_at     :timestamp(6)
+#  nls_title      :string(750)
+#  language       :string(50)
+#  nls_author     :string(750)
 #
 
 class CsvStage < ActiveRecord::Base
