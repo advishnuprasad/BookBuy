@@ -41,6 +41,10 @@
     Boxes: <%= f.text_field :boxes_cnt %>
   </p>
   <p>
+    Regional Language Invoice?: <%= f.check_box :has_isbn, { },'NO', 'YES' %></td>
+  </p>
+
+  <p>
     <%= f.submit "Create" %>
     <%= f.submit "Cancel" %>
   </p>

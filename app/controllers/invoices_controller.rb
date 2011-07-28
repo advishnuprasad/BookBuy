@@ -20,11 +20,11 @@ class InvoicesController < ApplicationController
   end
 
   def new
-    @invoice = Invoice.new
+    @invoice = Invoice.new(:has_isbn => "YES")
   end
   
   def new_with_supplier
-    @invoice = Invoice.new
+    @invoice = Invoice.new(:has_isbn => "YES")
     @pos = Po.open_pos.find_by_supplier_id(params[:supplier_id])
     @supplier = Supplier.find(params[:supplier_id])
   end

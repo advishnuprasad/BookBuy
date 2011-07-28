@@ -5,7 +5,7 @@ development:
  database: XE
  username: ams
  password: ams
- 
+ encoding: utf8 
 test:
  adapter: oracle_enhanced
  database: XE

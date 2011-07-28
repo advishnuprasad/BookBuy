@@ -21,6 +21,8 @@ require 'barby'
 require 'barby/outputter/png_outputter'
 
 class Invoice < ActiveRecord::Base
+
+  
   belongs_to :po, :counter_cache => true
   
   validates :invoice_no,              :presence => true
@@ -30,7 +32,7 @@ class Invoice < ActiveRecord::Base
   validates :quantity,                :presence => true
   validates :amount,                  :presence => true
   validates :boxes_cnt,               :presence => true
-  
+  validates :has_isbn,                :presence => true  
   validate  :po_val_greater_than_total_invoices_val
   
   has_many :invoiceitems
@@ -57,6 +59,12 @@ class Invoice < ActiveRecord::Base
       where('po_id = ? AND invoice_no = ?', po_id, invoice_no)
     }
   
+  def isbn_invoice?
+    has_isbn.eql?('YES')
+  end
+  def nls_invoice?
+    !isbn_invoice?
+  end
   def formatted_po_name
     po.code[0..po.code.index('/',5)-1]
   end

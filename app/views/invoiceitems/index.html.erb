@@ -29,13 +29,19 @@
       <th class="span-2">Rate</th>
       <th class="span-2">Discount</th>
       <th class="span-2">Net Amount</th>
+      <%if @invoice.nls_invoice? %>
+        <th class="span-2">NLS Title</th>
+        <th class="span-2">Language</th>
+        <th class="span-2">NLS Author</th>
+      <% end %>
+
       
     </tr>
     <% @invoiceitems.each do |row| %>
     <tr>
       <td class="span-3"> <%= row.isbn %> </td>
       <td class="span-2"> <%= row.author %> </td>
-      <td class="span-3"> <%= row.title %> </td>
+      <td > <%= row.title %> </td>
       <td class="span-2"> <%= row.publisher %> </td>
       <td class="span-2"> <%= row.quantity %> </td>
       <td class="span-2"> <%= row.unit_price %> </td>
@@ -44,6 +50,11 @@
       <td class="span-2"> <%= row.conv_rate  %> </td>
       <td class="span-2"> <%= row.discount %> </td>
       <td class="span-2"> <%= row.net_amount %> </td>
+      <%if @invoice.nls_invoice? %>
+        <td class="span-3"><%= row.nls_title %> </td>
+        <td class="span-2"><%= row.language %> </td>
+        <td class="span-2"><%= row.nls_author %> </td>
+      <% end %>
       
     </tr>
     

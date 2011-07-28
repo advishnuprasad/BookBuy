@@ -25,7 +25,9 @@ class Invoiceitem < ActiveRecord::Base
 
   belongs_to :invoice
   
-  validates :isbn, :presence => true
+  validate :isbn_required
+  validate :nls_title_required
+  validate :language_required
   validates :quantity, :presence => true
   validates :invoice_id, :presence => true
   validates :currency, :presence => true
@@ -37,6 +39,15 @@ class Invoiceitem < ActiveRecord::Base
   validates :net_amount, :presence => true
   before_validation :set_data, :on => :create
   
+  def isbn_required
+    self.invoice.isbn_invoice? and (self.isbn.blank? or self.isbn.nil?)
+  end
+  def nls_title_required
+    self.invoice.nls_invoice? and (self.nls_title.blank? or self.nls_title.nil? )
+  end
+  def language_required
+    self.invoice.nls_invoice? and (self.language.blank? or self.language.nil? )
+  end
   def set_data
     if (self.currency.upcase.eql?('INR') and (self.conv_rate.nil? or self.conv_rate.blank? ))
       self.conv_rate = 1
@@ -61,5 +72,8 @@ class Invoiceitem < ActiveRecord::Base
     self.discount = csv.discount
     self.net_amount = csv.net_amount
     self.user_id = user_id
+    self.nls_title = csv.nls_title
+    self.language = csv.language
+    self.nls_author = csv.author
   end
 end
