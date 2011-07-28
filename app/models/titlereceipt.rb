@@ -22,6 +22,7 @@ class Titlereceipt < ActiveRecord::Base
   after_validation              :check_for_errors
   before_create                 :upsert_box_total_cnt
   after_create                  :update_procurement_item_cnt
+  after_initialize              :set_defaults
   
   scope :valid, where("error is NULL")
   scope :of_po_and_isbn, lambda { |po_no, isbn|
@@ -52,9 +53,9 @@ class Titlereceipt < ActiveRecord::Base
   validate :invoice_no_should_exist
   validate :isbn_should_be_part_of_po
   
-  validate_on_create :excess_quantity
+  validate :excess_quantity,    :on => :create
   
-  def after_initialize
+  def set_defaults
     @error_messages = Hash.new
   end
   

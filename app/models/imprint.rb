@@ -12,11 +12,10 @@
 #
 
 class Imprint < ActiveRecord::Base
-  named_scope :with_names, :conditions => ["publishername IS NOT NULL"]
-  
   belongs_to :publisher
   has_many :enrichedtitles
   
+  scope :with_names, where("publishername IS NOT NULL")
   scope :to_fill, where("publisher_id is NULL")
   scope :to_fill_in_procurement_det, lambda {|procurement_id|
       joins(:enrichedtitles => :procurementitems).

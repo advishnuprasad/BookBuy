@@ -35,7 +35,7 @@ class Invoiceitem < ActiveRecord::Base
   validates :conv_rate, :presence => true
   validates :discount, :presence => true
   validates :net_amount, :presence => true
-  before_validation_on_create  :set_data
+  before_validation :set_data, :on => :create
   
   def set_data
     if (self.currency.upcase.eql?('INR') and (self.conv_rate.nil? or self.conv_rate.blank? ))

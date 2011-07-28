@@ -25,7 +25,7 @@ class Currencyrate < ActiveRecord::Base
   
   before_save :set_defaults
   
-  validate_on_create :combination_should_be_unique, :code1_and_code2_should_be_different
+  validate :combination_should_be_unique, :code1_and_code2_should_be_different, :on => :create
   
   scope :fetch, lambda {|code1, code2, effective_from|
       {:conditions => ['((code1 = ? and code2 = ?) OR (code1 = ? and code2 = ?)) AND effective_from = ?', 
