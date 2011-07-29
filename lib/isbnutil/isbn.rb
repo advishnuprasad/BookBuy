@@ -70,46 +70,57 @@ module Isbnutil
     
     private
       def _parse(isbn, groups)
+        @isValid = false
         if (isbn =~ /^\d{9}[\dX]$/) != nil
           @source = isbn
-          @isValid = true
-          @isIsbn10 = true
-          @isIsbn13 = false
           details = _split(isbn, groups)
-          @group = details["group"]
-          @imprint = details["imprint"]
-          @article = details["article"]
-          @check = details["check"]
+          unless details.nil?
+            @isValid = true
+            @isIsbn10 = true
+            @isIsbn13 = false
+            @group = details["group"]
+            @imprint = details["imprint"]
+            @article = details["article"]
+            @check = details["check"]
+          end
         elsif isbn.length==13 && (isbn =~ /^(\d+)-(\d+)-(\d+)-([\dX])$/) != nil
           @source = isbn
-          @isValid = true
-          @isIsbn10 = true
-          @isIsbn13 = false
-          @group = $1
-          @imprint = $2
-          @article = $3
-          @check = $4
+          details = _split(isbn, groups)
+          unless details.nil?
+            @isValid = true
+            @isIsbn10 = true
+            @isIsbn13 = false
+            @group = $1
+            @imprint = $2
+            @article = $3
+            @check = $4
+          end
         elsif (isbn =~ /^(978|979)(\d{9}[\dX]$)/) != nil
           @source = isbn
-          @isValid = true
-          @isIsbn10 = false
-          @isIsbn13 = true
-          @prefix = $1
           details = _split($2, groups)
-          @group = details["group"]
-          @imprint = details["imprint"]
-          @article = details["article"]
-          @check = details["check"]
+          unless details.nil?
+            @isValid = true
+            @isIsbn10 = false
+            @isIsbn13 = true
+            @prefix = $1
+            @group = details["group"]
+            @imprint = details["imprint"]
+            @article = details["article"]
+            @check = details["check"]
+          end
         elsif isbn.length==17 && (isbn =~ /^(978|979)-(\d+)-(\d+)-(\d+)-([\dX])$/) != nil
           @source = isbn
-          @isValid = true
-          @isIsbn10 = false
-          @isIsbn13 = true
-          @prefix = $1
-          @group = $2
-          @imprint = $3
-          @article = $4
-          @check = $5
+          details = _split(isbn, groups)
+          unless details.nil?
+            @isValid = true
+            @isIsbn10 = false
+            @isIsbn13 = true
+            @prefix = $1
+            @group = $2
+            @imprint = $3
+            @article = $4
+            @check = $5
+          end
         end
         
         #Check if Check Digit is correct
@@ -134,11 +145,9 @@ module Isbnutil
       
       def splitToArray(isbn, groups)
         detail = _getGroupRecord(isbn, groups)
-
         if detail.nil?
           return nil
         end
-        
         IsbnGroups[detail["record"]]["ranges"].each do |range|
           key = detail["rest"][0..range[0].length-1]
           if(range[0] <= key && range[1] >= key)
@@ -165,6 +174,7 @@ module Isbnutil
             return {"group" => group, "record" => groups[groups.find_index(group)], "rest" => $1}
           end
         end
+        return nil
       end
       
       def _calcCheckDigit(isbn)

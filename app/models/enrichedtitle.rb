@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110410134111
+# Schema version: 20110728130354
 #
 # Table name: enrichedtitles
 #
@@ -21,6 +21,9 @@
 #  currency    :string(255)     not null
 #  enriched    :string(255)
 #  imprint_id  :integer(38)
+#  category1   :string(255)
+#  category2   :string(255)
+#  category3   :string(255)
 #
 
 require 'isbnutil/isbn.rb'

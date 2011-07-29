@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110728072757) do
+ActiveRecord::Schema.define(:version => 20110728131153) do
 
   create_table "book_mig_log", :id => false, :force => true do |t|
     t.string    "book_no",    :limit => 20,                                :null => false
@@ -144,6 +144,9 @@ ActiveRecord::Schema.define(:version => 20110728072757) do
     t.string    "currency"
     t.string    "enriched"
     t.integer   "imprint_id",                    :precision => 38, :scale => 0
+    t.string    "category1"
+    t.string    "category2"
+    t.string    "category3"
   end
 
   add_index "enrichedtitle_versions", ["enrichedtitle_id"], :name => "i_enr_ver_enr_id"
@@ -166,6 +169,9 @@ ActiveRecord::Schema.define(:version => 20110728072757) do
     t.string    "currency",                                                :null => false
     t.string    "enriched"
     t.integer   "imprint_id",               :precision => 38, :scale => 0
+    t.string    "category1"
+    t.string    "category2"
+    t.string    "category3"
   end
 
   add_index "enrichedtitles", ["isbn"], :name => "enrichedtitles_isbn", :unique => true
