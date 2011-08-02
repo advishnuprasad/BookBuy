@@ -171,7 +171,8 @@ class WorklistsController < ApplicationController
       enrichedtitle.author = value["author"] unless value["author"].nil? or value["author"].blank?
       enrichedtitle.author ||= 'No Author'
       enrichedtitle.verified = value["verified"] unless value["verified"].nil?
-      enrichedtitle.price = value["price"] unless value["price"].nil?
+      enrichedtitle.listprice = value["price"] unless value["price"].nil?
+      enrichedtitle.currency = value["currency"] unless value["currency"].nil?
       if !value["publisher"].nil?
         imprint = Imprint.find(enrichedtitle.imprint.id)
         imprint.publisher_id = value["publisher"]

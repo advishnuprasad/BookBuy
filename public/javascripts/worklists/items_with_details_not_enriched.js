@@ -105,6 +105,22 @@ $("#items .input_price").live("change",function(event) {
             delete changedCells[$(this).attr('dataid')]["price"];
 });
 
+$("#items .input_currency").live("change",function(event) {
+    if($(this).attr('datacurrency') != this.value) {
+        if(changedCells[$(this).attr('dataid')]) {
+            changedCells[$(this).attr('dataid')]["currency"] = this.value;
+        }
+        else {
+            changedCells[$(this).attr('dataid')] = {}
+            changedCells[$(this).attr('dataid')]["id"] = $(this).attr('dataid');
+            changedCells[$(this).attr('dataid')]["currency"] = this.value;
+        }
+    }
+    else
+        if(changedCells[$(this).attr('dataid')])
+            delete changedCells[$(this).attr('dataid')]["currency"];
+});
+
 $("#items .select_cancel").live("change",function(event) {
     if($(this).attr('datacancel') != this.value) {
         if(changedCells[$(this).attr('datacancelid')]) {
