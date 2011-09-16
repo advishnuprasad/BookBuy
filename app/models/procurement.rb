@@ -26,6 +26,10 @@ class Procurement < ActiveRecord::Base
   belongs_to :created_by_user, :foreign_key => "created_by", :class_name => "User"
   belongs_to :modified_by_user, :foreign_key => "modified_by", :class_name => "User"
   
+  validates :description,             :presence => true
+  validates :kind,                    :presence => true
+  validates :status,                  :presence => true
+  
   def refresh_worklists
     if description == 'IBTR'
       plsql.worklist_generator.regenerate_ibtr_wl(id)

@@ -35,6 +35,12 @@ class Enrichedtitle < ActiveRecord::Base
   belongs_to :jbtitle, :foreign_key => "title_id", :class_name => "Title"
   has_many :procurementitems
   
+  validates :title,                  :presence => true
+  validates :isbn,                   :presence => true
+  validates :author,                 :presence => true
+  validates :listprice,              :presence => true
+  validates :currency,               :presence => true
+  
   scope :unscanned, where(:isbnvalid => nil)
   scope :valid, where(:isbnvalid => 'Y')
   

@@ -36,7 +36,7 @@ class ListStaging < ActiveRecord::Base
         error += 'invalid quantity;'
       end
       
-      if isbn.include?('+') or isbn.include?('.') or isbn.nil? or isbn.blank?
+      if isbn.nil? or isbn.blank? or isbn.include?('+') or isbn.include?('.')
         error += 'invalid isbn;'
       end
       

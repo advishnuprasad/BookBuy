@@ -37,7 +37,10 @@ class Procurementitem < ActiveRecord::Base
   belongs_to :procurement
   belongs_to :title
   belongs_to :branch
+  belongs_to :listitem, :foreign_key => "source_id", :class_name => "Listitem"
   belongs_to :po, :foreign_key => "po_number", :primary_key => "po_number", :class_name => "Po"
+  
+  validates :isbn,             :presence => true
   
   has_many   :distributions
   has_many   :branches, :through => :distributions, :dependent => :delete_all

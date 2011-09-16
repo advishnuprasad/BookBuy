@@ -35,4 +35,15 @@ class Listitem < ActiveRecord::Base
   validates :quantity, :presence => true
   validates :listprice, :presence => true
   validates :currency, :presence => true
+  
+  validate :list_is_valid_and_present
+  
+  private
+    def list_is_valid_and_present
+      begin
+        list = List.find(list_id)
+      rescue ActiveRecord::RecordNotFound
+        errors.add(:list_id, " does not exist!")
+      end
+    end
 end
