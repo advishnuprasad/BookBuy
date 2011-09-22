@@ -52,7 +52,7 @@ class ListStaging < ActiveRecord::Base
         end
       end
       
-      if publisher.include?('+') or publisher.nil? or publisher.blank?
+      if publisher.nil? or publisher.blank? or publisher.include?('+')
         error += 'invalid publisher;'
       end
       

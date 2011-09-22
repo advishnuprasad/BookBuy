@@ -103,43 +103,51 @@ class ProcurementsController < ApplicationController
   def pull
     unless params[:pull].nil?
       if params[:pull] == 'ibtr'
-        cnt = Procurement.pending_ibtr_items_exist
-        
-        if cnt > 0
-          id = Procurement.pull_ibtr_items
-          @procurement = Procurement.find(id)
+        ActiveRecord::Base.transaction do          
+          cnt = Procurement.pending_ibtr_items_exist
           
-          @procurement.created_by = current_user.id
-          @procurement.save
-        else
-          flash[:success] = "No pending IBTR Requests!"
+          if cnt > 0
+            id = Procurement.pull_ibtr_items
+            @procurement = Procurement.find(id)
+            
+            @procurement.created_by = current_user.id
+            @procurement.save
+          else
+            flash[:success] = "No pending IBTR Requests!"
+          end
         end
       elsif params[:pull] == 'nent'
-        List.yet_to_pull.of_kind('NENT').each do |list|
-          id = Procurement.pull_nent_items(list.id)
-          
-          @procurement = Procurement.find(id)
-          
-          @procurement.created_by = current_user.id
-          @procurement.save
+        ActiveRecord::Base.transaction do
+          List.yet_to_pull.of_kind('NENT').each do |list|
+            id = Procurement.pull_nent_items(list.id)
+            
+            @procurement = Procurement.find(id)
+            
+            @procurement.created_by = current_user.id
+            @procurement.save
+          end
         end
       elsif params[:pull] == 'nstr'
-        List.yet_to_pull.of_kind('NSTR').each do |list|
-          id = Procurement.pull_nstr_items(list.id)
-          
-          @procurement = Procurement.find(id)
-          
-          @procurement.created_by = current_user.id
-          @procurement.save
+        ActiveRecord::Base.transaction do
+          List.yet_to_pull.of_kind('NSTR').each do |list|
+            id = Procurement.pull_nstr_items(list.id)
+            
+            @procurement = Procurement.find(id)
+            
+            @procurement.created_by = current_user.id
+            @procurement.save
+          end
         end
       elsif params[:pull] == 'whse'
-        List.yet_to_pull.of_kind('WHSE').each do |list|
-          id = Procurement.pull_whse_items(list.id)
-          
-          @procurement = Procurement.find(id)
-          
-          @procurement.created_by = current_user.id
-          @procurement.save
+        ActiveRecord::Base.transaction do
+          List.yet_to_pull.of_kind('WHSE').each do |list|
+            id = Procurement.pull_whse_items(list.id)
+            
+            @procurement = Procurement.find(id)
+            
+            @procurement.created_by = current_user.id
+            @procurement.save
+          end
         end
       end
     end
@@ -152,7 +160,7 @@ class ProcurementsController < ApplicationController
         }
         format.xml  { render :xml => @procurement, :status => :created, :location => @procurement }
       else
-        format.html { redirect_to(procurements_url, :notice => 'No pending IBTR Requests!') }
+        format.html { redirect_to(procurements_url, :notice => 'No pending Requests!') }
         format.xml  { head :ok }
       end
     end

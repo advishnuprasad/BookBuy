@@ -25,7 +25,6 @@ class List < ActiveRecord::Base
   validates :description,       :presence => true
   
   before_create :generate_key
-  before_create :set_defaults
   
   scope :yet_to_pull, where(:pulled => 'N')
   scope :of_kind, lambda { |kind|
@@ -53,14 +52,13 @@ class List < ActiveRecord::Base
       
       listitem.save
     end
+    
+    self.pulled = 'N'
+    self.save
   end
   
   private
     def generate_key
       self.key = (Time.now.to_f*1000).round
-    end
-    
-    def set_defaults
-      self.pulled = 'N'
     end
 end
