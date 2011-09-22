@@ -102,6 +102,7 @@ class Procurement < ActiveRecord::Base
     procurement = Procurement.new
     procurement.source_id = 1
     procurement.description = 'IBTR'
+    procurement.kind = 'IBTR'
     procurement.status = 'Open'
     #TODO - Fill Requests Count
     if procurement.save
@@ -126,6 +127,7 @@ class Procurement < ActiveRecord::Base
     procurement = Procurement.new
     procurement.source_id = list_id
     procurement.description = 'NENT'
+    procurement.kind = 'NENT'
     procurement.status = 'Open'
     if procurement.save
       #Pull Items
@@ -149,6 +151,7 @@ class Procurement < ActiveRecord::Base
     procurement = Procurement.new
     procurement.source_id = list_id
     procurement.description = 'NSTR'
+    procurement.kind = 'NSTR'
     procurement.status = 'Open'
     if procurement.save
       #Pull Items
@@ -172,6 +175,7 @@ class Procurement < ActiveRecord::Base
     procurement = Procurement.new
     procurement.source_id = list_id
     procurement.description = 'WHSE'
+    procurement.kind = 'WHSE'
     procurement.status = 'Open'
     if procurement.save
       #Pull Items

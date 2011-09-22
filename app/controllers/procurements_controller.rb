@@ -153,7 +153,7 @@ class ProcurementsController < ApplicationController
     end
     
     respond_to do |format|
-      if id
+      if @procurement
         format.html { 
           flash[:success] = 'Procurement was successfully created.'
           redirect_to(@procurement)
