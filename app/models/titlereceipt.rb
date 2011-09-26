@@ -52,6 +52,7 @@ class Titlereceipt < ActiveRecord::Base
   validate :po_no_should_exist
   validate :invoice_no_should_exist
   validate :isbn_should_be_part_of_po
+  validate :box_is_already_not_in_crate
   
   validate :excess_quantity,    :on => :create
   
@@ -121,6 +122,7 @@ class Titlereceipt < ActiveRecord::Base
       if @error_messages.count > 0
         str = @error_messages.values.join(" ")
         error = ""
+        puts str
         if str.include?("order quantity exceeded")
           error = "Order Quantity Exceeded"
         elsif str.include?("not found in PO")
@@ -180,5 +182,14 @@ class Titlereceipt < ActiveRecord::Base
       box = Box.find_by_box_no_and_po_no_and_invoice_no(box_no, po_no, invoice_no)
       box.total_cnt = box.total_cnt - 1
       box.save
+    end
+    
+    def box_is_already_not_in_crate
+      box = Box.find_by_box_no_and_po_no_and_invoice_no(box_no, po_no, invoice_no)
+      unless box.nil? 
+        unless box.crate.nil?
+          errors.add(:box_no, " - has already been placed in Crate");
+        end
+      end
     end
 end

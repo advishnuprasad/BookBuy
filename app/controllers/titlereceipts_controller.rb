@@ -32,7 +32,7 @@ class TitlereceiptsController < ApplicationController
           format.xml
         end
       else
-        flash[:error] = "Some error occured!"
+        flash[:error] = "Some error occured!/Box Capacity Breached"
         format.html { render :new }
         format.xml { render :nothing => true, :status => :not_found }
       end

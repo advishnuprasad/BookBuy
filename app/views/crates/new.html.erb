@@ -1,7 +1,17 @@
+<% if @crate.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@crate.errors.count, "error") %> prohibited this Crate from being saved:</h2>
+
+      <ul>
+      <% @crate.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
 <%= form_for @crate do |f| %>
   Please click Create...
   <p>
     <%= f.submit "Create" %>
-    <%= f.submit "Cancel" %>
   </p>
 <% end %>

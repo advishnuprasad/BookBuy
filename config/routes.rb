@@ -1,5 +1,7 @@
 BookBuy::Application.routes.draw do
   
+  resources :batches
+
   resources :distributions
   resources :currencyrates
   resources :currencies

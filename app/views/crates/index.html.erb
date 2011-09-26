@@ -1,3 +1,7 @@
+<div>
+  <%= "Current Batch: #{@current_batch.id} (Total: #{@current_batch.total_cnt}) (Completed: #{@current_batch.completed_cnt}) - Created on #{@current_batch.created_at.strftime('%d-%b-%Y')}" %>
+</div>
+<br/><br/>
 <div>Crates</div>
 <div><h4><%= link_to "New Crate", new_crate_path %></h4></div>
 <br/><br/>

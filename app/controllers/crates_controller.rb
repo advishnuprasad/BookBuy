@@ -1,7 +1,7 @@
 class CratesController < ApplicationController
   def index
     @crates = Crate.recent.paginate(:per_page => 10, :page => params[:page])
-    
+    @current_batch = Batch.current_batch.first
     breadcrumbs.add 'Crates'
     
     respond_to do |format|
@@ -38,11 +38,11 @@ class CratesController < ApplicationController
     @crate = Crate.new(params[:crate])
     @crate.created_by = current_user.id
     @crate.total_cnt = 0
+    @crate.batch = Batch.current_batch.first
     if @crate.save
       flash[:success] = "Saved Successfully!"
       redirect_to crate_path(@crate.id)
     else
-      flash[:error] = "Save Failure!"
       render :new
     end
   end
@@ -51,10 +51,14 @@ class CratesController < ApplicationController
     @crate = Crate.find(params[:id])
     
     @crate.modified_by = current_user.id
-    @crate.save
-    
-    @crate.fill
-    redirect_to crate_path
+    @crate.save!
+    if @crate.batch.has_capacity
+      @crate.fill
+      redirect_to crate_path(@crate.id)
+    else
+      flash[:error] = "Batch Full!"
+      render :index 
+    end
   end
   
   def regenerate
@@ -69,8 +73,10 @@ class CratesController < ApplicationController
   
   def fetch_by_crate_no
     @crate = Crate.find(params[:crate_no])
+    retval = plsql.fn_is_crate_valid_for_catalog(@crate.id)
+    
     respond_to do |format|
-      if @crate
+      if @crate && retval == 0
         format.html # show.html.erb
         format.xml # fetch_by_crate_no.xml.erb
       else

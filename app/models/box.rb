@@ -14,7 +14,11 @@
 #
 
 class Box < ActiveRecord::Base
+  CAPACITY = 100;
+  
   belongs_to :crate
+  
+  validate :exceeds_capacity
   
   scope :unassigned, where("crate_id IS NULL").order("id")
   scope :unassigned_among_pos, lambda { |po_nos|
@@ -66,14 +70,21 @@ class Box < ActiveRecord::Base
         #Assign box to crate
         added_boxes.each do |added_box|
           added_box.crate_id = crate_id
-          added_box.save
+          added_box.save!
         end
         
         #Update Crate with Total Items
         crate = Crate.find(crate_id)
         crate.total_cnt = current_cnt
-        crate.save
+        crate.save!
       end
     end
   end
+  
+  private
+    def exceeds_capacity
+      if total_cnt > Box::CAPACITY
+        errors.add(:quantity, " : 100 Books have already been recieved in this Box. Use Another Box!");
+      end
+    end   
 end

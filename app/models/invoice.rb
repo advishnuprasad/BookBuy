@@ -28,11 +28,11 @@ class Invoice < ActiveRecord::Base
   validates :po_id,                   :presence => true
   validates :date_of_receipt,         :presence => true
   validates :date_of_invoice,         :presence => true
-  validates :quantity,                :presence => true
-  validates :amount,                  :presence => true
-  validates :boxes_cnt,               :presence => true
+  validates :quantity,                :presence => true, :numericality => { :greater_than => 0, :only_integer => true }
+  validates :amount,                  :presence => true, :numericality => { :greater_than => 0 }
+  validates :boxes_cnt,               :presence => true, :numericality => { :greater_than => 0, :only_integer => true }
   validates :has_isbn,                :presence => true  
-  validate  :po_val_greater_than_total_invoices_val
+  validate  :po_val_greater_than_total_invoices_val, :quantity_under_capacity
   
   has_many :invoiceitems
   has_many :bookreceipts
@@ -210,6 +210,12 @@ class Invoice < ActiveRecord::Base
       end
       File.open('public/images/' + invstr + '.png', 'wb') do |f|
         f.write invbarcode.to_png
+      end
+    end
+    
+    def quantity_under_capacity
+      unless quantity < (boxes_cnt * Box::CAPACITY)
+        errors.add(:quantity, " - Quantity exceeds permitted capacity for box. Every box can contain maximum 100 copies!")
       end
     end
     

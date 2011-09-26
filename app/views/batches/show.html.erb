@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Total cnt:</b>
+  <%= @batch.total_cnt %>
+</p>
+
+<p>
+  <b>Completed cnt:</b>
+  <%= @batch.completed_cnt %>
+</p>
+
+
+<%= link_to 'Edit', edit_batch_path(@batch) %> |
+<%= link_to 'Back', batches_path %>

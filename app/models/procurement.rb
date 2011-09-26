@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110728072757
+# Schema version: 20110923082509
 #
 # Table name: procurements
 #
@@ -12,7 +12,7 @@
 #  created_at   :timestamp(6)
 #  updated_at   :timestamp(6)
 #  status       :string(255)
-#  kind         :string(255)
+#  kind         :string(1020)
 #
 
 require 'zip/zip'
