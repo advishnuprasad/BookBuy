@@ -34,7 +34,7 @@ class Titlereceipt < ActiveRecord::Base
 
   scope :of_po_inv_box_and_isbn, lambda { |po_no, inv_no, box_no, isbn|
       valid.
-      where("po_no = :po_no AND isbn = :isbn AND invoice_no = :inv_no AND box_no = :box_no", {:po_no => po_no, :isbn => isbn, :inv_no => inv_no, :box_no => box_no}).
+      where("po_no = :po_no AND isbn = :isbn AND invoice_no = :inv_no AND box_no = :box_no AND book_no IS NULL AND error is NULL", {:po_no => po_no, :isbn => isbn, :inv_no => inv_no, :box_no => box_no}).
       order("created_at")
   }
 
