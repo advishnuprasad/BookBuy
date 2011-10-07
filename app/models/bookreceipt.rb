@@ -72,7 +72,7 @@ class Bookreceipt < ActiveRecord::Base
       
       boxes.each do |box|
         Procurementitem.to_be_procured(isbn, box.po_no).each do |item|
-          Titlereceipt.of_po_inv_box_and_isbn(box.po_no, box.inv_no, box.box_no, isbn).each do |titlereceipt|
+          Titlereceipt.of_po_inv_box_and_isbn(box.po_no, box.invoice_no, box.box_no, isbn).each do |titlereceipt|
             self.po_no = titlereceipt.po_no
             self.invoice_no = titlereceipt.invoice_no
             self.titlereceipt_id = titlereceipt.id
