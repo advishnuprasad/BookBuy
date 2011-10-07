@@ -1,15 +1,9 @@
 class EnrichedtitlesController < ApplicationController
   def index
-    @enrichedtitles = []
-    unless params[:queryCrateId].blank?
-      boxes = Box.find_all_by_crate_id(params[:queryCrateId])
-      
-      boxes.each do |box|
-        Procurementitem.find_all_by_po_number(box.po_no, :include => :enrichedtitle).each do |item|
-          @enrichedtitles << item.enrichedtitle
-        end
-      end
-    end    
+    unless params[:queryISBN].blank?
+      @enrichedtitle = Enrichedtitle.find_by_isbn(params[:queryISBN])
+      render "show"
+    end
   end
   
   def edit

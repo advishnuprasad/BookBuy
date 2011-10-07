@@ -6,9 +6,10 @@
     Language: <%= @enrichedtitle.language %><br/>
     Author: <%= @enrichedtitle.author %><br/>
     
-    Category 1: <%= @enrichedtitle.category1 %><br/>
-    Category 2: <%= @enrichedtitle.category2 %><br/>
-    Category 3: <%= @enrichedtitle.category3 %><br/>
+    <% unless @enrichedtitle.jbcategory.nil? -%>
+      Section: <%= @enrichedtitle.jbcategory.division %><br/>
+      Category: <%= @enrichedtitle.jbcategory.name %><br/>
+    <% end -%>
   </div>
   <div class="span-12 last">
     <%= image_tag "http://img.justbooksclc.com.s3.amazonaws.com/#{@enrichedtitle.isbn}.jpg", :size => "100X150" %>
@@ -28,7 +29,7 @@
         </div>
       <% end %>
       
-      <%= f.select :category, Category.all.collect {|p| [p.division + '-' + p.name, p.id]} %>
+      <%= f.select :category_id, Category.all.collect {|p| [p.division + '-' + p.name, p.id]} %>
 
       <div class="actions">
         <%= f.submit %>

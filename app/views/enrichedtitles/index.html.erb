@@ -1,30 +1,12 @@
 <div class="span-24 last">
 	<%= form_tag enrichedtitles_path, :id => 'searchForm', :method => 'get' do -%>
-			<%= field_set_tag 'Batch Number' do %>		
-			<span>Enter the batch number to fetch titles that need the category assigned.
+			<%= field_set_tag 'ISBN' do %>		
+			<span>Enter the isbn.
 			</span>
 			<br/>
-			<%= label_tag 'Crate No'%>
-			<%= text_field_tag :queryCrateId, params[:queryCrateId] %>
+			<%= label_tag 'ISBN'%>
+			<%= text_field_tag :queryISBN, params[:queryISBN] %>
 			<%= submit_tag "Submit", :name => nil %>
 			<% end -%>
 	<% end -%>
-	
-  <% unless @enrichedtitles.nil? -%>
-    <table>
-      <thead><tr> <th> ISBN </th> <th> Title </th> <th> Category </th> <th> Sub Category </th>  <th> Cover </th> <th>  </th> </tr></thead>
-      <tbody>
-        <% for enrichedtitle in @enrichedtitles -%>
-          <tr>
-              <td> <%= enrichedtitle.isbn %> </td>
-              <td><%= enrichedtitle.title %> </td>
-              <td> <%= enrichedtitle.category %> </td>
-              <td> <%= enrichedtitle.subcategory %></td> 
-              <td> <%= image_tag "http://img.justbooksclc.com.s3.amazonaws.com/#{enrichedtitle.isbn}.jpg", :size => "50x75" %> </td>              
-              <td> <%= link_to "Edit", edit_enrichedtitle_path(enrichedtitle) %>
-          </tr>
-        <% end -%>
-      </tbody>
-    </table>
-  <% end -%>
 </div>

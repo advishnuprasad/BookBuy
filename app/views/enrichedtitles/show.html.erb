@@ -5,12 +5,11 @@
     Title: <%= @enrichedtitle.title %><br/>
     Language: <%= @enrichedtitle.language %><br/>
     Author: <%= @enrichedtitle.author %><br/>
-    
-    Category 1: <%= @enrichedtitle.category1 %><br/>
-    Category 2: <%= @enrichedtitle.category2 %><br/>
-    Category 3: <%= @enrichedtitle.category3 %><br/>
-    
-    Category: <%= @enrichedtitle.category %><br/>
+
+    <% unless @enrichedtitle.jbcategory.nil? -%>
+      Section: <%= @enrichedtitle.jbcategory.division %><br/>
+      Category: <%= @enrichedtitle.jbcategory.name %><br/>
+    <% end -%>
   </div>
   
   <div class="span-12 last">
@@ -18,6 +17,7 @@
   </div>
 
   <div class="span-24 last">
+    <%= link_to 'Edit', edit_enrichedtitle_path(@enrichedtitle) %>    
     <%= link_to 'Back', enrichedtitles_path %>
   </div>
 </div>

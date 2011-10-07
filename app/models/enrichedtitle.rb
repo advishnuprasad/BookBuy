@@ -35,6 +35,8 @@ class Enrichedtitle < ActiveRecord::Base
   belongs_to :jbtitle, :foreign_key => "title_id", :class_name => "Title"
   has_many :procurementitems
   
+  belongs_to :jbcategory, :foreign_key => 'category_id', :class_name => "Category"
+  
   validates :title,                  :presence => true
   validates :isbn,                   :presence => true
   validates :author,                 :presence => true
@@ -49,9 +51,7 @@ class Enrichedtitle < ActiveRecord::Base
       where(:procurementitems => {:procurement_id => procurement_id})
     }
     
-  scope :needs_category, where( :category => nil )
-  
-  attr_accessible :category, :subcategory
+  attr_accessible :category_id
     
   def self.scan_in_procurement(procurement_id)
     Enrichedtitle.of_procurement(procurement_id).unscanned.limit(1000).each do |title|
