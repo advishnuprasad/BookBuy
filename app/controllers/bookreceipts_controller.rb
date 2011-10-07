@@ -55,10 +55,11 @@ class BookreceiptsController < ApplicationController
   def destroy
     @bookreceipt = Bookreceipt.find(params[:id])
     @bookreceipt.destroy
+    @daily_count = Bookreceipt.of_user_for_today(current_user.id).count
 
     respond_to do |format|
       format.html { redirect_to(bookreceipts_url) }
-      format.xml  { head :ok }
+      format.xml { render :daily_count_of_user }
     end
   end
   

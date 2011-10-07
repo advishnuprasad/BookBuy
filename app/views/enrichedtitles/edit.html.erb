@@ -1,0 +1,38 @@
+<div class="span-24 last">
+
+  <div class="span-10">
+    ISBN: <%= @enrichedtitle.isbn %><br/>
+    Title: <%= @enrichedtitle.title %><br/>
+    Language: <%= @enrichedtitle.language %><br/>
+    Author: <%= @enrichedtitle.author %><br/>
+    
+    Category 1: <%= @enrichedtitle.category1 %><br/>
+    Category 2: <%= @enrichedtitle.category2 %><br/>
+    Category 3: <%= @enrichedtitle.category3 %><br/>
+  </div>
+  <div class="span-12 last">
+    <%= image_tag "http://img.justbooksclc.com.s3.amazonaws.com/#{@enrichedtitle.isbn}.jpg", :size => "100X150" %>
+  </div>
+  
+  <div class="span-24 last">
+    <%= form_for(@enrichedtitle) do |f| %>
+      <% if @enrichedtitle.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@enrichedtitle.errors.count, "error") %> prohibited this title from being saved:</h2>
+
+          <ul>
+          <% @enrichedtitle.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
+      
+      <%= f.select :category, Category.all.collect {|p| [p.division + '-' + p.name, p.id]} %>
+
+      <div class="actions">
+        <%= f.submit %>
+      </div>
+    <% end %>
+  </div>
+</div>

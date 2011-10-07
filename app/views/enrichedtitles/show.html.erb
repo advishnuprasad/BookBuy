@@ -1,0 +1,23 @@
+<div class="span-24 last">
+
+  <div class="span-10">
+    ISBN: <%= @enrichedtitle.isbn %><br/>
+    Title: <%= @enrichedtitle.title %><br/>
+    Language: <%= @enrichedtitle.language %><br/>
+    Author: <%= @enrichedtitle.author %><br/>
+    
+    Category 1: <%= @enrichedtitle.category1 %><br/>
+    Category 2: <%= @enrichedtitle.category2 %><br/>
+    Category 3: <%= @enrichedtitle.category3 %><br/>
+    
+    Category: <%= @enrichedtitle.category %><br/>
+  </div>
+  
+  <div class="span-12 last">
+    <%= image_tag "http://img.justbooksclc.com.s3.amazonaws.com/#{@enrichedtitle.isbn}.jpg", :size => "100X150" %>
+  </div>
+
+  <div class="span-24 last">
+    <%= link_to 'Back', enrichedtitles_path %>
+  </div>
+</div>

@@ -25,11 +25,19 @@ class Titlereceipt < ActiveRecord::Base
   after_initialize              :set_defaults
   
   scope :valid, where("error is NULL")
+
   scope :of_po_and_isbn, lambda { |po_no, isbn|
       valid.
       where("po_no = :po_no AND isbn = :isbn", {:po_no => po_no, :isbn => isbn}).
       order("created_at")
     }
+
+  scope :of_po_inv_box_and_isbn, lambda { |po_no, inv_no, box_no, isbn|
+      valid.
+      where("po_no = :po_no AND isbn = :isbn AND invoice_no = :inv_no AND box_no = :box_no", {:po_no => po_no, :isbn => isbn, :inv_no => inv_no, :box_no => box_no}).
+      order("created_at")
+  }
+
   scope :of_invoice, lambda{|invoice_no|
       valid.
       where(:invoice_no => invoice_no).
@@ -52,8 +60,8 @@ class Titlereceipt < ActiveRecord::Base
   validate :po_no_should_exist
   validate :invoice_no_should_exist
   validate :isbn_should_be_part_of_po
-  validate :box_is_already_not_in_crate
   
+  validate :box_is_already_not_in_crate, :on => :create
   validate :excess_quantity,    :on => :create
   
   def set_defaults

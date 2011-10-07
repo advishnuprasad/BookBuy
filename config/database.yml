@@ -1,6 +1,6 @@
 development:
  adapter: oracle_enhanced
- database: XE
+ database: JEOS
  username: ams
  password: ams
  encoding: utf8

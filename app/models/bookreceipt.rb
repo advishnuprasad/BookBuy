@@ -21,14 +21,14 @@
 class Bookreceipt < ActiveRecord::Base
   before_validation             :find_order_item
   before_validation             :select_full_po_no
-  before_create                 :set_title_id
   after_validation              :populate_invoice_and_po_ids
   after_create                  :update_procurement_item_cnt
   after_create                  :update_book_no_in_titlereceipt
   
   belongs_to :created_by_user, :foreign_key => "created_by", :class_name => "User"
   belongs_to :modified_by_user, :foreign_key => "modified_by", :class_name => "User"
-  
+  attr_accessor :titlereceipt_id
+    
   validates :po_no,             :presence => true
   validates :invoice_no,        :presence => true
   validates :isbn,              :presence => true
@@ -36,23 +36,14 @@ class Bookreceipt < ActiveRecord::Base
   validates :crate_id,          :presence => true
   
   validate :book_no_should_not_have_been_used
-  validate :po_no_should_exist
   validate :invoice_no_should_exist
-  validate :isbn_should_be_part_of_po
-  validate :crate_no_should_exist
+  
+
   
   scope :of_user_for_today, lambda { |user_id|
       {:conditions => ['created_by = ? AND created_at >= ? AND created_at <= ?', user_id, Time.zone.today.beginning_of_day, Time.zone.today.end_of_day]}
     }
   
-  def po_no_should_exist
-    unless po_no.blank?
-      po = Po.find_by_code(po_no)
-      if po.nil?
-        errors.add(:po_no, " is invalid!")
-      end
-    end
-  end
   
   def invoice_no_should_exist
     unless invoice_no.blank?
@@ -64,14 +55,6 @@ class Bookreceipt < ActiveRecord::Base
     end
   end
   
-  def isbn_should_be_part_of_po
-    unless isbn.blank?
-      item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
-      if item.nil?
-        errors.add(:isbn, " is invalid!");
-      end
-    end
-  end
   
   def book_no_should_not_have_been_used
     unless book_no.blank?
@@ -82,25 +65,23 @@ class Bookreceipt < ActiveRecord::Base
     end
   end
   
-  def crate_no_should_exist
-    unless crate_id.blank?
-      crate = Crate.find(crate_id)
-      if crate.nil?
-        errors.add(:crate_id, " is invalid!");
-      end
-    end
-  end
   
   def find_order_item
     unless isbn.blank?
-      po_nos = Crate.find(crate_id).boxes.collect {|box| box.po_no}
-      Procurementitem.to_be_procured(isbn, po_nos).each do |item|
-        Titlereceipt.of_po_and_isbn(item.po_number, isbn).each do |titlereceipt|
-          self.po_no = titlereceipt.po_no
-          self.invoice_no = titlereceipt.invoice_no
-          break
+      boxes = Crate.find(crate_id).boxes
+      
+      boxes.each do |box|
+        Procurementitem.to_be_procured(isbn, box.po_no).each do |item|
+          Titlereceipt.of_po_inv_box_and_isbn(box.po_no, box.inv_no, box.box_no, isbn).each do |titlereceipt|
+            self.po_no = titlereceipt.po_no
+            self.invoice_no = titlereceipt.invoice_no
+            self.titlereceipt_id = titlereceipt.id
+            self.title_id = item.enrichedtitle.title_id
+            break
+          end
         end
       end
+      
       if po_no.blank?
         errors.add(:isbn, " not found among items to Catalog")
       end
@@ -124,50 +105,30 @@ class Bookreceipt < ActiveRecord::Base
       end
     end
     
-    def set_title_id
-      unless po_no.blank?
-        item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
-        if item
-          self.title_id = item.enrichedtitle.title_id
-        end
-      end
-    end
     
     def update_procurement_item_cnt
-      unless po_no.blank?
-        item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
-        if item
-          item.procured_cnt ||= 0
-          item.procured_cnt = item.procured_cnt + 1
-          item.save
-        end
-      end
+      item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
+      item.procured_cnt ||= 0
+      item.procured_cnt = item.procured_cnt + 1
+      item.save!
     end
     
     def decr_procurement_item_cnt
       item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
-      if item
-        item.procured_cnt = item.procured_cnt - 1
-        item.save
-      end
+      item.procured_cnt = item.procured_cnt - 1
+      item.save!
     end
     
     def update_book_no_in_titlereceipt
-      unless po_no.blank?
-        title = Titlereceipt.not_cataloged.find_by_po_no_and_invoice_no_and_isbn(po_no, invoice_no, isbn)
-        if title
-          title.book_no = book_no
-          title.save
-        end
-      end
+      title = Titlereceipt.not_cataloged.find(titlereceipt_id)
+      title.book_no = book_no
+      title.save!
     end
     
     def remove_book_no_in_titlereceipt
       title = Titlereceipt.find_by_book_no(book_no)
-      if title
-        title.book_no = ''
-        title.save
-      end
+      title.book_no = ''
+      title.save!
     end
     
     def populate_invoice_and_po_ids
