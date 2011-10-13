@@ -28,8 +28,8 @@ gem 'ruby-oci8'
 
 group :development do
   gem 'rspec-rails'
-  gem 'annotate-models', '1.0.4'
-  gem 'ruby-debug19'
+#  gem 'annotate-models', '1.0.4'
+#  gem 'ruby-debug19'
 end
 
 group :test do
