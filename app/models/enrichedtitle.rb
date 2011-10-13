@@ -51,7 +51,7 @@ class Enrichedtitle < ActiveRecord::Base
       where(:procurementitems => {:procurement_id => procurement_id})
     }
     
-  attr_accessible :category_id
+  attr_accessible :category_id, :language
     
   def self.scan_in_procurement(procurement_id)
     Enrichedtitle.of_procurement(procurement_id).unscanned.limit(1000).each do |title|
