@@ -41,6 +41,7 @@ class Procurementitem < ActiveRecord::Base
   belongs_to :po, :foreign_key => "po_number", :primary_key => "po_number", :class_name => "Po"
   
   validates :isbn,             :presence => true
+  validate :received_under_quantity
   
   has_many   :distributions
   has_many   :branches, :through => :distributions, :dependent => :delete_all
@@ -132,4 +133,10 @@ class Procurementitem < ActiveRecord::Base
       end
     end
   end
+
+  private
+    def received_under_quantity
+      errors.add(:received_cnt, 'Ordered Quantity Exceeded - Ordered #{quantity}, Received #{received_cnt}') if received_cnt > quantity
+    end
+    
 end

@@ -71,6 +71,14 @@ class Po < ActiveRecord::Base
   scope :of_procurement, lambda {|procurement_id|
       where(:procurement_id => procurement_id)
     }
+    
+  scope :from_po_no, lambda {|po_no|
+    if po_no.length == 9
+      where("code LIKE :po_no", {:po_no => "#{po_no}%"})
+    else
+      where(:code => po_no)
+    end
+  }
   
   def publishername
     Publisher.get_publisher_name(publisher_id)

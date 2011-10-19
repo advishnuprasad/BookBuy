@@ -17,25 +17,23 @@ class TitlereceiptsController < ApplicationController
     
     respond_to do |format|
       if @titlereceipt.save
-        if @titlereceipt.error == "Order Quantity Exceeded"
-          flash[:error] = "Order quantity exceeded!"
-          format.html { render :new }
-          format.xml { render :nothing => true, :status => :precondition_failed }
-        elsif @titlereceipt.error == "ISBN not found in PO"
-          flash[:error] = "Validations failed!"
-          format.html { render :new }
-          format.xml { render :nothing => true, :status => :not_found }
-        else
-          # error - invoice is based on po & invoice while , titlereceipts is based only on po
-          @pending_cnt = Invoice.of_po_and_invoice(Po.find_by_code(@titlereceipt.po_no).id, @titlereceipt.invoice_no).first.quantity - Titlereceipt.of_po(@titlereceipt.po_no).count
-          flash[:success] = "Title Receipt captured successfully!"
-          format.html { redirect_to titlereceipts_path}
-          format.xml
-        end
+        @pending_cnt = @titlereceipt.invoice.quantity - @titlereceipt.invoice.received_cnt
+        flash[:success] = "Title Receipt captured successfully!"
+        format.html { redirect_to titlereceipts_path}
+        format.xml
       else
-        flash[:error] = "Some error occured!/Box Capacity Breached"
         format.html { render :new }
-        format.xml { render :nothing => true, :status => :not_found }
+        format.xml { 
+          if @titlereceipt.errors.include?(:procurementitem_id)
+            render :nothing => true, :status => :not_found 
+          elsif @titlereceipt.errors.include?(:isbn)
+            render :nothing => true, :status => :precondition_failed
+          elsif @titlereceipt.errors.include?(:invoice_id)
+            render :nothing => true, :status => :precondition_failed
+          else
+            render :nothing => true, :status => :not_found 
+          end
+        }
       end
     end
   end

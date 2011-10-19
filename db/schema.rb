@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111009111046) do
+ActiveRecord::Schema.define(:version => 20111015201806) do
 
   create_table "app_116_16_gt", :temporary => true, :id => false, :force => true do |t|
     t.integer "batch_no",                  :precision => 38, :scale => 0
@@ -95,6 +95,18 @@ ActiveRecord::Schema.define(:version => 20111009111046) do
   end
 
   create_table "boxes", :force => true do |t|
+    t.integer   "box_no",                  :precision => 38, :scale => 0, :null => false
+    t.string    "po_no",                                                  :null => false
+    t.string    "invoice_no",                                             :null => false
+    t.integer   "total_cnt",               :precision => 38, :scale => 0
+    t.timestamp "created_at", :limit => 6
+    t.timestamp "updated_at", :limit => 6
+    t.integer   "crate_id",                :precision => 38, :scale => 0
+    t.integer   "invoice_id",              :precision => 38, :scale => 0
+  end
+
+  create_table "boxes_backup", :id => false, :force => true do |t|
+    t.integer   "id",                      :precision => 38, :scale => 0, :null => false
     t.integer   "box_no",                  :precision => 38, :scale => 0, :null => false
     t.string    "po_no",                                                  :null => false
     t.string    "invoice_no",                                             :null => false
@@ -309,6 +321,7 @@ ActiveRecord::Schema.define(:version => 20111009111046) do
     t.integer   "created_by",                    :precision => 38, :scale => 0
     t.integer   "modified_by",                   :precision => 38, :scale => 0
     t.string    "has_isbn",        :limit => 20,                                :default => "YES"
+    t.integer   "received_cnt",                  :precision => 38, :scale => 0
   end
 
   add_index "invoices", ["invoice_no", "po_id"], :name => "invoices_unq", :unique => true
@@ -525,15 +538,20 @@ ActiveRecord::Schema.define(:version => 20111009111046) do
   end
 
   create_table "titlereceipts", :force => true do |t|
-    t.string    "po_no",                                                     :null => false
-    t.string    "invoice_no",                                                :null => false
-    t.string    "isbn",                                                      :null => false
-    t.integer   "box_no",                     :precision => 38, :scale => 0, :null => false
-    t.timestamp "created_at", :limit => 6
-    t.timestamp "updated_at", :limit => 6
-    t.string    "book_no",    :limit => 1020
-    t.integer   "created_by",                 :precision => 38, :scale => 0
-    t.string    "error",      :limit => 1020
+    t.string    "po_no",                                                             :null => false
+    t.string    "invoice_no",                                                        :null => false
+    t.string    "isbn",                                                              :null => false
+    t.integer   "box_no",                             :precision => 38, :scale => 0, :null => false
+    t.timestamp "created_at",         :limit => 6
+    t.timestamp "updated_at",         :limit => 6
+    t.string    "book_no",            :limit => 1020
+    t.integer   "created_by",                         :precision => 38, :scale => 0
+    t.string    "error",              :limit => 1020
+    t.integer   "crate_id",                           :precision => 38, :scale => 0
+    t.integer   "procurementitem_id",                 :precision => 38, :scale => 0
+    t.integer   "po_id",                              :precision => 38, :scale => 0
+    t.integer   "invoice_id",                         :precision => 38, :scale => 0
+    t.integer   "box_id",                             :precision => 38, :scale => 0
   end
 
   create_table "users", :force => true do |t|

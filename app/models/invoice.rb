@@ -34,11 +34,17 @@ class Invoice < ActiveRecord::Base
   validates :has_isbn,                :presence => true  
   validate  :po_val_greater_than_total_invoices_val, :quantity_under_capacity
   
+  validate  :received_cnt_for_destroy, :on => :destroy
+  
+  
+  has_many :boxes
   has_many :invoiceitems
   has_many :bookreceipts
 
   before_create :clean_invoice_no
   after_create :generate_barcodes
+  after_create :create_boxes
+  before_destroy :destroy_boxes
   
   scope :today, lambda { where("created_at >= ? and created_at <= ?",  Time.zone.today.to_time.beginning_of_day, Time.zone.today.to_time.end_of_day) }
   scope :created_on, lambda {|date| 
@@ -193,6 +199,7 @@ class Invoice < ActiveRecord::Base
   end
   
   private 
+    
     def clean_invoice_no
       self.invoice_no = self.invoice_no.upcase.chomp.strip
     end
@@ -214,9 +221,8 @@ class Invoice < ActiveRecord::Base
     end
     
     def quantity_under_capacity
-      unless quantity < (boxes_cnt * Box::CAPACITY)
-        errors.add(:quantity, " - Quantity exceeds permitted capacity for box. Every box can contain maximum 100 copies!")
-      end
+      self.received_cnt ||= 0
+      errors.add(:received_cnt, "Order Quantity Exceeded") if received_cnt > quantity
     end
     
     def po_val_greater_than_total_invoices_val
@@ -241,6 +247,25 @@ class Invoice < ActiveRecord::Base
         elsif total_qty_so_far + quantity > po_temp.copies_cnt
           errors.add(:quantity, " - Total invoices quantity exceeds PO copies")
         end
+      end
+    end
+    
+    def create_boxes
+      boxes_cnt.times do |i|
+        self.boxes.build(:box_no => i+1, :po_no => po.code, :invoice_no => invoice_no).save!        
+      end
+    end
+    
+    def destroy_boxes
+      self.boxes.each do |box|
+        box.destroy
+      end
+    end
+    
+    def received_cnt_for_destroy
+      errors.add(:id, "Invoice already processed - cannot delete") if received_cnt > 0
+      boxes.each do |box|
+        errors.add(:id, "Invoice already processed - cannot delete") if box.total_cnt > 0
       end
     end
 end

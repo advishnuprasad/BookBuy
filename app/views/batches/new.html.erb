@@ -1,5 +1,28 @@
 <h1>New batch</h1>
 
-<%= render 'form' %>
+<%= form_for(@batch) do |f| %>
+  <% if @batch.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@batch.errors.count, "error") %> prohibited this batch from being saved:</h2>
+
+      <ul>
+      <% @batch.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <table>
+    <tr><th>Id</th><th>Total Count</th><th>Created At</th><th>Include</th></tr>
+      <% Crate.unassigned.each do |crate| -%>
+        <tr><td><%= crate.id %></td><td><%= crate.total_cnt%></td><td><%= crate.created_at%></td><td><%= check_box_tag "batch[crate_ids][]"," #{crate.id}", @batch.crates.include?(crate) %></td></tr>
+      <% end -%>
+  </table>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
 
 <%= link_to 'Back', batches_path %>

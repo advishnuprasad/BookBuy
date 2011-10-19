@@ -11,21 +11,26 @@
 #
 
 class Batch < ActiveRecord::Base
-  CAPACITY = 1500
+  CAPACITY = 100
   
   has_many :crates
+  accepts_nested_attributes_for :crates
   
   scope :current_batch, where("id = (select max(id) from batches)")
   
-  before_save :set_defaults
+  before_create :set_defaults
   
-  def has_capacity
-    total_cnt < (Batch::CAPACITY)
-  end
-  
+  validate :batch_size_with_capacity
+
   private
     def set_defaults
-      self.total_cnt = 0 if total_cnt.nil?
-      self.completed_cnt = 0 if completed_cnt.nil?
+      self.completed_cnt ||= 0 
     end
+    
+    def batch_size_with_capacity
+      self.total_cnt ||= 0
+      crates.each  { |c| self.total_cnt += c.total_cnt } 
+      errors.add(:id, "Batch Capacity exceeded") if total_cnt > Batch::CAPACITY
+    end
+
 end

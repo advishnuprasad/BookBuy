@@ -1,7 +1,7 @@
-require 'rufus/scheduler'
+#require 'rufus/scheduler'
 
-scheduler = Rufus::Scheduler.start_new
+#scheduler = Rufus::Scheduler.start_new
 
-scheduler.every("1m") do
-  Enrichedtitle.scan
-end 
+#scheduler.every("1m") do
+#  Enrichedtitle.scan
+#end 

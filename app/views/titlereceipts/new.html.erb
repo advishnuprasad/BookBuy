@@ -1,5 +1,22 @@
-<%= render 'shared/error_messages' %>
+<% if @titlereceipt %>
+  <% if @titlereceipt.errors.any? %>
+    <div id="error_explanation">
+      <h3><%= pluralize(@titlereceipt.errors.count, "error") %> 
+          prohibited this user from being saved:</h3>
+      <p>There were problems with the following fields:</p>
+      <ul>
+      <% @titlereceipt.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<% end %>
+
 <%= form_for @titlereceipt do |f| -%>
+  <p>
+    Crate: <%= f.text_field :crate_id %>
+  </p>
   <p>
     PO: <%= f.text_field :po_no %>
   </p>

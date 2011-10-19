@@ -16,13 +16,6 @@
 #
 
 class Titlereceipt < ActiveRecord::Base
-  attr_accessor                 :error_messages
-  
-  before_validation             :select_full_po_no
-  after_validation              :check_for_errors
-  before_create                 :upsert_box_total_cnt
-  after_create                  :update_procurement_item_cnt
-  after_initialize              :set_defaults
   
   scope :valid, where("error is NULL")
 
@@ -56,148 +49,46 @@ class Titlereceipt < ActiveRecord::Base
   validates :invoice_no,        :presence => true
   validates :isbn,              :presence => true
   validates :box_no,            :presence => true
+  validates :crate_id,          :presence => true
   
-  validate :po_no_should_exist
-  validate :invoice_no_should_exist
-  validate :isbn_should_be_part_of_po
+  before_validation :set_references
+  validate :validate_references
+  validates_associated :procurementitem, :invoice # to check received_cnt <= quantity
   
-  validate :box_is_already_not_in_crate, :on => :create
-  validate :excess_quantity,    :on => :create
+  belongs_to :crate, :counter_cache => :total_cnt
+  belongs_to :procurementitem, :counter_cache => :received_cnt
+  belongs_to :box, :counter_cache => :total_cnt
+  belongs_to :po
+  belongs_to :invoice, :counter_cache => :received_cnt
   
-  def set_defaults
-    @error_messages = Hash.new
-  end
-  
-  def po_no_should_exist
-    unless po_no.blank?
-      po = Po.find_by_code(po_no)
-      if po.nil?
-        @error_messages[:po_no] = "PO is invalid!"
-      end
-    end
-  end
-  
-  def invoice_no_should_exist
-    unless invoice_no.blank?
-      po = Po.find_by_code(po_no)
-      invoice = Invoice.find_by_invoice_no_and_po_id(invoice_no, po.id)
-      if invoice.nil?
-        @error_messages[:invoice_no] = "Invoice is invalid!"
-      end
-    end
-  end
-  
-  def isbn_should_be_part_of_po
-    unless isbn.blank?
-      item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
-      if item.nil?
-        @error_messages[:isbn] = "ISBN not found in PO!"
-      end
-    end
-  end
-  
-  def excess_quantity
-    po = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
-    if po
-      order_qty = po.quantity
-      titlereceipt = Titlereceipt.of_po_and_isbn(po_no, isbn)
-      if titlereceipt
-        scan_cnt = titlereceipt.count
-        if scan_cnt == order_qty
-          @error_messages[:isbn] = "ISBN's order quantity exceeded!"
-        end
-      end
-    end
-  end
-  
-  def destroy
-    decr_procurement_item_cnt
-    decr_box_total_cnt
-    super
-  end
+  attr_accessible :po_no, :invoice_no, :isbn, :box_no, :crate_id
+  attr_readonly :crate_id, :procurementitem_id, :box_id, :po_id, :invoice_id
   
   private
-    def select_full_po_no
-      if po_no.length == 9
-        po_item = Po.where("code LIKE :po_no", {:po_no => "#{po_no}%"})
-        if po_item
-          self.po_no = po_item[0].code
-        end
+  
+    # a titlereceipt has references to po, invoice, procurementitem, box & crate
+    # the crate_id is passed directly, while the others have to be found out
+    def set_references
+      self.po = Po.from_po_no(po_no).first
+      self.po_no = po.code unless po.nil? # the scope above does some jugglery
+      self.invoice = Invoice.find_by_invoice_no_and_po_id(invoice_no, po.id) unless po.nil?
+      self.procurementitem = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
+      self.box = Box.find_by_box_no_and_po_no_and_invoice_no(box_no, po_no, invoice_no)
+    end
+    
+    def validate_references
+      errors.add(:po_no, "PO is invalid!") if po.nil?
+      errors.add(:invoice_no, "Invoice is invalid!") if invoice.nil?
+      errors.add(:isbn, "ISBN not found in PO") if procurementitem.nil?
+      errors.add(:crate_id, "Crate Not Valid") if crate.nil?      
+      errors.add(:box_no, "Box Not Valid") if box.nil? 
+      
+      unless procurementitem.nil? 
+        errors.add(:procurementitem_id, "Order Quantity Exceeded") unless procurementitem.received_cnt < procurementitem.quantity
       end
-    end
-    
-    def check_for_errors
-      if @error_messages.count > 0
-        str = @error_messages.values.join(" ")
-        error = ""
-        puts str
-        if str.include?("order quantity exceeded")
-          error = "Order Quantity Exceeded"
-        elsif str.include?("not found in PO")
-          error = "ISBN not found in PO"
-        elsif str.include?("PO is invalid")
-          error = "PO is invalid"
-        elsif str.include?("Invoice is invalid")
-          error = "Invoice is invalid"
-        end
-        self.error = error
-      end
-    end
-    
-    def update_procurement_item_cnt
-      if @error_messages.count == 0
-        item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
-        if item
-          item.received_cnt ||= 0
-          item.received_cnt = item.received_cnt + 1
-          item.save
-        end
-      end
-    end
-    
-    def decr_procurement_item_cnt
-      item = Procurementitem.find_by_po_number_and_isbn(po_no, isbn)
-      if item
-        item.received_cnt = item.received_cnt - 1
-        item.save
-      end
-    end
-    
-    def upsert_box_total_cnt
-      if @error_messages.count == 0
-        unless box_no.blank?
-          box = Box.find_by_box_no_and_po_no_and_invoice_no(box_no, po_no, invoice_no)
-          if box
-            #Box Exists - Update total count
-            #TODO - Put increment method within Box model
-            box.total_cnt = box.total_cnt + 1
-            box.save
-          else
-            #New Box - Create a new record
-            #TODO - Directly pass params to Box New
-            box = Box.new
-            box.po_no = po_no
-            box.invoice_no = invoice_no
-            box.box_no = box_no
-            box.total_cnt = 1
-            box.save
-          end
-        end
-      end
-    end
-    
-    def decr_box_total_cnt
-      box = Box.find_by_box_no_and_po_no_and_invoice_no(box_no, po_no, invoice_no)
-      box.total_cnt = box.total_cnt - 1
-      box.save
-    end
-    
-    def box_is_already_not_in_crate
-      box = Box.find_by_box_no_and_po_no_and_invoice_no(box_no, po_no, invoice_no)
-      unless box.nil? 
-        unless box.crate.nil?
-          errors.add(:box_no, " - has already been placed in Crate");
-        end
+      
+      unless invoice.nil?
+        errors.add(:invoice_id, "Order Quantity Exceeded") unless invoice.received_cnt < invoice.quantity
       end
     end
 end

@@ -14,77 +14,24 @@
 #
 
 class Box < ActiveRecord::Base
-  CAPACITY = 100;
+
+  attr_accessible :box_no, :po_no, :invoice_no, :invoice_id
   
-  belongs_to :crate
+  validates :invoice_no,    :presence => true
+  validates :po_no,         :presence => true
+  validates :box_no,        :presence => true, :numericality => { :greater_than => 0, :only_integer => true }
   
-  validate :exceeds_capacity
-  
-  scope :unassigned, where("crate_id IS NULL").order("id")
-  scope :unassigned_among_pos, lambda { |po_nos|
-    where(:po_no => po_nos).order("id")
-    }
-  scope :unassigned_in_po_and_invoice, lambda { |po_no, invoice_no|
-    where("crate_id IS NULL AND po_no = ? and invoice_no = ?", po_no, invoice_no)
-    }  
-  scope :is_assigned, lambda { |crate_id|
-    where("crate_id = :crate_id", :crate_id => crate_id)
-    }
+  belongs_to :invoice
+
+  before_create :set_defaults
   
   def get_supplier_name
     Po.find_by_code(po_no).supplier.name
   end
   
-  def self.fill_crate(crate_id)
-    current_cnt = 0
-    added_boxes = Array.new
-    
-    if Box.unassigned.count > 0
-      boxes = Box.unassigned.first.po_no
-    end
-    
-    if boxes
-      unassigned_boxes = Box.unassigned.unassigned_among_pos(Po.pos_for_supplier(Po.find_by_code(boxes).supplier_id).collect {|po| po.code})
-      
-      #More Intelligence
-      #1. Get the Biggest boxes first
-      #2. The first box might be lesser than capacity, but the next may be more than capacity
-      
-      #If first crate has more books than capacity
-      if unassigned_boxes.first.total_cnt > Crate::CAPACITY
-        box = unassigned_boxes.first
-        current_cnt = current_cnt + box.total_cnt
-        added_boxes.push(box)
-      #else loop and fill crate
-      else
-        unassigned_boxes.each do |box|
-          if current_cnt + box.total_cnt <= Crate::CAPACITY
-            current_cnt = current_cnt + box.total_cnt
-            added_boxes.push(box)
-          end
-        end
-      end
-      
-      #Create entries for Crate and update crate_id in Boxes
-      if current_cnt > 0
-        #Assign box to crate
-        added_boxes.each do |added_box|
-          added_box.crate_id = crate_id
-          added_box.save!
-        end
-        
-        #Update Crate with Total Items
-        crate = Crate.find(crate_id)
-        crate.total_cnt = current_cnt
-        crate.save!
-      end
-    end
-  end
-  
   private
-    def exceeds_capacity
-      if total_cnt > Box::CAPACITY
-        errors.add(:quantity, " : 100 Books have already been recieved in this Box. Use Another Box!");
-      end
-    end   
+    def set_defaults
+      self.total_cnt = 0      
+    end
+
 end

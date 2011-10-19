@@ -47,19 +47,6 @@ class CratesController < ApplicationController
     end
   end
 
-  def fill
-    @crate = Crate.find(params[:id])
-    
-    @crate.modified_by = current_user.id
-    @crate.save!
-    if @crate.batch.has_capacity
-      @crate.fill
-      redirect_to crate_path(@crate.id)
-    else
-      flash[:error] = "Batch Full!"
-      render :index 
-    end
-  end
   
   def regenerate
     @crate = Crate.find(params[:id])
