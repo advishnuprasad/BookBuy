@@ -71,17 +71,21 @@ class Enrichedtitle < ActiveRecord::Base
         title.isbnvalid = 'N'
         title.save
       else
-        validate(title.id, title.isbn)
+        validate(title.id, title.isbn, true)
       end
     end
     return nil
   end
   
-  def self.validate(id, isbnstr)
+  def self.validate(id, isbnstr, validateCheckDigit)
+    if validateCheckDigit.nil?
+      validateCheckDigit = false
+    end
+    
     title = Enrichedtitle.find(id)
     unless title.nil?
       #ISBN validity
-      isbn = Isbnutil::Isbn.parse(isbnstr, nil)
+      isbn = Isbnutil::Isbn.parse(isbnstr, nil, validateCheckDigit)
       if isbn
         #Check if ISBN already exists and is valid
         title_isbn13 = Enrichedtitle.valid.find_by_isbn(isbn.asIsbn13.gsub(/-/,''))
@@ -109,7 +113,10 @@ class Enrichedtitle < ActiveRecord::Base
         else
           #title record does not exist
           title.isbn10 = isbn.asIsbn10.gsub(/-/,'')
-          title.isbn = isbn.asIsbn13.gsub(/-/,'')
+          
+          #If validateCheckDigit is false, a manual scan is being triggered
+          title.isbn = isbn.asIsbn13.gsub(/-/,'') if validateCheckDigit
+          
           title.isbnvalid = 'Y'
           #Imprint entry
           unless isbn.imprint.nil?

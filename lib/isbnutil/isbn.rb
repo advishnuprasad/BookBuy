@@ -4,13 +4,17 @@ module Isbnutil
   class Isbn
     attr_accessor :source, :isValid, :isIsbn13, :isIsbn10, :group, :imprint, :article, :check, :prefix
     
-    def initialize(isbn, args)
+    def initialize(isbn, args, validateCheckDigit)
       groups = args ? args : IsbnGroups.keys
-      _parse(isbn, groups)
+      _parse(isbn, groups, validateCheckDigit)
     end
     
-    def self.parse(isbn, args)
-      me = Isbn.new(isbn, args)
+    def self.parse(isbn, args, validateCheckDigit)
+      if validateCheckDigit.nil?
+        validateCheckDigit = false
+      end
+      
+      me = Isbn.new(isbn, args, validateCheckDigit)
       return me.isValid ? me : nil
     end
     
@@ -30,17 +34,25 @@ module Isbnutil
       end
     end
     
-    def self.validate(isbn)
+    def self.validate(isbn, validateCheckDigit)
+      if validateCheckDigit.nil?
+        validateCheckDigit = false
+      end
+        
       #Cleanup Miscellaneous characters in ISBN
       isbn = isbn.squeeze(' ').gsub(/-/,'').gsub(/\./,'').chomp.upcase
       
       result = "Valid"
       if (isbn.length == 10)
         true if Float(isbn[0..8]) rescue result="Not Numeric"
-        result = "Invalid Checkdigit" unless isbn[9] == calculateCheckDigit(isbn).to_s
+        if validateCheckDigit
+          result = "Invalid Checkdigit" unless isbn[9] == calculateCheckDigit(isbn).to_s
+        end
       elsif (isbn.length == 13)
         true if Float(isbn[0..11]) rescue result="Not Numeric"
-        result = "Invalid Checkdigit" unless isbn[12] == calculateCheckDigit(isbn).to_s
+        if validateCheckDigit
+          result = "Invalid Checkdigit" unless isbn[12] == calculateCheckDigit(isbn).to_s
+        end
       else
         result = "Invalid Length"
       end
@@ -69,7 +81,7 @@ module Isbnutil
     end
     
     private
-      def _parse(isbn, groups)
+      def _parse(isbn, groups, validateCheckDigit)
         @isValid = false
         if (isbn =~ /^\d{9}[\dX]$/) != nil
           @source = isbn
@@ -124,7 +136,7 @@ module Isbnutil
         end
         
         #Check if Check Digit is correct
-        if @isValid
+        if @isValid && validateCheckDigit
           if @check != _calcCheckDigit([@prefix, @group, @imprint, @article].join('')).to_s
             @isValid = false
           end
