@@ -11,7 +11,7 @@
 #
 
 class Batch < ActiveRecord::Base
-  CAPACITY = 1500
+  CAPACITY = 2000
   
   has_many :crates
   

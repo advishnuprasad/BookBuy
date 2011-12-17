@@ -4,13 +4,17 @@ module Isbnutil
   class Isbn
     attr_accessor :source, :isValid, :isIsbn13, :isIsbn10, :group, :imprint, :article, :check, :prefix
     
-    def initialize(isbn, args)
+    def initialize(isbn, args, validateCheckDigit)
       groups = args ? args : IsbnGroups.keys
-      _parse(isbn, groups)
+      _parse(isbn, groups, validateCheckDigit)
     end
     
-    def self.parse(isbn, args)
-      me = Isbn.new(isbn, args)
+    def self.parse(isbn, args, validateCheckDigit)
+      if validateCheckDigit.nil?
+        validateCheckDigit = false
+      end
+      
+      me = Isbn.new(isbn, args, validateCheckDigit)
       return me.isValid ? me : nil
     end
     
@@ -30,17 +34,25 @@ module Isbnutil
       end
     end
     
-    def self.validate(isbn)
+    def self.validate(isbn, validateCheckDigit)
+      if validateCheckDigit.nil?
+        validateCheckDigit = false
+      end
+        
       #Cleanup Miscellaneous characters in ISBN
       isbn = isbn.squeeze(' ').gsub(/-/,'').gsub(/\./,'').chomp.upcase
       
       result = "Valid"
       if (isbn.length == 10)
         true if Float(isbn[0..8]) rescue result="Not Numeric"
-        result = "Invalid Checkdigit" unless isbn[9] == calculateCheckDigit(isbn).to_s
+        if validateCheckDigit
+          result = "Invalid Checkdigit" unless isbn[9] == calculateCheckDigit(isbn).to_s
+        end
       elsif (isbn.length == 13)
         true if Float(isbn[0..11]) rescue result="Not Numeric"
-        result = "Invalid Checkdigit" unless isbn[12] == calculateCheckDigit(isbn).to_s
+        if validateCheckDigit
+          result = "Invalid Checkdigit" unless isbn[12] == calculateCheckDigit(isbn).to_s
+        end
       else
         result = "Invalid Length"
       end
@@ -55,7 +67,7 @@ module Isbnutil
         end
         c = (11 -c % 11) % 11
         return c == 10 ? 'X' : c.to_s #Returns X in place of 10
-      elsif (isbn.match(/(?:978|979)\d{9}[\dX]?/))
+      elsif (isbn.match(/(?:978|979|977)\d{9}[\dX]?/))
         c=0
         i=0
         until i > 11
@@ -69,7 +81,7 @@ module Isbnutil
     end
     
     private
-      def _parse(isbn, groups)
+      def _parse(isbn, groups, validateCheckDigit)
         @isValid = false
         if (isbn =~ /^\d{9}[\dX]$/) != nil
           @source = isbn
@@ -95,7 +107,7 @@ module Isbnutil
             @article = $3
             @check = $4
           end
-        elsif (isbn =~ /^(978|979)(\d{9}[\dX]$)/) != nil
+        elsif (isbn =~ /^(978|979|977)(\d{9}[\dX]$)/) != nil
           @source = isbn
           details = _split($2, groups)
           unless details.nil?
@@ -108,7 +120,7 @@ module Isbnutil
             @article = details["article"]
             @check = details["check"]
           end
-        elsif isbn.length==17 && (isbn =~ /^(978|979)-(\d+)-(\d+)-(\d+)-([\dX])$/) != nil
+        elsif isbn.length==17 && (isbn =~ /^(978|979|977)-(\d+)-(\d+)-(\d+)-([\dX])$/) != nil
           @source = isbn
           details = _split(isbn, groups)
           unless details.nil?
@@ -124,7 +136,7 @@ module Isbnutil
         end
         
         #Check if Check Digit is correct
-        if @isValid
+        if @isValid && validateCheckDigit
           if @check != _calcCheckDigit([@prefix, @group, @imprint, @article].join('')).to_s
             @isValid = false
           end
@@ -185,7 +197,7 @@ module Isbnutil
           end
           c = (11 -c % 11) % 11
           return c == 10 ? 'X' : c.to_s
-        elsif (isbn.match(/(?:978|979)\d{9}[\dX]?/))
+        elsif (isbn.match(/(?:978|979|977)\d{9}[\dX]?/))
           c=0
           i=0
           until i > 11

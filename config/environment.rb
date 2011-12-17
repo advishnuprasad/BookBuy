@@ -9,5 +9,5 @@ ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag|
 end
 
 module Paths
-  PO_FILE_PATH = "/home/subhash/db/dbbackups/"
+  PO_FILE_PATH = "/disk1/dbbackups/"
 end

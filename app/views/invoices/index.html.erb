@@ -135,9 +135,9 @@
             <tr>
               <td style="width: 10%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= link_to invoice.invoice_no, invoice_path(invoice.id) %></td>            
               <td style="width: 12%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.po.code %></td>
-              <td style="width: 15%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.po.supplier.name %></td>
+              <td style="width: 15%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.po.supplier.name unless invoice.po.supplier.nil? %></td>
               <td style="width: 7.5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.date_of_receipt.strftime('%d-%b-%Y') unless invoice.created_at.nil? %></td>
-              <td style="width: 12%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.po.branch.name %></td>
+              <td style="width: 12%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.po.branch.name unless invoice.po.branch.nil?%></td>
               <td style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.quantity %></td>
               <td style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.amount %></td>
               <td style="width: 5%;padding: 2px 4px 2px 4px; border: 1px solid #000000;font-size: 9px;"><%= invoice.boxes_cnt %></td>

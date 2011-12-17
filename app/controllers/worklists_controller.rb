@@ -217,7 +217,7 @@ class WorklistsController < ApplicationController
     data.each {|key, value|
       procurementitem = Procurementitem.find(value["id"])
       unless value["isbn"].nil?
-        unless Enrichedtitle.validate(procurementitem.enrichedtitle.id, value["isbn"].gsub(/-/,'').gsub(/ /,''))
+        unless Enrichedtitle.validate(procurementitem.enrichedtitle.id, value["isbn"].gsub(/-/,'').gsub(/ /,''),false)
           result = false
         end
       end
