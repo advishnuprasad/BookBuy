@@ -1,7 +1,8 @@
 require 'bundler/capistrano'
 
 set :application, "BookBuy"
-set :repository,  "git://github.com/SubhashB/BookBuy.git"
+set :repository,  "git://github.com/subhashb/BookBuy.git"
+set :branch, "production"
 
 set :scm, :git
 
