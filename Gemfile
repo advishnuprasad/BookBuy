@@ -19,6 +19,10 @@ gem 'ruby-plsql'
 gem 'rubyzip'
 gem 'breadcrumbs'
 
+# gem's to upload images
+gem 'paperclip'
+gem 'aws-sdk'
+
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 

@@ -40,12 +40,18 @@ GEM
       ZenTest (>= 4.4.1)
     autotest-rails (4.1.0)
       ZenTest
+    aws-sdk (1.2.5)
+      httparty (~> 0.7)
+      json (~> 1.4)
+      nokogiri (>= 1.4.4)
+      uuidtools (~> 2.1)
     barby (0.4.2)
     barcode (0.2)
     bcrypt-ruby (2.1.4)
     breadcrumbs (0.1.6)
       i18n
     builder (2.1.2)
+    cocaine (0.2.1)
     devise (1.1.7)
       bcrypt-ruby (~> 2.1.2)
       warden (~> 1.0.2)
@@ -62,7 +68,11 @@ GEM
       rack (>= 1.1.0, < 2)
     hoe (2.8.0)
       rake (>= 0.8.7)
+    httparty (0.8.1)
+      multi_json
+      multi_xml
     i18n (0.5.0)
+    json (1.6.3)
     mail (2.2.15)
       activesupport (>= 2.3.6)
       i18n (>= 0.4.0)
@@ -70,6 +80,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.16)
     multi_json (0.0.5)
+    multi_xml (0.4.1)
     multipart-post (1.1.0)
     net-ldap (0.1.1)
     nokogiri (1.4.4)
@@ -111,6 +122,11 @@ GEM
       oa-more (= 0.2.1)
       oa-oauth (= 0.2.1)
       oa-openid (= 0.2.1)
+    paperclip (2.4.5)
+      activerecord (>= 2.3.0)
+      activesupport (>= 2.3.2)
+      cocaine (>= 0.0.2)
+      mime-types
     png (1.1.0)
       RubyInline (>= 3.5.0)
       hoe (>= 1.2.0)
@@ -167,6 +183,7 @@ GEM
     treetop (1.4.9)
       polyglot (>= 0.3.1)
     tzinfo (0.3.26)
+    uuidtools (2.1.2)
     warden (1.0.3)
       rack (>= 1.0.0)
     webrat (0.7.1)
@@ -183,6 +200,7 @@ DEPENDENCIES
   acts_as_versioned
   autotest
   autotest-rails
+  aws-sdk
   barby
   barcode
   breadcrumbs
@@ -190,6 +208,7 @@ DEPENDENCIES
   factory_girl_rails (~> 1.1)
   hoe (= 2.8.0)
   omniauth
+  paperclip
   png (= 1.1.0)
   rails (= 3.0.3)
   rspec
