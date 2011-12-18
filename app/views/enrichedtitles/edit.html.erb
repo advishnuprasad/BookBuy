@@ -29,7 +29,8 @@
         </div>
       <% end %>
       
-      <%= f.select :category_id, Category.all.collect {|p| [p.division + '-' + p.name, p.id]} %>
+      <%= f.select :category_id, Category.all.collect {|p| [p.division + '-' + p.name, p.id]} %><br/>
+      <%= f.label :language %> <%= f.select :language, Language.all.collect {|p| [p.name,p.name] } %>
 
       <div class="actions">
         <%= f.submit %>
