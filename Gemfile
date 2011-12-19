@@ -5,11 +5,9 @@ gem 'rails', '3.0.3'
 #Barcode printers/readers
 gem 'hoe', '2.8.0'
 gem 'barcode'
-gem 'barby'
+gem 'barby', '0.4.2'
 gem 'png', '1.1.0'
 
-gem 'autotest'
-gem 'autotest-rails'
 gem 'acts_as_versioned'
 gem 'devise', '1.1.7'
 gem 'omniauth', "~> 0.3.2"
@@ -37,6 +35,8 @@ group :development do
 end
 
 group :test do
+  gem 'autotest'
+  gem 'autotest-rails'
   gem 'rspec'
   gem 'spork', '0.9.0.rc7'
   gem 'webrat', '0.7.1'

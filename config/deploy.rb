@@ -46,6 +46,14 @@ role :db,  "74.86.131.195", :primary => true # This is where Rails migrations wi
   end
 
   namespace :deploy do
+    task :copy_aws_settings do 
+      production_aws_config = "/disk1/bookbuy/aws-s3.yml" 
+      run "cp #{production_aws_config} #{release_path}/config/aws-s3.yml"
+    end
+    after "deploy:update_code", "deploy:copy_aws_settings"
+  end
+
+  namespace :deploy do
    task :start do ; end
    task :stop do ; end
    task :restart, :roles => :app, :except => { :no_release => true } do
