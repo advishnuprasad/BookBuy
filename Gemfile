@@ -7,6 +7,7 @@ gem 'hoe', '2.8.0'
 gem 'barcode'
 gem 'barby', '0.4.2'
 gem 'png', '1.1.0'
+gem 'chunky_png'
 
 gem 'acts_as_versioned'
 gem 'devise', '1.1.7'
