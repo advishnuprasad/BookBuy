@@ -13,7 +13,7 @@
   </div>
   
   <div class="span-12 last">
-    <%= image_tag "http://img.justbooksclc.com.s3.amazonaws.com/#{@enrichedtitle.isbn}.jpg", :size => "100X150" %>
+    <%= image_tag @enrichedtitle.cover.url, :size => "100X150" %>
   </div>
 
   <div class="span-24 last">

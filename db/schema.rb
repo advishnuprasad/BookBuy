@@ -10,11 +10,34 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110923082509) do
+ActiveRecord::Schema.define(:version => 20111218195039) do
+
+  create_table "app_116_16_gt", :temporary => true, :id => false, :force => true do |t|
+    t.integer "batch_no",                  :precision => 38, :scale => 0
+    t.integer "branch_id",                 :precision => 38, :scale => 0
+    t.integer "crate_id",                  :precision => 38, :scale => 0
+    t.integer "box_no",                    :precision => 38, :scale => 0
+    t.string  "po_no",      :limit => 200
+    t.string  "invoice_no", :limit => 200
+    t.string  "isbn",       :limit => 200
+    t.integer "title_id",                  :precision => 38, :scale => 0
+    t.string  "title",      :limit => 500
+    t.string  "book_no",    :limit => 200
+    t.string  "category1",  :limit => 200
+    t.string  "category2",  :limit => 200
+  end
+
+  create_table "authentications", :force => true do |t|
+    t.integer  "user_id",    :precision => 38, :scale => 0
+    t.string   "provider"
+    t.string   "uid"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "batches", :force => true do |t|
-    t.integer   "total_cnt",                  :precision => 38, :scale => 0
-    t.integer   "completed_cnt",              :precision => 38, :scale => 0
+    t.integer   "total_cnt",                  :precision => 38, :scale => 0, :null => false
+    t.integer   "completed_cnt",              :precision => 38, :scale => 0, :null => false
     t.timestamp "created_at",    :limit => 6
     t.timestamp "updated_at",    :limit => 6
   end
@@ -44,6 +67,33 @@ ActiveRecord::Schema.define(:version => 20110923082509) do
 
   add_index "bookreceipts", ["book_no"], :name => "bookreceipts_uk1", :unique => true
 
+  create_table "bookreceipts_org", :id => false, :force => true do |t|
+    t.integer   "id",                       :precision => 38, :scale => 0, :null => false
+    t.string    "book_no",                                                 :null => false
+    t.string    "po_no",                                                   :null => false
+    t.string    "invoice_no",                                              :null => false
+    t.string    "isbn",                                                    :null => false
+    t.integer   "title_id",                 :precision => 38, :scale => 0, :null => false
+    t.timestamp "created_at",  :limit => 6
+    t.timestamp "updated_at",  :limit => 6
+    t.integer   "crate_id",                 :precision => 38, :scale => 0, :null => false
+    t.integer   "created_by",               :precision => 38, :scale => 0
+    t.integer   "modified_by",              :precision => 38, :scale => 0
+    t.integer   "invoice_id",               :precision => 38, :scale => 0
+    t.integer   "po_id",                    :precision => 38, :scale => 0
+  end
+
+  create_table "booksorts", :id => false, :force => true do |t|
+    t.timestamp "log_date",   :limit => 6
+    t.string    "book_no",    :limit => 15
+    t.integer   "title_id",   :limit => nil
+    t.string    "isbn",       :limit => 15
+    t.string    "po_no",      :limit => 50
+    t.string    "invoice_no", :limit => 50
+    t.string    "category1",  :limit => 30
+    t.string    "category2",  :limit => 30
+  end
+
   create_table "boxes", :force => true do |t|
     t.integer   "box_no",                  :precision => 38, :scale => 0, :null => false
     t.string    "po_no",                                                  :null => false
@@ -52,6 +102,33 @@ ActiveRecord::Schema.define(:version => 20110923082509) do
     t.timestamp "created_at", :limit => 6
     t.timestamp "updated_at", :limit => 6
     t.integer   "crate_id",                :precision => 38, :scale => 0
+    t.integer   "invoice_id",              :precision => 38, :scale => 0
+  end
+
+  create_table "boxes_backup", :id => false, :force => true do |t|
+    t.integer   "id",                      :precision => 38, :scale => 0, :null => false
+    t.integer   "box_no",                  :precision => 38, :scale => 0, :null => false
+    t.string    "po_no",                                                  :null => false
+    t.string    "invoice_no",                                             :null => false
+    t.integer   "total_cnt",               :precision => 38, :scale => 0
+    t.timestamp "created_at", :limit => 6
+    t.timestamp "updated_at", :limit => 6
+    t.integer   "crate_id",                :precision => 38, :scale => 0
+  end
+
+  create_table "branches", :id => false, :force => true do |t|
+    t.integer "id",          :limit => nil
+    t.string  "name",        :limit => 298
+    t.string  "address",     :limit => 1000
+    t.string  "city",        :limit => 50
+    t.string  "phone"
+    t.string  "email",       :limit => 100
+    t.string  "category",    :limit => 1,    :null => false
+    t.integer "parent_id",   :limit => nil
+    t.string  "parent_name"
+    t.string  "card_id",     :limit => 16
+    t.string  "subdomain",   :limit => 50
+    t.integer "city_id",     :limit => nil
   end
 
   create_table "corelist", :force => true do |t|
@@ -122,6 +199,12 @@ ActiveRecord::Schema.define(:version => 20110923082509) do
     t.timestamp "updated_at",     :limit => 6
   end
 
+  create_table "dev_categories", :id => false, :force => true do |t|
+    t.integer "id",                      :precision => 38, :scale => 0
+    t.string  "name",     :limit => 200
+    t.string  "division", :limit => 200
+  end
+
   create_table "distributions", :force => true do |t|
     t.integer  "procurementitem_id", :precision => 38, :scale => 0
     t.integer  "branch_id",          :precision => 38, :scale => 0
@@ -134,55 +217,75 @@ ActiveRecord::Schema.define(:version => 20110923082509) do
   end
 
   create_table "enrichedtitle_versions", :force => true do |t|
-    t.integer   "enrichedtitle_id",                 :precision => 38, :scale => 0
-    t.integer   "version",                          :precision => 38, :scale => 0
-    t.integer   "title_id",                         :precision => 38, :scale => 0
+    t.integer   "enrichedtitle_id",                   :precision => 38, :scale => 0
+    t.integer   "version",                            :precision => 38, :scale => 0
+    t.integer   "title_id",                           :precision => 38, :scale => 0
     t.string    "title"
     t.string    "isbn"
     t.string    "language"
     t.string    "category"
     t.string    "subcategory"
     t.string    "isbn10"
-    t.timestamp "created_at",       :limit => 6
-    t.timestamp "updated_at",       :limit => 6
+    t.timestamp "created_at",         :limit => 6
+    t.timestamp "updated_at",         :limit => 6
     t.string    "verified"
     t.string    "author"
     t.string    "isbnvalid"
-    t.integer   "listprice",                        :precision => 38, :scale => 0
+    t.integer   "listprice",                          :precision => 38, :scale => 0
     t.string    "currency"
     t.string    "enriched"
-    t.integer   "imprint_id",                       :precision => 38, :scale => 0
-    t.string    "category1",        :limit => 1020
-    t.string    "category3",        :limit => 1020
-    t.string    "category2",        :limit => 1020
+    t.integer   "imprint_id",                         :precision => 38, :scale => 0
+    t.string    "category1",          :limit => 1020
+    t.string    "category3",          :limit => 1020
+    t.string    "category2",          :limit => 1020
+    t.integer   "category_id",                        :precision => 38, :scale => 0
+    t.string    "cover_file_name"
+    t.string    "cover_content_type"
+    t.integer   "cover_file_size",                    :precision => 38, :scale => 0
+    t.datetime  "cover_updated_at"
   end
 
   add_index "enrichedtitle_versions", ["enrichedtitle_id"], :name => "i_enr_ver_enr_id"
 
   create_table "enrichedtitles", :force => true do |t|
-    t.integer   "title_id",                    :precision => 38, :scale => 0
-    t.string    "title",                                                      :null => false
-    t.string    "isbn",                                                       :null => false
+    t.integer   "title_id",                           :precision => 38, :scale => 0
+    t.string    "title",                                                             :null => false
+    t.string    "isbn",                                                              :null => false
     t.string    "language"
     t.string    "category"
     t.string    "subcategory"
     t.string    "isbn10"
-    t.timestamp "created_at",  :limit => 6
-    t.timestamp "updated_at",  :limit => 6
-    t.integer   "version",                     :precision => 38, :scale => 0
+    t.timestamp "created_at",         :limit => 6
+    t.timestamp "updated_at",         :limit => 6
+    t.integer   "version",                            :precision => 38, :scale => 0
     t.string    "verified"
     t.string    "author"
     t.string    "isbnvalid"
-    t.decimal   "listprice",                                                  :null => false
-    t.string    "currency",                                                   :null => false
+    t.decimal   "listprice",                                                         :null => false
+    t.string    "currency",                                                          :null => false
     t.string    "enriched"
-    t.integer   "imprint_id",                  :precision => 38, :scale => 0
-    t.string    "category1",   :limit => 1020
-    t.string    "category3",   :limit => 1020
-    t.string    "category2",   :limit => 1020
+    t.integer   "imprint_id",                         :precision => 38, :scale => 0
+    t.string    "category1",          :limit => 1020
+    t.string    "category3",          :limit => 1020
+    t.string    "category2",          :limit => 1020
+    t.integer   "category_id",                        :precision => 38, :scale => 0
+    t.string    "cover_file_name"
+    t.string    "cover_content_type"
+    t.integer   "cover_file_size",                    :precision => 38, :scale => 0
+    t.datetime  "cover_updated_at"
   end
 
   add_index "enrichedtitles", ["isbn"], :name => "enrichedtitles_isbn", :unique => true
+
+  create_table "enrichedtitles_categories", :id => false, :force => true do |t|
+    t.integer "title_id",  :limit => nil
+    t.string  "isbn",      :limit => 15
+    t.string  "category1", :limit => 30
+    t.string  "category2", :limit => 30
+  end
+
+  add_index "enrichedtitles_categories", ["isbn"], :name => "in_ec_2", :unique => true
+  add_index "enrichedtitles_categories", ["title_id"], :name => "in_ec_1", :unique => true
 
   create_table "imprints", :force => true do |t|
     t.string    "code",                                                     :null => false
@@ -226,9 +329,16 @@ ActiveRecord::Schema.define(:version => 20110923082509) do
     t.integer   "created_by",                    :precision => 38, :scale => 0
     t.integer   "modified_by",                   :precision => 38, :scale => 0
     t.string    "has_isbn",        :limit => 20,                                :default => "YES"
+    t.integer   "received_cnt",                  :precision => 38, :scale => 0
   end
 
   add_index "invoices", ["invoice_no", "po_id"], :name => "invoices_unq", :unique => true
+
+  create_table "languages", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "list_stagings", :force => true do |t|
     t.string    "isbn"
@@ -358,6 +468,32 @@ ActiveRecord::Schema.define(:version => 20110923082509) do
 
   add_index "procurementitems", ["po_number", "isbn", "branch_id", "procurement_id"], :name => "unq_po_isbn", :unique => true
 
+  create_table "procurementitems_bkp", :id => false, :force => true do |t|
+    t.integer   "id",                               :precision => 38, :scale => 0, :null => false
+    t.string    "source"
+    t.integer   "source_id",                        :precision => 38, :scale => 0
+    t.integer   "enrichedtitle_id",                 :precision => 38, :scale => 0
+    t.string    "isbn"
+    t.string    "status"
+    t.string    "po_number"
+    t.string    "cancel_reason"
+    t.integer   "deferred_by",                      :precision => 38, :scale => 0
+    t.timestamp "last_action_date", :limit => 6
+    t.integer   "supplier_id",                      :precision => 38, :scale => 0
+    t.timestamp "expiry_date",      :limit => 6
+    t.integer   "member_id",                        :precision => 38, :scale => 0
+    t.string    "card_id"
+    t.integer   "branch_id",                        :precision => 38, :scale => 0, :null => false
+    t.timestamp "created_at",       :limit => 6
+    t.timestamp "updated_at",       :limit => 6
+    t.integer   "quantity",                         :precision => 38, :scale => 0
+    t.integer   "procured_cnt",                     :precision => 38, :scale => 0
+    t.string    "availability",     :limit => 1020
+    t.integer   "title_id",                         :precision => 38, :scale => 0
+    t.integer   "procurement_id",                   :precision => 38, :scale => 0
+    t.integer   "received_cnt",                     :precision => 38, :scale => 0
+  end
+
   create_table "procurements", :force => true do |t|
     t.integer   "source_id",                    :precision => 38, :scale => 0
     t.string    "description"
@@ -371,10 +507,11 @@ ActiveRecord::Schema.define(:version => 20110923082509) do
   end
 
   create_table "publishers", :force => true do |t|
-    t.timestamp "created_at", :limit => 6
-    t.timestamp "updated_at", :limit => 6
-    t.string    "name",       :limit => 1020, :null => false
-    t.string    "country",    :limit => 1020
+    t.timestamp "created_at",    :limit => 6
+    t.timestamp "updated_at",    :limit => 6
+    t.string    "imprintname",   :limit => 1020, :null => false
+    t.string    "country",       :limit => 1020
+    t.string    "publishername"
   end
 
   create_table "supplierdiscounts", :force => true do |t|
@@ -409,15 +546,37 @@ ActiveRecord::Schema.define(:version => 20110923082509) do
   end
 
   create_table "titlereceipts", :force => true do |t|
-    t.string    "po_no",                                                     :null => false
-    t.string    "invoice_no",                                                :null => false
-    t.string    "isbn",                                                      :null => false
-    t.integer   "box_no",                     :precision => 38, :scale => 0, :null => false
-    t.timestamp "created_at", :limit => 6
-    t.timestamp "updated_at", :limit => 6
-    t.string    "book_no",    :limit => 1020
-    t.integer   "created_by",                 :precision => 38, :scale => 0
-    t.string    "error",      :limit => 1020
+    t.string    "po_no",                                                             :null => false
+    t.string    "invoice_no",                                                        :null => false
+    t.string    "isbn",                                                              :null => false
+    t.integer   "box_no",                             :precision => 38, :scale => 0, :null => false
+    t.timestamp "created_at",         :limit => 6
+    t.timestamp "updated_at",         :limit => 6
+    t.string    "book_no",            :limit => 1020
+    t.integer   "created_by",                         :precision => 38, :scale => 0
+    t.string    "error",              :limit => 1020
+    t.integer   "crate_id",                           :precision => 38, :scale => 0
+    t.integer   "procurementitem_id",                 :precision => 38, :scale => 0
+    t.integer   "po_id",                              :precision => 38, :scale => 0
+    t.integer   "invoice_id",                         :precision => 38, :scale => 0
+    t.integer   "box_id",                             :precision => 38, :scale => 0
+  end
+
+  create_table "users", :force => true do |t|
+    t.string   "username"
+    t.string   "email",                                                              :default => "", :null => false
+    t.string   "encrypted_password",   :limit => 128,                                :default => ""
+    t.string   "password_salt",                                                      :default => ""
+    t.string   "reset_password_token"
+    t.string   "remember_token"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",                       :precision => 38, :scale => 0, :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "workitems", :force => true do |t|
@@ -449,8 +608,7 @@ ActiveRecord::Schema.define(:version => 20110923082509) do
 
   add_foreign_key "workitems", "worklists", :name => "workitems_worklists_fk1", :dependent => :delete
 
-  add_synonym "authentications", "authentications@link_opac", :force => true
-  add_synonym "users", "users@link_opac", :force => true
-  add_synonym "users_seq", "users_seq@link_opac", :force => true
+  add_synonym "sms", "sms@jbclclink", :force => true
+  add_synonym "sms_seq", "sms_seq@jbclclink", :force => true
 
 end

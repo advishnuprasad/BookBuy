@@ -12,7 +12,7 @@ gem 'autotest'
 gem 'autotest-rails'
 gem 'acts_as_versioned'
 gem 'devise', '1.1.7'
-gem 'omniauth'
+gem 'omniauth', "~> 0.3.2"
 gem 'will_paginate', '~> 3.0.pre2'
 gem 'rufus-scheduler'
 gem 'ruby-plsql'
@@ -20,8 +20,8 @@ gem 'rubyzip'
 gem 'breadcrumbs'
 
 # gem's to upload images
+gem 'aws-s3'
 gem 'paperclip'
-gem 'aws-sdk'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

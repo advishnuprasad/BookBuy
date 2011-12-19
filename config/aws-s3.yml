@@ -1,0 +1,9 @@
+development:
+  access_key_id: dirty
+  secret_access_key: picture
+  bucket: dirty.pic
+
+production:
+  access_key_id: dirty
+  secret_access_key: picture
+  bucket: dirty.pick

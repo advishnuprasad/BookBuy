@@ -11,12 +11,12 @@
       Category: <%= @enrichedtitle.jbcategory.name %><br/>
     <% end -%>
   </div>
-  <div class="span-12 last">
-    <%= image_tag "http://img.justbooksclc.com.s3.amazonaws.com/#{@enrichedtitle.isbn}.jpg", :size => "100X150" %>
+  <div class="span-10 last">
+    <%= image_tag @enrichedtitle.cover.url, :size => "100X150" %>
   </div>
   
   <div class="span-24 last">
-    <%= form_for(@enrichedtitle) do |f| %>
+    <%= form_for(@enrichedtitle, :html => { :multipart => true }) do |f| %>
       <% if @enrichedtitle.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(@enrichedtitle.errors.count, "error") %> prohibited this title from being saved:</h2>
@@ -29,8 +29,11 @@
         </div>
       <% end %>
       
-      <%= f.select :category_id, Category.all.collect {|p| [p.division + '-' + p.name, p.id]} %><br/>
-      <%= f.label :language %> <%= f.select :language, Language.all.collect {|p| [p.name,p.name] } %>
+      <%= field_set_tag do -%>
+        <%= f.label :category_id %> <%= f.select :category_id, Category.all.collect {|p| [p.division + '-' + p.name, p.id]} %><br/>
+        <%= f.label :language %> <%= f.select :language, Language.all.collect {|p| [p.name,p.name] } %><br/>      
+        <%= f.label :cover %><%= f.file_field :cover, :accept => 'image/jpeg' %>
+      <% end %>
 
       <div class="actions">
         <%= f.submit %>

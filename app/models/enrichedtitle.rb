@@ -34,6 +34,8 @@ class Enrichedtitle < ActiveRecord::Base
   belongs_to :imprint
   belongs_to :jbtitle, :foreign_key => "title_id", :class_name => "Title"
   has_many :procurementitems
+  has_attached_file :cover, :styles => {:thumb => "100x100>", :medium => "200x200>"}, 
+  :path => ':style/:isbn.:extension', :default_url => "/images/missing_:style.jpg"
   
   belongs_to :jbcategory, :foreign_key => 'category_id', :class_name => "Category"
   
@@ -42,6 +44,9 @@ class Enrichedtitle < ActiveRecord::Base
   validates :author,                 :presence => true
   validates :listprice,              :presence => true
   validates :currency,               :presence => true
+
+  validates_attachment_size :cover, :less_than => 50.kilobytes, :message => 'file size maximum 50 KB allowed'
+  validates_attachment_content_type :cover, :content_type => ['image/jpeg']
   
   scope :unscanned, where(:isbnvalid => nil)
   scope :valid, where(:isbnvalid => 'Y')
@@ -52,6 +57,7 @@ class Enrichedtitle < ActiveRecord::Base
     }
     
   attr_accessible :category_id, :language
+  attr_protected :cover_file_name, :cover_content_type, :conver_file_size, :conver_updated_at
     
   def self.scan_in_procurement(procurement_id)
     Enrichedtitle.of_procurement(procurement_id).unscanned.limit(1000).each do |title|
