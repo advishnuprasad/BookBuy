@@ -2,7 +2,7 @@ class CurrencyratesController < ApplicationController
   # GET /currencyrates
   # GET /currencyrates.xml
   def index
-    @currencyrates = Currencyrate.order('code1').order('code2').all.paginate(:per_page => 15, :page => params[:page])
+    @currencyrates = Currencyrate.order('code1').order('code2').paginate(:per_page => 15, :page => params[:page])
 
     breadcrumbs.add 'Currency Rates'
     

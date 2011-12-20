@@ -18,7 +18,7 @@ class ImprintsController < ApplicationController
         @imprints = Imprint.of_publisher(params[:publisher_id]).paginate(:per_page => 50, :page => params[:page])
       end
     else
-      @imprints = Imprint.order("publisher_id").all.paginate(:per_page => 50, :page => params[:page])
+      @imprints = Imprint.order("publisher_id").paginate(:per_page => 50, :page => params[:page])
     end
 
     breadcrumbs.add 'Imprints'
