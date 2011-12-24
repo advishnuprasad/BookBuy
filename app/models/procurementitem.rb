@@ -32,7 +32,7 @@ class Procurementitem < ActiveRecord::Base
   AVAILABILITY_OPTIONS = ["Avl","Not Avl"]
   CANCEL_REASONS = ["Out of Print","High Cost","Unavailable in Market", "Insufficient Data","Imported Edition","Non-Procurable Category"]
   
-  belongs_to :enrichedtitle
+  belongs_to :enrichedtitle, :counter_cache => true
   belongs_to :supplier
   belongs_to :procurement
   belongs_to :title

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111218195039) do
+ActiveRecord::Schema.define(:version => 20111223130939) do
 
   create_table "app_116_16_gt", :temporary => true, :id => false, :force => true do |t|
     t.integer "batch_no",                  :precision => 38, :scale => 0
@@ -248,31 +248,32 @@ ActiveRecord::Schema.define(:version => 20111218195039) do
   add_index "enrichedtitle_versions", ["enrichedtitle_id"], :name => "i_enr_ver_enr_id"
 
   create_table "enrichedtitles", :force => true do |t|
-    t.integer   "title_id",                           :precision => 38, :scale => 0
-    t.string    "title",                                                             :null => false
-    t.string    "isbn",                                                              :null => false
+    t.integer   "title_id",                               :precision => 38, :scale => 0
+    t.string    "title",                                                                                :null => false
+    t.string    "isbn",                                                                                 :null => false
     t.string    "language"
     t.string    "category"
     t.string    "subcategory"
     t.string    "isbn10"
-    t.timestamp "created_at",         :limit => 6
-    t.timestamp "updated_at",         :limit => 6
-    t.integer   "version",                            :precision => 38, :scale => 0
+    t.timestamp "created_at",             :limit => 6
+    t.timestamp "updated_at",             :limit => 6
+    t.integer   "version",                                :precision => 38, :scale => 0
     t.string    "verified"
     t.string    "author"
     t.string    "isbnvalid"
-    t.decimal   "listprice",                                                         :null => false
-    t.string    "currency",                                                          :null => false
+    t.decimal   "listprice",                                                                            :null => false
+    t.string    "currency",                                                                             :null => false
     t.string    "enriched"
-    t.integer   "imprint_id",                         :precision => 38, :scale => 0
-    t.string    "category1",          :limit => 1020
-    t.string    "category3",          :limit => 1020
-    t.string    "category2",          :limit => 1020
-    t.integer   "category_id",                        :precision => 38, :scale => 0
+    t.integer   "imprint_id",                             :precision => 38, :scale => 0
+    t.string    "category1",              :limit => 1020
+    t.string    "category3",              :limit => 1020
+    t.string    "category2",              :limit => 1020
+    t.integer   "category_id",                            :precision => 38, :scale => 0
     t.string    "cover_file_name"
     t.string    "cover_content_type"
-    t.integer   "cover_file_size",                    :precision => 38, :scale => 0
+    t.integer   "cover_file_size",                        :precision => 38, :scale => 0
     t.datetime  "cover_updated_at"
+    t.integer   "procurementitems_count",                 :precision => 38, :scale => 0, :default => 0
   end
 
   add_index "enrichedtitles", ["isbn"], :name => "enrichedtitles_isbn", :unique => true
@@ -509,7 +510,7 @@ ActiveRecord::Schema.define(:version => 20111218195039) do
   create_table "publishers", :force => true do |t|
     t.timestamp "created_at",    :limit => 6
     t.timestamp "updated_at",    :limit => 6
-    t.string    "imprintname",   :limit => 1020, :null => false
+    t.string    "name",          :limit => 1020, :null => false
     t.string    "country",       :limit => 1020
     t.string    "publishername"
   end
