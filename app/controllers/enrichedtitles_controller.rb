@@ -2,12 +2,20 @@ class EnrichedtitlesController < ApplicationController
   def index
     unless params[:queryISBN].blank?
       @enrichedtitle = Enrichedtitle.find_by_isbn(params[:queryISBN])
-      render "show"
+      unless @enrichedtitle.nil?
+        render "show"
+      else
+        @isbn = params[:queryISBN]
+        render :action => "new"
+      end
     end
   end
   
   def edit
     @enrichedtitle = Enrichedtitle.find(params[:id])
+  end
+  
+  def new
   end
   
   def show
