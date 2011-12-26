@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111223130939) do
+ActiveRecord::Schema.define(:version => 20111226064052) do
 
   create_table "app_116_16_gt", :temporary => true, :id => false, :force => true do |t|
     t.integer "batch_no",                  :precision => 38, :scale => 0
@@ -217,32 +217,33 @@ ActiveRecord::Schema.define(:version => 20111223130939) do
   end
 
   create_table "enrichedtitle_versions", :force => true do |t|
-    t.integer   "enrichedtitle_id",                   :precision => 38, :scale => 0
-    t.integer   "version",                            :precision => 38, :scale => 0
-    t.integer   "title_id",                           :precision => 38, :scale => 0
+    t.integer   "enrichedtitle_id",                       :precision => 38, :scale => 0
+    t.integer   "version",                                :precision => 38, :scale => 0
+    t.integer   "title_id",                               :precision => 38, :scale => 0
     t.string    "title"
     t.string    "isbn"
     t.string    "language"
     t.string    "category"
     t.string    "subcategory"
     t.string    "isbn10"
-    t.timestamp "created_at",         :limit => 6
-    t.timestamp "updated_at",         :limit => 6
+    t.timestamp "created_at",             :limit => 6
+    t.timestamp "updated_at",             :limit => 6
     t.string    "verified"
     t.string    "author"
     t.string    "isbnvalid"
-    t.integer   "listprice",                          :precision => 38, :scale => 0
+    t.integer   "listprice",                              :precision => 38, :scale => 0
     t.string    "currency"
     t.string    "enriched"
-    t.integer   "imprint_id",                         :precision => 38, :scale => 0
-    t.string    "category1",          :limit => 1020
-    t.string    "category3",          :limit => 1020
-    t.string    "category2",          :limit => 1020
-    t.integer   "category_id",                        :precision => 38, :scale => 0
+    t.integer   "imprint_id",                             :precision => 38, :scale => 0
+    t.string    "category1",              :limit => 1020
+    t.string    "category3",              :limit => 1020
+    t.string    "category2",              :limit => 1020
+    t.integer   "category_id",                            :precision => 38, :scale => 0
     t.string    "cover_file_name"
     t.string    "cover_content_type"
-    t.integer   "cover_file_size",                    :precision => 38, :scale => 0
+    t.integer   "cover_file_size",                        :precision => 38, :scale => 0
     t.datetime  "cover_updated_at"
+    t.integer   "procurementitems_count",                 :precision => 38, :scale => 0, :default => 0
   end
 
   add_index "enrichedtitle_versions", ["enrichedtitle_id"], :name => "i_enr_ver_enr_id"
