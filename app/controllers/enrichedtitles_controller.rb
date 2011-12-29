@@ -5,8 +5,7 @@ class EnrichedtitlesController < ApplicationController
       unless @enrichedtitle.nil?
         render "show"
       else
-        @isbn = params[:queryISBN]
-        render :action => "new"
+        redirect_to :action => 'new', :isbn => params[:queryISBN]
       end
     end
   end
@@ -15,7 +14,19 @@ class EnrichedtitlesController < ApplicationController
     @enrichedtitle = Enrichedtitle.find(params[:id])
   end
   
+  def create
+    @enrichedtitle = Enrichedtitle.new(params[:enrichedtitle])
+
+    if @enrichedtitle.save
+      redirect_to(@enrichedtitle, :notice => 'Title was successfully created.')
+    else
+      render :action => "new"
+    end
+  end
+  
   def new
+    @isbn = params[:isbn]
+    @enrichedtitle = Enrichedtitle.new_from_web(@isbn)
   end
   
   def show

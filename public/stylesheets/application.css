@@ -173,3 +173,8 @@ table.form tbody td {font-size:120%;font-weight:normal;}
  text-align: center;
  margin-bottom: 10px;
 }
+
+table.no-zebra tbody tr:nth-child(even) td,
+table.no-zebra tbody tr.even td {
+  background: transparent;
+}

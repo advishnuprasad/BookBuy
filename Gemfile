@@ -22,6 +22,9 @@ gem 'breadcrumbs'
 gem 'aws-s3'
 gem 'paperclip'
 
+# for scraping
+gem 'mechanize'
+
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 

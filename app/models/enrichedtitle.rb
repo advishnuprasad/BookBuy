@@ -39,12 +39,15 @@ class Enrichedtitle < ActiveRecord::Base
   
   belongs_to :jbcategory, :foreign_key => 'category_id', :class_name => "Category"
   
-  validates :title,                  :presence => true
-  validates :isbn,                   :presence => true
-  validates :author,                 :presence => true
-  validates :listprice,              :presence => true
-  validates :currency,               :presence => true
+  validates :title,       :presence => true
+  validates :isbn,        :presence => true
+  validates :author,      :presence => true
+  validates :listprice,   :presence => true, :numericality => true
+  validates :currency,    :presence => true
+  validates :language,    :presence => true
+  validates :category_id, :presence => true
 
+  before_validation :download_remote_image, :if => :image_url_provided?
   validates_attachment_size :cover, :less_than => 50.kilobytes, :message => 'file size maximum 50 KB allowed'
   validates_attachment_content_type :cover, :content_type => ['image/jpeg']
   
@@ -54,10 +57,13 @@ class Enrichedtitle < ActiveRecord::Base
   scope :of_procurement, lambda {|procurement_id|
       joins(:procurementitems).
       where(:procurementitems => {:procurement_id => procurement_id})
-    }
-    
-  attr_accessible :category_id, :language
+  }
+  
+  attr_accessor :publisher, :pubdate, :page_cnt, :image_url, :use_image_url
+  attr_accessible :category_id, :language, :listprice, :currency
   attr_protected :cover_file_name, :cover_content_type, :conver_file_size, :conver_updated_at
+  
+
     
   def self.scan_in_procurement(procurement_id)
     Enrichedtitle.of_procurement(procurement_id).unscanned.limit(1000).each do |title|
@@ -156,6 +162,43 @@ class Enrichedtitle < ActiveRecord::Base
       end
     end
     return false
+  end
+
+  def self.new_from_web(isbn)
+    et = new
+    et.isbn = isbn
+    finfo = FlipkartInfo.book_info(isbn)
+    unless finfo.nil?
+      et.title = finfo[:title]
+      et.author =  finfo[:authors]
+      et.publisher = finfo[:publisher]
+      et.pubdate = finfo[:pubdate]
+      et.page_cnt = finfo[:page_cnt]
+      et.language = finfo[:language]
+      et.listprice = finfo[:listprice].scan(/\d/).join('')
+      et.image_url = finfo[:image]
+    end
+    et
+  end
+  
+  private
+  
+  def image_url_provided?
+    !image_url.blank?
+  end
+  
+  def download_remote_image
+    self.cover = do_download_remote_image
+    self.cover_remote_url = image_url
+  end
+  
+  def do_download_remote_image
+      require 'open-uri'
+      io = open(URI.parse(image_url))
+      def io.original_filename; base_uri.path.split('/').last; end
+      io.original_filename.blank? ? nil : io
+  rescue
+    self.cover = nil
   end
 end
 

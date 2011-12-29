@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111226064052) do
+ActiveRecord::Schema.define(:version => 20111229084309) do
 
   create_table "app_116_16_gt", :temporary => true, :id => false, :force => true do |t|
     t.integer "batch_no",                  :precision => 38, :scale => 0
@@ -244,6 +244,7 @@ ActiveRecord::Schema.define(:version => 20111226064052) do
     t.integer   "cover_file_size",                        :precision => 38, :scale => 0
     t.datetime  "cover_updated_at"
     t.integer   "procurementitems_count",                 :precision => 38, :scale => 0, :default => 0
+    t.string    "cover_remote_url"
   end
 
   add_index "enrichedtitle_versions", ["enrichedtitle_id"], :name => "i_enr_ver_enr_id"
@@ -275,6 +276,7 @@ ActiveRecord::Schema.define(:version => 20111226064052) do
     t.integer   "cover_file_size",                        :precision => 38, :scale => 0
     t.datetime  "cover_updated_at"
     t.integer   "procurementitems_count",                 :precision => 38, :scale => 0, :default => 0
+    t.string    "cover_remote_url"
   end
 
   add_index "enrichedtitles", ["isbn"], :name => "enrichedtitles_isbn", :unique => true
