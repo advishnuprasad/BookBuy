@@ -44,8 +44,8 @@ class Enrichedtitle < ActiveRecord::Base
   validates :author,      :presence => true
   validates :listprice,   :presence => true, :numericality => true
   validates :currency,    :presence => true
-  # validates :language,    :presence => true, :on => :create # new fields, existing data not set
-  # validates :category_id, :presence => true, :on => :create # new fields, existing data not set
+  validates :language,    :presence => true, :on => :create # new fields, existing data not set
+  validates :category_id, :presence => true, :on => :create # new fields, existing data not set
 
   before_validation :download_remote_image, :if => :image_url_provided?
   validates_attachment_size :cover, :less_than => 50.kilobytes, :message => 'file size maximum 50 KB allowed'
