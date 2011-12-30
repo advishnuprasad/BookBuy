@@ -1,10 +1,12 @@
 <h2>Procurements</h2>
 
+<%= will_paginate :prev_label => '<< Previous', :next_label => 'Next >>', :class => 'pagination'%>
 <table>
   <tr>
     <th style="width: 40%;">List</th>
     <th style="width: 10%;">Type</th>
     <th style="width: 10%;">Requests count</th>
+    <th style="width: 10%;">Created at</th>
     <th style="width: 10%;">Created by</th>
     <th style="width: 10%;">Modified by</th>
   </tr>
@@ -14,17 +16,12 @@
     <td><%= link_to procurement.list.name, procurement %></td>
     <td><%= procurement.description %></td>
     <td><%= procurement.requests_cnt %></td>
+    <td><%= procurement.created_at.strftime('%d-%b-%Y') unless procurement.created_at.nil? %></td>
     <td><%= procurement.created_by_user.username unless procurement.created_by_user.nil? %></td>
     <td><%= procurement.modified_by_user.username unless procurement.modified_by_user.nil? %></td>
   </tr>
 <% end %>
 </table>
-
-<br />
-
-<!--<%= link_to 'New Procurement', new_procurement_path %> -->
-
-<br/>
 <hr>
 <h2>Pull Items</h2>
 

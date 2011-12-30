@@ -2,7 +2,7 @@ class ProcurementsController < ApplicationController
   # GET /procurements
   # GET /procurements.xml
   def index
-    @procurements = Procurement.order("id DESC").all
+    @procurements = Procurement.order("id DESC").paginate(:per_page => 15, :page => params[:page])
     
     breadcrumbs.add 'Procurements'
     
