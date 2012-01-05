@@ -50,7 +50,9 @@ class List < ActiveRecord::Base
       listitem.list_id = id
       listitem.pulled = 'N'
       
-      listitem.save
+      unless listitem.save
+        Rails.logger.warn(listitem.errors.to_s)
+      end
     end
     
     self.pulled = 'N'
