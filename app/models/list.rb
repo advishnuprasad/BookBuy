@@ -34,7 +34,7 @@ class List < ActiveRecord::Base
     
   attr_readonly :key
   attr_accessible :name, :kind, :pulled, :description, :listitems_attributes
-  accepts_nested_attributes_for :listitems
+  accepts_nested_attributes_for :listitems, :reject_if => lambda {|a| a[:ready_to_order] == "0" }
   
   def pull_items_from_staging_area (user_id)
     list_stagings.each do |list_staging|

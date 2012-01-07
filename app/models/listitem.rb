@@ -37,5 +37,6 @@ class Listitem < ActiveRecord::Base
   validates :currency, :presence => true
 
   attr_accessible :isbn, :quantity, :branch_id, :ibtr_id, :member_id, :card_id
+  attr_accessor :ready_to_order
   
 end
