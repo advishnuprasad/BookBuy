@@ -2,62 +2,43 @@ require 'bundler/capistrano'
 
 set :application, "BookBuy"
 set :repository,  "git://github.com/subhashb/BookBuy.git"
-set :branch, "production"
-
 set :scm, :git
-
-set :deploy_to, "/disk1/bookbuy"
-set :user, 'rails'
 set :scm_username, 'akil_rails'
 set :use_sudo, false
 
-# Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
+task :production do
+  set :branch, "production"
+  set :default_environment, {  "LD_LIBRARY_PATH" => "/opt/oracle/instantclient_10_2", "TNS_ADMIN" => "/opt/oracle/network/admin" }
+  set :user, 'rails'
+  set :deploy_to, "/disk1/bookbuy"
+  role :web, "74.86.131.195"                          # Your HTTP server, Apache/etc
+  role :app, "74.86.131.195"                          # This may be the same as your `Web` server
+  role :db,  "74.86.131.195", :primary => true        # This is where Rails migrations will run
+end
 
-role :web, "74.86.131.195"                          # Your HTTP server, Apache/etc
-role :app, "74.86.131.195"                          # This may be the same as your `Web` server
-role :db,  "74.86.131.195", :primary => true # This is where Rails migrations will run
-# role :db,  "74.86.131.195"
+task :staging do
+  set :branch, "production"   # Temporary; will be removed when production 
+  set :default_environment, { "PATH" => "/usr/local/ruby-1.9.2-p290/bin:$PATH", "LD_LIBRARY_PATH" => "/opt/oracle/instantclient_10_2", "TNS_ADMIN" => "/opt/oracle/network/admin" }
+  set :user, 'ruby'
+  set :deploy_to, "/usr/ruby/ams"
+  role :web, "jbserver1.interactivedns.com"                          # Your HTTP server, Apache/etc
+  role :app, "jbserver1.interactivedns.com"                          # This may be the same as your `Web` server
+  role :db,  "jbserver1.interactivedns.com", :primary => true        # This is where Rails migrations will run
+end
 
-# If you are using Passenger mod_rails uncomment this:
-# if you're still using the script/reapear helper you will need
-# these http://github.com/rails/irs_process_scripts
-  namespace :deploy do
-    task :copy_database_configuration do 
-      production_db_config = "/disk1/bookbuy/database.yml" 
-      run "cp #{production_db_config} #{release_path}/config/database.yml"
-    end
-    after "deploy:update_code", "deploy:copy_database_configuration"
+after "deploy", "deploy:migrate"
+
+namespace :deploy do
+  after "deploy:update_code" do
+    run "cp #{deploy_to}/database.yml #{release_path}/config/database.yml"
+    run "cp #{deploy_to}/setup_mail.rb #{release_path}/config/initializers/setup_mail.rb"
+    run "cp #{deploy_to}/environment.rb #{release_path}/config/environment.rb"
+    run "cp #{deploy_to}/aws-s3.yml #{release_path}/config/aws-s3.yml"
   end
 
-  namespace :deploy do
-    task :copy_mail_configuration do 
-      production_mail_config = "/disk1/bookbuy/setup_mail.rb" 
-      run "cp #{production_mail_config} #{release_path}/config/initializers/setup_mail.rb"
-    end
-    after "deploy:update_code", "deploy:copy_mail_configuration"
+  task :start do ; end
+  task :stop do ; end
+  task :restart, :roles => :app, :except => { :no_release => true } do
+    run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
   end
-  
-  namespace :deploy do
-    task :copy_environment_settings do 
-      production_environment_config = "/disk1/bookbuy/environment.rb" 
-      run "cp #{production_environment_config} #{release_path}/config/environment.rb"
-    end
-    after "deploy:update_code", "deploy:copy_environment_settings"
-  end
-
-  namespace :deploy do
-    task :copy_aws_settings do 
-      production_aws_config = "/disk1/bookbuy/aws-s3.yml" 
-      run "cp #{production_aws_config} #{release_path}/config/aws-s3.yml"
-    end
-    after "deploy:update_code", "deploy:copy_aws_settings"
-  end
-
-  namespace :deploy do
-   task :start do ; end
-   task :stop do ; end
-   task :restart, :roles => :app, :except => { :no_release => true } do
-     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-   end
- end
- 
+end
