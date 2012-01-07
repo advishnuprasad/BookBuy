@@ -13,7 +13,6 @@ task :production do
   role :web, "74.86.131.195"                          # Your HTTP server, Apache/etc
   role :app, "74.86.131.195"                          # This may be the same as your `Web` server
   role :db,  "74.86.131.195", :primary => true        # This is where Rails migrations will run
-  yield
 end
 
 task :staging do
@@ -23,7 +22,6 @@ task :staging do
   role :web, "jbserver1.interactivedns.com"                          # Your HTTP server, Apache/etc
   role :app, "jbserver1.interactivedns.com"                          # This may be the same as your `Web` server
   role :db,  "jbserver1.interactivedns.com", :primary => true        # This is where Rails migrations will run
-  yield
 end
 
 after "deploy", "deploy:migrate"
