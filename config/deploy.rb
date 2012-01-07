@@ -6,27 +6,24 @@ set :scm, :git
 set :scm_username, 'akil_rails'
 set :use_sudo, false
 
-def production name
-  task name do
-    set :branch, "production"
-    set :user, 'rails'
-    set :deploy_to, "/disk1/bookbuy"
-    role :web, "74.86.131.195"                          # Your HTTP server, Apache/etc
-    role :app, "74.86.131.195"                          # This may be the same as your `Web` server
-    role :db,  "74.86.131.195", :primary => true        # This is where Rails migrations will run
-    yield
-  end
+task :production do
+  set :branch, "production"
+  set :user, 'rails'
+  set :deploy_to, "/disk1/bookbuy"
+  role :web, "74.86.131.195"                          # Your HTTP server, Apache/etc
+  role :app, "74.86.131.195"                          # This may be the same as your `Web` server
+  role :db,  "74.86.131.195", :primary => true        # This is where Rails migrations will run
+  yield
 end
 
-def staging name
-  task name do
-    set :branch, "production"
-    set :user, 'ruby'
-    set :deploy_to, "/usr/ruby/ams"
-    role :web, "jbserver1.interactivedns.com"                          # Your HTTP server, Apache/etc
-    role :app, "jbserver1.interactivedns.com"                          # This may be the same as your `Web` server
-    role :db,  "jbserver1.interactivedns.com", :primary => true        # This is where Rails migrations will run
-  end
+task :staging do
+  set :branch, "production"   # Temporary; will be removed when production 
+  set :user, 'ruby'
+  set :deploy_to, "/usr/ruby/ams"
+  role :web, "jbserver1.interactivedns.com"                          # Your HTTP server, Apache/etc
+  role :app, "jbserver1.interactivedns.com"                          # This may be the same as your `Web` server
+  role :db,  "jbserver1.interactivedns.com", :primary => true        # This is where Rails migrations will run
+  yield
 end
 
 after "deploy", "deploy:migrate"
