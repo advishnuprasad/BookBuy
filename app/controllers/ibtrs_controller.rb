@@ -3,10 +3,21 @@ class IbtrsController < ApplicationController
     @ibtrs = Ibtr.find(:all, :from => :search, :params => { :Assigned => :Assigned, :branchVal => 951, :searchBy => "respondent_id" })
     enrichedtitles = Enrichedtitle.valid.find_all_by_title_id( @ibtrs.collect { |ibtr| ibtr.title_id }.uniq )
     titles = Title.find_all_by_id( @ibtrs.collect { |ibtr| ibtr.title_id }.uniq )
+    
+    @list = List.new(:name => 'IBTR-'+(Time.now.to_f*1000).round.to_s, :kind => 'IBTR', :pulled => 'N', :description => 'IBTR List Description')
     @ibtrs.each do |ibtr|
       ibtr.enrichedtitle = enrichedtitles.detect { |er| er.title_id == ibtr.title_id }
       ibtr.title = titles.detect { |t| t.id.to_i == ibtr.title_id }
-    end
+      
+      unless ibtr.enrichedtitle.nil?
+        @list.listitems.build(:isbn => ibtr.enrichedtitle.isbn, 
+                              :quantity => 1, 
+                              :branch_id => ibtr.branch_id, 
+                              :member_id => ibtr.member_id, 
+                              :card_id => ibtr.card_id, 
+                              :ibtr_id => ibtr.id)
+      end
+    end    
   end
   
   def edit

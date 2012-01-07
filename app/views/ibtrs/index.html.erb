@@ -18,17 +18,24 @@
 <hr/>
 <h3>Ready to Order</h3>
 <span>To place a procurement, you need to select the checkbox for the items that should be included</span>
-<table>
-  <% @ibtrs.reject { |x| x.enrichedtitle.nil? }.each do |ibtr| -%>
-    <tr>
-      <td><%= ibtr.id %></td>
-      <td><%= ibtr.member_id %></td>
-      <td><%= ibtr.card_id %></td>
-      <td><%= ibtr.branch_id %></td>
-      <td><%= ibtr.title_id %></td>
-      <td colspan="2"><%= ibtr.enrichedtitle.title %></td>
-      <td><%= ibtr.enrichedtitle.isbn %></td>
-      <td><%= check_box_tag :place_order %></td>
-    </tr>
-  <% end -%>
-</table>
+<%= form_for @list, :url => lists_path do |f| -%>
+  <%= f.hidden_field :kind %><br/>
+  <%= @list.name %><%= f.hidden_field :name %><br/>
+  <%= f.label :description %><%= f.text_field :description %>
+  <%= f.hidden_field :pulled, :value => 'N' %>
+  <table>
+    <%= f.fields_for :listitems do |f1| %>
+      <tr>
+        <td><%= f1.object.ibtr_id %><%= f1.hidden_field :ibtr_id %></td>
+        <td><%= f1.object.member_id %><%= f1.hidden_field :member_id %></td>
+        <td><%= f1.object.card_id %><%= f1.hidden_field :card_id %></td>
+        <td><%= f1.object.branch_id %><%= f1.hidden_field :branch_id %></td>
+        <td colspan="3"><%= f1.object.title %><%= f1.hidden_field :title %></td>
+        <td><%= f1.object.isbn %><%= f1.hidden_field :isbn %></td>
+        <td><%= f1.check_box :ready_to_order %></td>
+      </tr>
+      <%= f1.hidden_field :quantity, :value => 1 %>
+    <% end %>
+  </table>
+  <%= f.submit :submit %>
+<% end -%>
