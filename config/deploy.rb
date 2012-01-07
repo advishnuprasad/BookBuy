@@ -8,6 +8,7 @@ set :use_sudo, false
 
 task :production do
   set :branch, "production"
+  set :default_environment, {  "LD_LIBRARY_PATH" => "/opt/oracle/instantclient_10_2", "TNS_ADMIN" => "/opt/oracle/network/admin" }
   set :user, 'rails'
   set :deploy_to, "/disk1/bookbuy"
   role :web, "74.86.131.195"                          # Your HTTP server, Apache/etc
@@ -17,6 +18,7 @@ end
 
 task :staging do
   set :branch, "production"   # Temporary; will be removed when production 
+  set :default_environment, { "PATH" => "/usr/local/ruby-1.9.2-p290/bin:$PATH", "LD_LIBRARY_PATH" => "/opt/oracle/instantclient_10_2", "TNS_ADMIN" => "/opt/oracle/network/admin" }
   set :user, 'ruby'
   set :deploy_to, "/usr/ruby/ams"
   role :web, "jbserver1.interactivedns.com"                          # Your HTTP server, Apache/etc
