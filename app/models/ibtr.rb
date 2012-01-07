@@ -1,7 +1,7 @@
 class Ibtr < ActiveResource::Base
-  self.site = "http://127.0.0.1:3001"
-  self.user = "nazia"
-  self.password = "justbooks12"
+  self.site = Settings.ibtr_url
+  self.user = Settings.ibtr_user
+  self.password = Settings.ibtr_password
   
   attr_accessor :enrichedtitle, :title, :isbn
   

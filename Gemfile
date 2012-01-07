@@ -17,6 +17,7 @@ gem 'rufus-scheduler'
 gem 'ruby-plsql'
 gem 'rubyzip'
 gem 'breadcrumbs'
+gem "settingslogic", "~> 2.0.6"
 
 # gem's to upload images
 gem 'aws-s3'

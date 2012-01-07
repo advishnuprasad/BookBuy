@@ -1,0 +1,14 @@
+development:
+  ibtr_url: "http://127.0.0.1:3001"
+  ibtr_user: "nazia"
+  ibtr_password: "justbooks12"
+
+test:
+  ibtr_url: "http://127.0.0.1:3001"
+  ibtr_user: "nazia"
+  ibtr_password: "justbooks12"
+
+production:
+  ibtr_url: "http://127.0.0.1:3001"
+  ibtr_user: "nazia"
+  ibtr_password: "justbooks12"
