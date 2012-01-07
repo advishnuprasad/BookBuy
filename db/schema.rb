@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111229084309) do
+ActiveRecord::Schema.define(:version => 20120105153607) do
 
   create_table "app_116_16_gt", :temporary => true, :id => false, :force => true do |t|
     t.integer "batch_no",                  :precision => 38, :scale => 0
@@ -382,6 +382,9 @@ ActiveRecord::Schema.define(:version => 20111229084309) do
     t.string    "error"
     t.string    "pulled"
     t.integer   "list_id",                   :precision => 38, :scale => 0, :null => false
+    t.integer   "ibtr_id",                   :precision => 38, :scale => 0
+    t.string    "card_id"
+    t.integer   "member_id",                 :precision => 38, :scale => 0
   end
 
   create_table "lists", :force => true do |t|

@@ -28,14 +28,14 @@
 <div>
   <div>
     <span>No. of items to be scanned: </span>
-    <span><%= link_to @procurement.pending_scan_cnt, imprints_path(:filter => 'for_procurement', :procurement_id => @procurement.id)%></span>
+    <span><%= @procurement.pending_scan_cnt %></span>
     <% if @procurement.pending_scan_cnt > 0 %>
       (<span><%= link_to "Scan", scan_procurement_path(@procurement)%></span>)
     <% end %>
   </div>
   <div>
     <span>No. of Invalid ISBNs: </span>
-    <span><%= link_to @procurement.invalid_isbn_cnt, imprints_path(:filter => 'for_procurement', :procurement_id => @procurement.id)%></span>
+    <span><%= @procurement.invalid_isbn_cnt %></span>
   </div>
   <div>
     <span>No. of imprints to be updated: </span>

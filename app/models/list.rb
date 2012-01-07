@@ -16,7 +16,7 @@
 #
 
 class List < ActiveRecord::Base
-  has_many :listitems
+  has_many :listitems, :inverse_of => :list, :before_add => :set_nest
   has_many :list_stagings, :dependent => :delete_all
   belongs_to :created_by_user, :foreign_key => "created_by", :class_name => "User"
   belongs_to :modified_by_user, :foreign_key => "modified_by", :class_name => "User"
@@ -25,11 +25,16 @@ class List < ActiveRecord::Base
   validates :description,       :presence => true
   
   before_create :generate_key
+  before_destroy {|rec| !(rec.pulled == 'Y')} # no error returned, destroy of a list will silently fail for pulled lists
   
   scope :yet_to_pull, where(:pulled => 'N')
   scope :of_kind, lambda { |kind|
       where(:kind => kind)
     }  
+    
+  attr_readonly :key
+  attr_accessible :name, :kind, :pulled, :description, :listitems_attributes
+  accepts_nested_attributes_for :listitems
   
   def pull_items_from_staging_area (user_id)
     list_stagings.each do |list_staging|
@@ -61,4 +66,24 @@ class List < ActiveRecord::Base
     def generate_key
       self.key = (Time.now.to_f*1000).round
     end
+    
+    def set_nest(listitem)
+      if kind == 'IBTR' then
+        er = Enrichedtitle.find_by_isbn(listitem.isbn)
+        listitem.title = er.title
+        listitem.author = er.author
+        listitem.listprice = er.listprice
+        listitem.currency = er.currency
+        listitem.category = er.category
+        listitem.subcategory = er.subcategory
+        listitem.created_by = self.created_by
+        listitem.pulled = 'N'
+        
+        unless er.imprint.nil?
+          listitem.publisher = er.imprint.publisher.name unless er.imprint.publisher.nil?
+          listitem.publisher_id = er.imprint.publisher.id unless er.imprint.publisher.nil?
+        end
+      end
+    end
+    
 end

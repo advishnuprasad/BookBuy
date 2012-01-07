@@ -1,0 +1,34 @@
+<h3>Cannot be ordered</h3>
+<span>For all these items, you need to assign a valid ISBN, that is also present in AMS. If the isbn does not exist in AMS, you can create one.</span>
+<table>
+  <% @ibtrs.select { |x| x.enrichedtitle.nil? }.each do |ibtr| -%>
+    <tr>
+      <td><%= ibtr.id %></td>
+      <td><%= ibtr.member_id %></td>
+      <td><%= ibtr.card_id %></td>
+      <td><%= ibtr.branch_id %></td>
+      <td><%= ibtr.title_id %></td>
+      <td colspan="2"><%= ibtr.title.title unless ibtr.title.nil? %></td>
+      <td><%= link_to "Assign ISBN", edit_ibtr_path(ibtr) %></td>
+      <td></td>
+    </tr>
+  <% end -%>
+</table>
+
+<hr/>
+<h3>Ready to Order</h3>
+<span>To place a procurement, you need to select the checkbox for the items that should be included</span>
+<table>
+  <% @ibtrs.reject { |x| x.enrichedtitle.nil? }.each do |ibtr| -%>
+    <tr>
+      <td><%= ibtr.id %></td>
+      <td><%= ibtr.member_id %></td>
+      <td><%= ibtr.card_id %></td>
+      <td><%= ibtr.branch_id %></td>
+      <td><%= ibtr.title_id %></td>
+      <td colspan="2"><%= ibtr.enrichedtitle.title %></td>
+      <td><%= ibtr.enrichedtitle.isbn %></td>
+      <td><%= check_box_tag :place_order %></td>
+    </tr>
+  <% end -%>
+</table>

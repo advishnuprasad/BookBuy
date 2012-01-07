@@ -1,0 +1,33 @@
+<div class="span-15">
+  <%= form_for(@ibtr) do |f| %>
+    <% if @ibtr.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@ibtr.errors.count, "error") %> prohibited this title from being saved:</h2>
+
+        <ul>
+        <% @ibtr.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+    
+    <%= f.label :title_id %> <%= @ibtr.title.id unless @ibtr.title.nil? %><br/>
+    <%= f.label :title %> <%= @ibtr.title.title unless @ibtr.title.nil? %><br/>
+    <%= f.label :isbn %> <%= f.text_field :isbn %>
+    <%= content_tag :button, 'Validate', :type => :button, :id => :ibtr_validate %>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  <% end %>
+</div>
+<div class="span-6">
+  <table class="no-zebra">
+    <tr><td><%= content_tag :label, 'Title' %></td><td><%= content_tag :span, "", :id => :ibtr_isbn_title %></td></tr>
+    <tr><td><%= content_tag :label, 'Author' %></td><td><%= content_tag :span, "", :id => :ibtr_isbn_author %></td></tr>
+    <tr><td><%= content_tag :label, 'Title ID' %></td><td><%= content_tag :span, "", :id => :ibtr_isbn_titleid %></td></tr>
+  </table>
+</div>
+<hr/>
+<%= link_to 'Back', ibtrs_path %>

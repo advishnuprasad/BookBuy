@@ -52,6 +52,10 @@ GEM
     breadcrumbs (0.1.6)
       i18n
     builder (2.1.2)
+    cached_resource (2.0.1)
+      activeresource
+      activesupport
+      rake
     chunky_png (1.2.1)
     cocaine (0.2.1)
     devise (1.1.7)
@@ -220,11 +224,13 @@ DEPENDENCIES
   barby (= 0.4.2)
   barcode
   breadcrumbs
+  cached_resource
   chunky_png
   devise (= 1.1.7)
   factory_girl_rails (~> 1.1)
   hoe (= 2.8.0)
   mechanize
+  nokogiri
   omniauth (~> 0.3.2)
   paperclip
   png (= 1.1.0)

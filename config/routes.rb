@@ -6,6 +6,7 @@ BookBuy::Application.routes.draw do
   resources :distributions
   resources :currencyrates
   resources :currencies
+  resources :ibtrs, :only => [:index, :show, :edit, :update]
   resources :publishers, :only => [:index, :new, :show, :edit]
   resources :lists do
     member do

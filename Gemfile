@@ -25,6 +25,9 @@ gem 'paperclip'
 # for scraping
 gem 'mechanize'
 
+# for being a rest client to opac
+gem 'cached_resource'
+
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -59,7 +62,7 @@ end
 
 # Bundle the extra gems:
 # gem 'bj'
-# gem 'nokogiri'
+gem 'nokogiri'
 # gem 'sqlite3-ruby', :require => 'sqlite3'
 # gem 'aws-s3', :require => 'aws/s3'
 

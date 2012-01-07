@@ -2,10 +2,14 @@ class EnrichedtitlesController < ApplicationController
   def index
     unless params[:queryISBN].blank?
       @enrichedtitle = Enrichedtitle.find_by_isbn(params[:queryISBN])
-      unless @enrichedtitle.nil?
-        render "show"
-      else
-        redirect_to :action => 'new', :isbn => params[:queryISBN]
+      respond_to do |format|
+        unless @enrichedtitle.nil?
+          format.html {render "show"}
+          format.js {render :json => @enrichedtitle}
+        else
+          format.html {redirect_to :action => 'new', :isbn => params[:queryISBN]}
+          format.js {head :not_found}
+        end
       end
     end
   end

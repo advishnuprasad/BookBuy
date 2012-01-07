@@ -25,9 +25,9 @@
 #
 
 class Listitem < ActiveRecord::Base
-  belongs_to :list
+  belongs_to :list, :inverse_of => :listitems
+  validates_presence_of :list
   
-  validates :list_id, :presence => true
   validates :isbn, :presence => true
   validates :title, :presence => true
   validates :author, :presence => true
@@ -35,15 +35,7 @@ class Listitem < ActiveRecord::Base
   validates :quantity, :presence => true
   validates :listprice, :presence => true
   validates :currency, :presence => true
+
+  attr_accessible :isbn, :quantity, :branch_id, :ibtr_id, :member_id, :card_id
   
-  validate :list_is_valid_and_present
-  
-  private
-    def list_is_valid_and_present
-      begin
-        list = List.find(list_id)
-      rescue ActiveRecord::RecordNotFound
-        errors.add(:list_id, " does not exist!")
-      end
-    end
 end

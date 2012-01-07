@@ -9,3 +9,22 @@ $("#enrichedtitle_use_image_url").live('click',function() {
   }
   
 });
+
+$("#ibtr_validate").live('click',function() {
+  var isbn = $.trim($("#ibtr_isbn").val());
+  var url = '/enrichedtitles?queryISBN=' + isbn;
+
+  $.ajax({
+    url: url,
+    async: false,
+    dataType: 'json',
+    success: function(data) {
+      $("#ibtr_isbn_title").text(data.enrichedtitle.title);
+      $("#ibtr_isbn_author").text(data.enrichedtitle.author);
+      $("#ibtr_isbn_titleid").text(data.enrichedtitle.title_id);
+    },
+    error: function(xhr,status,errorThrown) {
+      alert('This ISBN does not exist - if you are sure this is a valid ISBN, add it first - ' + xhr.status);
+    }
+  });
+});
