@@ -31,6 +31,7 @@ after "deploy", "deploy:migrate"
 namespace :deploy do
   after "deploy:update_code" do
     run "cp #{deploy_to}/database.yml #{release_path}/config/database.yml"
+    run "cp #{deploy_to}/settings.yml #{release_path}/config/settings.yml"
     run "cp #{deploy_to}/setup_mail.rb #{release_path}/config/initializers/setup_mail.rb"
     run "cp #{deploy_to}/environment.rb #{release_path}/config/environment.rb"
     run "cp #{deploy_to}/aws-s3.yml #{release_path}/config/aws-s3.yml"
