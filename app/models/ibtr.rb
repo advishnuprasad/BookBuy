@@ -19,4 +19,23 @@ class Ibtr < ActiveResource::Base
       end
     end
   end
+  
+  def self.pending_procurements(created_at)
+    created_at ||= Time.zone.today
+    
+    Date.strptime(created_at,'%Y-%m-%d') rescue return []
+    
+    ibtrs = Ibtr.find(:all, :from => :search, :params => {:per_page => 200, :created_at => created_at, :Assigned => :Assigned, :branchVal => 951, :searchBy => "respondent_id" })
+    enrichedtitles = Enrichedtitle.valid.find_all_by_title_id( ibtrs.collect { |ibtr| ibtr.title_id }.uniq )    
+    titles = Title.find_all_by_id( ibtrs.collect { |ibtr| ibtr.title_id }.uniq )
+    listitems = Listitem.find_all_by_ibtr_id( ibtrs.collect {|ibtr| ibtr.id}.uniq )
+    ibtrs.each do |ibtr|
+      ibtr.listitem = listitems.detect { |t| t.ibtr_id == ibtr.id }
+      ibtr.enrichedtitle = enrichedtitles.detect { |er| er.title_id == ibtr.title_id }
+      ibtr.title = titles.detect { |t| t.id == ibtr.title_id }
+    end
+    
+    ibtrs
+  end
+  
 end

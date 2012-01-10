@@ -1,41 +1,95 @@
-<h3>Cannot be ordered</h3>
-<span>For all these items, you need to assign a valid ISBN, that is also present in AMS. If the isbn does not exist in AMS, you can create one.</span>
-<table>
-  <% @ibtrs.select { |x| x.enrichedtitle.nil? }.each do |ibtr| -%>
-    <tr>
-      <td><%= ibtr.id %></td>
-      <td><%= ibtr.member_id %></td>
-      <td><%= ibtr.card_id %></td>
-      <td><%= ibtr.branch_id %></td>
-      <td><%= ibtr.title_id %></td>
-      <td colspan="2"><%= ibtr.title.title unless ibtr.title.nil? %></td>
-      <td><%= link_to "Assign ISBN", edit_ibtr_path(ibtr) %></td>
-      <td></td>
-    </tr>
-  <% end -%>
-</table>
-
-<hr/>
-<h3>Ready to Order</h3>
-<span>To place a procurement, you need to select the checkbox for the items that should be included</span>
-<%= form_for @list, :url => lists_path do |f| -%>
-  <%= f.hidden_field :kind %><br/>
-  <%= @list.name %><%= f.hidden_field :name %><br/>
-  <%= f.label :description %><%= f.text_field :description %>
-  <%= f.hidden_field :pulled, :value => 'N' %>
-  <table>
-    <%= f.fields_for :listitems do |f1| %>
+<div class="span-24 last">
+  <h3>IBT Procurements</h3>
+  	<%= form_tag ibtrs_path, :method => 'get' do -%>
+  		<%= label_tag 'Date:'%>
+  		<%= text_field_tag :ibtr_created_at, params[:ibtr_created_at] %>
+  		<span>(2012-02-01) For Feb 01, 2012</span><br/>
+  		<%= submit_tag "Submit", :name => nil %>
+  	<% end -%>
+  <hr/>
+  <h3>Cannot be ordered</h3>
+  <span>For all these items, you need to assign a valid ISBN, that is also present in AMS. If the isbn does not exist in AMS, you can create one.</span>
+  <br/>
+  <table class="no-zebra">
       <tr>
-        <td><%= f1.object.ibtr_id %><%= f1.hidden_field :ibtr_id %></td>
-        <td><%= f1.object.member_id %><%= f1.hidden_field :member_id %></td>
-        <td><%= f1.object.card_id %><%= f1.hidden_field :card_id %></td>
-        <td><%= f1.object.branch_id %><%= f1.hidden_field :branch_id %></td>
-        <td colspan="3"><%= f1.object.title %><%= f1.hidden_field :title %></td>
-        <td><%= f1.object.isbn %><%= f1.hidden_field :isbn %></td>
-        <td><%= f1.check_box :ready_to_order %></td>
+        <th>Id</th>
+        <th>Member</th>
+        <th>Card</th>
+        <th>Branch</th>
+        <th>Title Id</th>
+        <th colspan="2">Title</th>
+        <th colspan="2"></th>
       </tr>
-      <%= f1.hidden_field :quantity, :value => 1 %>
-    <% end %>
+    <% @ibtrs.select { |x| x.enrichedtitle.nil? }.each do |ibtr| -%>
+      <tr>
+        <td><%= ops_ibtr_url(ibtr.id, :id) %></td>
+        <td><%= ibtr.member_id %></td>
+        <td><%= ops_ibtr_url(ibtr.card_id, :card_id) %></td>
+        <td><%= ibtr.branch_id %></td>
+        <td><%= ibtr.title_id %></td>
+        <td colspan="2"><%= ibtr.title.title unless ibtr.title.nil? %></td>
+        <td><%= link_to "Assign ISBN", edit_ibtr_path(ibtr) %></td>
+        <td></td>
+      </tr>
+    <% end -%>
   </table>
-  <%= f.submit :submit %>
-<% end -%>
+  <br/>
+  <hr/>
+  <h3>Ready to Order</h3>
+  <span>To place a procurement, you need to select the checkbox for the items that should be included</span>
+  <%= form_for @list, :url => lists_path do |f| -%>
+    <%= f.hidden_field :kind %><br/>
+    <%= @list.name %><%= f.hidden_field :name %><br/>
+    <%= f.label :description %><%= f.text_field :description %>
+    <%= f.hidden_field :pulled, :value => 'N' %>
+    <table class="no-zebra">
+      <tr>
+        <th>Id</th>
+        <th>Member</th>
+        <th>Card</th>
+        <th>Branch</th>
+        <th colspan="3">Title</th>
+        <th>ISBN</th>
+      </tr>      
+      <%= f.fields_for :listitems do |f1| %>
+        <tr>
+          <td><%= ops_ibtr_url(f1.object.ibtr_id, :id) %><%= f1.hidden_field :ibtr_id %></td>
+          <td><%= f1.object.member_id %><%= f1.hidden_field :member_id %></td>
+          <td><%= ops_ibtr_url(f1.object.card_id, :card_id) %><%= f1.hidden_field :card_id %></td>
+          <td><%= f1.object.branch_id %><%= f1.hidden_field :branch_id %></td>
+          <td colspan="3"><%= f1.object.title %><%= f1.hidden_field :title %></td>
+          <td><%= f1.object.isbn %><%= f1.hidden_field :isbn %></td>
+          <td><%= f1.check_box :ready_to_order %></td>
+        </tr>
+        <%= f1.hidden_field :quantity, :value => 1 %>
+      <% end %>
+    </table>
+    <%= f.submit :submit %>
+  <% end -%>
+  
+  <br/>
+  <hr/>
+  <h3>Accepted for PO, Pending PO Creation</h3>
+  <table class="no-zebra">
+    <tr>
+      <th>Id</th>
+      <th>Member</th>
+      <th>Card</th>
+      <th>Branch</th>
+      <th colspan="2">Title</th>
+      <th>List</th>
+    </tr>
+    <% @ibtrs.reject { |x| x.listitem.nil? }.each do |ibtr| -%>
+      <tr>
+        <td><%= ops_ibtr_url(ibtr.id, :id) %></td>
+        <td><%= ibtr.member_id %></td>
+        <td><%= ops_ibtr_url(ibtr.card_id, :card_id)  %></td>
+        <td><%= ibtr.branch_id %></td>
+        <td colspan="2"><%= ibtr.title.title unless ibtr.title.nil? %></td>
+        <td><%= link_to ibtr.listitem.list.name, list_path(ibtr.listitem.list.id) %></td>
+        <td></td>
+      </tr>
+    <% end -%>
+  </table>
+  
+</div>
