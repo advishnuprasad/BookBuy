@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120105153607) do
+ActiveRecord::Schema.define(:version => 20120110124630) do
 
   create_table "app_116_16_gt", :temporary => true, :id => false, :force => true do |t|
     t.integer "batch_no",                  :precision => 38, :scale => 0
@@ -345,6 +345,8 @@ ActiveRecord::Schema.define(:version => 20120105153607) do
     t.string    "card_id"
     t.integer   "member_id",                 :precision => 38, :scale => 0
   end
+
+  add_index "listitems", ["ibtr_id"], :name => "in_listitems_ibtr_id", :unique => true
 
   create_table "lists", :force => true do |t|
     t.string    "name",                                                       :null => false
