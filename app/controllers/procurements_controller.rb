@@ -103,17 +103,32 @@ class ProcurementsController < ApplicationController
   def pull
     unless params[:pull].nil?
       if params[:pull] == 'ibtr'
-        ActiveRecord::Base.transaction do          
-          cnt = Procurement.pending_ibtr_items_exist
-          
-          if cnt > 0
-            id = Procurement.pull_ibtr_items
-            @procurement = Procurement.find(id)
+        ActiveRecord::Base.transaction do   
+          List.yet_to_pull.of_kind('IBTR').each do |list|
+            cnt = Procurement.get_member_ibtr_items_count(list.id)
+            if cnt > 0
+              id = Procurement.pull_member_ibtr_items(list.id)
             
-            @procurement.created_by = current_user.id
-            @procurement.save
-          else
-            flash[:success] = "No pending IBTR Requests!"
+              @procurement = Procurement.find(id)
+            
+              @procurement.created_by = current_user.id
+              @procurement.save
+            end
+            
+            cnt = 0
+            cnt = Procurement.get_branch_ibtr_items_count(list.id)
+            if cnt > 0
+              id = Procurement.pull_branch_ibtr_items(list.id)
+            
+              @procurement = Procurement.find(id)
+            
+              @procurement.created_by = current_user.id
+              @procurement.save
+            end
+            
+            #Update List as pulled - This is an exception compared to how other lists work
+            list.pulled = 'Y'
+            list.save
           end
         end
       elsif params[:pull] == 'nent'
