@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120110124630) do
+ActiveRecord::Schema.define(:version => 20120111120527) do
 
   create_table "app_116_16_gt", :temporary => true, :id => false, :force => true do |t|
     t.integer "batch_no",                  :precision => 38, :scale => 0
@@ -251,6 +251,13 @@ ActiveRecord::Schema.define(:version => 20120110124630) do
   add_index "enrichedtitles_categories", ["isbn"], :name => "in_ec_2", :unique => true
   add_index "enrichedtitles_categories", ["title_id"], :name => "in_ec_1", :unique => true
 
+  create_table "ibtr_update_log", :id => false, :force => true do |t|
+    t.integer   "procurementitem_id", :limit => nil
+    t.timestamp "created_at",         :limit => 6
+    t.string    "status",             :limit => 1
+    t.string    "msg"
+  end
+
   create_table "imprints", :force => true do |t|
     t.string    "code",                                                     :null => false
     t.string    "name"
@@ -323,27 +330,28 @@ ActiveRecord::Schema.define(:version => 20120110124630) do
   end
 
   create_table "listitems", :force => true do |t|
-    t.string    "isbn",                                                     :null => false
-    t.string    "title",                                                    :null => false
+    t.string    "isbn",                                                           :null => false
+    t.string    "title",                                                          :null => false
     t.string    "author"
-    t.string    "publisher",                                                :null => false
-    t.integer   "publisher_id",              :precision => 38, :scale => 0, :null => false
-    t.integer   "quantity",                  :precision => 38, :scale => 0
-    t.decimal   "listprice",                                                :null => false
-    t.string    "currency",                                                 :null => false
+    t.string    "publisher",                                                      :null => false
+    t.integer   "publisher_id",                    :precision => 38, :scale => 0, :null => false
+    t.integer   "quantity",                        :precision => 38, :scale => 0
+    t.decimal   "listprice",                                                      :null => false
+    t.string    "currency",                                                       :null => false
     t.string    "category"
     t.string    "subcategory"
-    t.integer   "branch_id",                 :precision => 38, :scale => 0
-    t.integer   "created_by",                :precision => 38, :scale => 0
-    t.integer   "modified_by",               :precision => 38, :scale => 0
-    t.timestamp "created_at",   :limit => 6
-    t.timestamp "updated_at",   :limit => 6
+    t.integer   "branch_id",                       :precision => 38, :scale => 0
+    t.integer   "created_by",                      :precision => 38, :scale => 0
+    t.integer   "modified_by",                     :precision => 38, :scale => 0
+    t.timestamp "created_at",         :limit => 6
+    t.timestamp "updated_at",         :limit => 6
     t.string    "error"
     t.string    "pulled"
-    t.integer   "list_id",                   :precision => 38, :scale => 0, :null => false
-    t.integer   "ibtr_id",                   :precision => 38, :scale => 0
+    t.integer   "list_id",                         :precision => 38, :scale => 0, :null => false
+    t.integer   "ibtr_id",                         :precision => 38, :scale => 0
     t.string    "card_id"
-    t.integer   "member_id",                 :precision => 38, :scale => 0
+    t.integer   "member_id",                       :precision => 38, :scale => 0
+    t.integer   "procurementitem_id",              :precision => 38, :scale => 0
   end
 
   add_index "listitems", ["ibtr_id"], :name => "in_listitems_ibtr_id", :unique => true
