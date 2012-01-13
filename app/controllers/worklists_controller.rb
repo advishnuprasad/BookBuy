@@ -67,7 +67,7 @@ class WorklistsController < ApplicationController
           enrichedtitle.author = procurementitem.title.author.name unless procurementitem.title.nil?
           enrichedtitle.language = procurementitem.title.language unless procurementitem.title.nil?
           enrichedtitle.category = procurementitem.title.category.name unless procurementitem.title.nil? || procurementitem.title.category.nil?
-          enrichedtitle.isbn10 = procurementitem.title.isbn10 unless procurementitem.title.nil?
+          enrichedtitle.isbn10 = procurementitem.title.isbn_10 unless procurementitem.title.nil?
           if enrichedtitle.save
             procurementitem.enrichedtitle_id = enrichedtitle.id
             procurementitem.isbn = enrichedtitle.isbn

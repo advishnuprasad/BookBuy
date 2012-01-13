@@ -21,9 +21,15 @@
 #
 
 class Title < ActiveRecord::Base
+  establish_connection "jbprod_#{RAILS_ENV}"
+  
+  set_primary_key :titleid
+  set_sequence_name :seq_titles
+  
   has_many :enrichedtitles
   has_many :procurementitems
-  belongs_to :author
-  belongs_to :category
+  belongs_to :author, :foreign_key => :authorid
+  belongs_to :category, :foreign_key => :category
+  
 end
 

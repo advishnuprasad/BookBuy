@@ -6,3 +6,11 @@ development:
   username: ams
   password: ams
   cursor_sharing: similar
+
+jbprod_development:
+  adapter: oracle_enhanced
+  database: JEOS
+  username: jbprod
+  password: jbprod
+  cursor_sharing: similar
+  

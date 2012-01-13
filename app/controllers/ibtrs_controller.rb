@@ -19,12 +19,12 @@ class IbtrsController < ApplicationController
   
   def edit
     @ibtr = Ibtr.find(params[:id])
-    @ibtr.title = Title.find(:first, :conditions => { :id => @ibtr.title_id})
+    @ibtr.title = Title.find(:first, :conditions => { :titleid => @ibtr.title_id})
   end
   
   def update
     @ibtr = Ibtr.find(params[:id])
-    @ibtr.title = Title.find(:first, :conditions => { :id => @ibtr.title_id})
+    @ibtr.title = Title.find(:first, :conditions => { :titleid => @ibtr.title_id})
     
     respond_to do |format|
       if @ibtr.set_title_id(Enrichedtitle.find_by_isbn(params[:ibtr][:isbn]))
