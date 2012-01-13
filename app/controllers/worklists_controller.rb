@@ -20,7 +20,7 @@ class WorklistsController < ApplicationController
     elsif @worklist.description == "Procurement Items with No ISBN"
       render 'items_with_no_isbn'
     elsif @worklist.description == "Procurement Items with No Supplier Details"
-      if @worklist.procurement.description == 'IBTR'
+      if @worklist.procurement.description == 'IBTB' || @worklist.procurement.description == 'IBTM'
         render 'items_with_no_supplier_details'
       else
         #Fill Array of Hashes for Publisher and Supplier discount combinations
