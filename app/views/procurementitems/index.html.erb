@@ -7,9 +7,11 @@
     <th style="width: 10%;">Isbn</th>
     <th style="width: 25%;">Title</th>
     <th style="width: 15%;">Author</th>
-    <th style="width: 15%;">Publisher</th>
-    <th style="width: 15%;">Supplier</th>
+    <th style="width: 10%;">Publisher</th>
+    <th style="width: 10%;">Supplier</th>
     <th style="width: 3%;">Qty</th>
+		<th style="width: 5%">Price</th>
+		<th style="width: 5%">Ccy</th>
     <th style="width: 10%;">Branch</th>
     <th style="width: 5%;"></th>
   </tr>
@@ -22,6 +24,8 @@
     <td><%= procurementitem.enrichedtitle.imprint.publisher.name unless procurementitem.enrichedtitle.nil? or procurementitem.enrichedtitle.imprint.nil? %></td>
     <td><%= procurementitem.supplier.name unless procurementitem.supplier.nil? %></td>
     <td><%= procurementitem.quantity %></td>
+		<td><%= procurementitem.enrichedtitle.listprice unless procurementitem.enrichedtitle.nil? %></td>
+		<td><%= procurementitem.enrichedtitle.currency unless procurementitem.enrichedtitle.nil? %></td>
     <td><%= procurementitem.branch.name unless procurementitem.branch.nil? %></td>
     <td><%= link_to 'Distribute', edit_procurementitem_path(procurementitem) %></td>
   </tr>
