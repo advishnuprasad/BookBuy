@@ -63,8 +63,8 @@ class Enrichedtitle < ActiveRecord::Base
       where(:procurementitems => {:procurement_id => procurement_id})
   }
   
-  attr_accessor :publisher, :pubdate, :page_cnt, :image_url, :use_image_url
-  attr_accessible :category_id, :language, :listprice, :currency
+  attr_accessor :publisher, :pubdate, :image_url, :use_image_url
+  attr_accessible :category_id, :language, :listprice, :currency, :page_cnt
   attr_protected :cover_file_name, :cover_content_type, :conver_file_size, :conver_updated_at
   
 
