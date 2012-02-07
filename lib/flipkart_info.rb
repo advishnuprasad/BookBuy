@@ -16,6 +16,7 @@ module FlipkartInfo
     dimensions = nil
     weight = nil
     listprice = nil
+    category = nil
 
     product_details = page.search("div#details table.fk-specs-type1 tr")
     if product_details.length != 0
@@ -58,10 +59,14 @@ module FlipkartInfo
       image = image_tag.attr('src').text.encode('UTF-8')
     end
 
-    summary_detail = page.search("div.item_desc_text.description")
-    if summary_detail.length != 0 
-      summary = summary_detail.inner_text.strip.encode('UTF-8')
-    end
+#    summary is no longer available in the body
+#    summary_detail = page.search("div.item_desc_text.description")
+#    if summary_detail.length != 0 
+#      summary = summary_detail.inner_text.strip.encode('UTF-8')
+#    end
+    
+    summary_match = page.body.match /var full_description = (.*)/
+    summary = summary_match[0] unless summary_match.nil?
     
     lp_span = page.search("span#fk-mprod-list-id")
     listprice = lp_span.text.encode('UTF-8') unless lp_span.nil?
@@ -69,7 +74,10 @@ module FlipkartInfo
     if listprice.blank?
       listprice = fkp_span.text.encode('UTF-8') unless fkp_span.nil?
     end
-
+    
+    category_span = page.search("div.line.bread-crumbs.fksk-bread-crumbs")
+    category = category_span.text.gsub(/\r?\n?/, "").strip.encode('UTF-8') unless category_span.nil?
+    
     {
       :info_source => "flipkart",
       :title => title,
@@ -83,7 +91,10 @@ module FlipkartInfo
       :isbn10 => isbn10,
       :dimensions => dimensions,
       :weight => weight,
-      :listprice => listprice
+      :listprice => listprice,
+      :awards => awards,
+      :summary => summary,
+      :category => category
     }
   end
 end
