@@ -27,7 +27,6 @@ namespace :enrich do
         et.web_scanned = 'Failed'
       end
       et.save    
-      puts et.to_xml
     end
   end
 end
