@@ -45,7 +45,7 @@ class Enrichedtitle < ActiveRecord::Base
   validates :listprice,   :presence => true, :numericality => true
   validates :currency,    :presence => true
   validates :language,    :presence => true, :on => :create # new fields, existing data not set
-  validates :category_id, :presence => true, :on => :create # new fields, existing data not set
+  validates :category_id, :presence => true, :on => :create, :unless => :web_scanned # new fields, existing data not set
   validates :isbnvalid,   :inclusion => { :in => ['Y'], :message => 'ISBN Is Invalid' }
 
   before_create :create_legacy_title
@@ -183,6 +183,25 @@ class Enrichedtitle < ActiveRecord::Base
       et.image_url = finfo[:image]
       
       et.author ||= '.'  # there are times when author is not set even in flip
+      
+      
+      # web related fields, these are set by default, and not allowed to change in the UI
+      et.web_title = finfo[:title]
+      et.web_author =  finfo[:authors]
+      et.web_listprice = finfo[:listprice]
+      et.web_language = finfo[:language]
+      et.web_category = finfo[:category].slice(0,200)
+
+      # new fields
+      et.format = finfo[:format]
+      et.page_cnt = finfo[:page_cnt]
+      et.dimensions = finfo[:dimensions]
+      et.weight = finfo[:weight]
+      et.pub_year = finfo[:pubdate]
+      et.publisher_name = finfo[:publisher]
+    
+      et.web_scanned = 'New'      
+      
     end
     et
   end
