@@ -46,7 +46,7 @@ class Enrichedtitle < ActiveRecord::Base
   validates :currency,    :presence => true
   validates :language,    :presence => true, :on => :create # new fields, existing data not set
   validates :category_id, :presence => true, :on => :create, :unless => :web_scanned # new fields, existing data not set
-  validates :isbnvalid,   :inclusion => { :in => ['Y'], :message => 'ISBN Is Invalid' }
+  validates :isbnvalid,   :inclusion => { :in => ['Y'], :message => 'ISBN Is Invalid' }, :on => :create
 
   before_create :create_legacy_title
   before_validation :parse_isbn, :on => :create
@@ -66,8 +66,6 @@ class Enrichedtitle < ActiveRecord::Base
   attr_accessor :publisher, :pubdate, :image_url, :use_image_url
   attr_accessible :category_id, :language, :listprice, :currency, :page_cnt
   attr_protected :cover_file_name, :cover_content_type, :conver_file_size, :conver_updated_at
-  
-
     
   def self.scan_in_procurement(procurement_id)
     Enrichedtitle.of_procurement(procurement_id).unscanned.limit(1000).each do |title|
@@ -75,7 +73,7 @@ class Enrichedtitle < ActiveRecord::Base
         title.isbnvalid = 'N'
         title.save
       else
-        validate(title.id, title.isbn)
+        validate(title.id, title.isbn, true)
       end
     end
     return nil
