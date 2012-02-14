@@ -30,7 +30,13 @@ namespace :enrich do
       rescue
         et.web_scanned = 'Failed'
       end
-      et.save    
+      puts "saving #{et.isbn}"
+      et.save
     end
   end
+end
+
+namespace :create do
+  desc "Create Title From Web"
+
 end

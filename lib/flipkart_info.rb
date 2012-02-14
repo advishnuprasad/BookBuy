@@ -81,7 +81,7 @@ module FlipkartInfo
     {
       :info_source => "flipkart",
       :title => title,
-      :authors => authors,
+      :authors => FlipkartInfo.encode_string(authors),
       :publisher => publisher,
       :image => image,
       :pubdate => pubdate,
@@ -96,5 +96,12 @@ module FlipkartInfo
       :summary => summary,
       :category => category
     }
+  end
+  
+  def self.encode_string(untrusted_string)
+    return untrusted_string if untrusted_string.valid_encoding?
+    
+    ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
+    ic.iconv(untrusted_string + ' ')[0..-2]
   end
 end
