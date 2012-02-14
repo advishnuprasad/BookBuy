@@ -1,7 +1,7 @@
 development:
-  access_key_id: AKIAILA4JXNSWWDFVCLQ
-  secret_access_key: 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
-  bucket: dev.justbooksclc.com
+  access_key_id: dirty
+  secret_access_key: picture
+  bucket: dirty.pick
 
 production:
   access_key_id: dirty
