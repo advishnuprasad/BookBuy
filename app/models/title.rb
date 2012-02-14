@@ -30,6 +30,7 @@ class Title < ActiveRecord::Base
   has_many :procurementitems
   belongs_to :author, :foreign_key => :authorid
   belongs_to :category, :foreign_key => :category
+  belongs_to :publisher, :foreign_key => :publisherid
   
 end
 

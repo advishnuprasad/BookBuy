@@ -1,0 +1,61 @@
+<div class="span-24 last">
+  <%= form_for(@noisbntitle, :html => { :multipart => true }) do |f| %>
+    <div class="span-24 last">    
+      <% if @noisbntitle.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@noisbntitle.errors.count, "error") %> prohibited this title from being saved:</h2>
+
+          <ul>
+          <% @noisbntitle.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="span-24 last">
+      <span>This screen is to be used to create a title entry when there is <b>NO ISBN.</b></span><br/>     
+      <span>The following information is from the legacy system. Review this information before proceeding to create an entry for the Title</span>
+      <br/>
+      <br/>
+    </div>
+    <div class="span-10">
+      <table class="no-zebra">
+        <tr><td><%= f.label :isbn %></td><td><%= @noisbntitle.jbtitle.isbn_13 %></td></tr>
+        <tr><td><%= f.label :title %></td><td><%= @noisbntitle.jbtitle.title %></td></tr>
+        <tr><td><%= f.label :author %></td><td><%= @noisbntitle.jbtitle.author.name unless @noisbntitle.jbtitle.author.nil? %></td></tr>
+        <tr><td><%= f.label :language %></td><td><%= @noisbntitle.jbtitle.language %></td></tr>
+        <tr><td><%= f.label :publisher %></td><td><%= @noisbntitle.jbtitle.publisher.name unless @noisbntitle.jbtitle.publisher.nil? %></td></tr>
+        <tr><td><%= f.label :listprice %></td><td><%= @noisbntitle.jbtitle.mrp %></td></tr>
+        <tr><td><%= f.label :listprice %></td><td><%= @noisbntitle.jbtitle.category.name unless @noisbntitle.jbtitle.category.nil? %></td></tr>
+      </table>
+    </div>
+
+    <div class="span-24 last">
+      <%= field_set_tag 'Required Information' do -%>
+      <%= f.hidden_field :title_id %>
+        <table class="no-zebra">
+          <tr><td style='width:20%'><%= f.label :title %></td><td><%= f.text_field :title, :size => 100 %></td></tr>
+          <tr><td><%= f.label :author %></td><td><%= f.text_field :author, :size => 100 %></td></tr>
+          <tr><td><%= f.label :language %></td><td><%= f.select :language, Language.all.collect {|p| [p.name,p.name] }, :prompt => '' %></td></tr>
+          <tr><td><%= f.label :listprice %></td><td><%= f.select :currency, Currency.all.collect {|p| [p.code,p.code] }, :prompt => '' %><%= f.number_field :listprice, :min => 1, :max => 100000 %></td></tr>
+          <tr><td><%= f.label :category_id %></td><td><%= f.select :category_id, Category.all.collect {|p| [p.division + '-' + p.name, p.id]}, :prompt => '' %></td></tr>
+          <tr><td><%= f.label :publisher_name %></td><td><%= f.text_field :publisher_name, :size => 100 %></td></tr>
+          <tr><td><%= f.label :publisher %></td><td><%= f.select :publisher_id, Publisher.all.collect {|p| [p.name,p.id]} %></td></tr>
+          <tr><td><%= f.label :pub_year %></td><td><%= f.text_field :pub_year, :size => 4, :maxlength => 4 %></td></tr>
+          <tr><td><%= f.label :format %></td><td><%= f.select :format, Format.all.collect {|p| [p.name,p.name]} %></td></tr>
+          <tr><td><%= f.label :page_cnt %></td><td><%= f.text_field :page_cnt, :size => 4 %></td></tr>
+          <tr><td><%= f.label :dimensions %></td><td><%= f.text_field :dimensions, :size => 20 %></td></tr>
+          <tr><td><%= f.label :weight %></td><td><%= f.text_field :weight, :size => 20 %></td></tr>
+          <tr><td>Title In Book Language</td><td><%= f.text_field :t_title, :size => 100 %></td></tr>
+          <tr><td>Author In Book Language</td><td><%= f.text_field :t_author, :size => 100 %></td></tr>
+          <tr><td><%= f.label :cover %></td><td><%= f.file_field :cover, :accept => 'image/jpeg' %></td></tr>
+        </table>
+      <% end %>  
+      <div class="actions">
+        <%= f.submit %>
+      </div>
+    </div>
+  <% end %>
+</div>

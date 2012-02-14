@@ -7,8 +7,8 @@ namespace :enrich do
 
         unless finfo.nil?
           # this data also comes from the corelist, therefore, we store it in the web_fields, for comparisons later
-          et.web_title = finfo[:title]
-          et.web_author =  finfo[:authors]
+          et.web_title = finfo[:title].slice(0,200)
+          et.web_author =  finfo[:authors].slice(0,200)
           et.web_listprice = finfo[:listprice]
           et.web_language = finfo[:language]
     

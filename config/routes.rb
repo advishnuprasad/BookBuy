@@ -2,6 +2,7 @@ BookBuy::Application.routes.draw do
   
   resources :batches
   resources :enrichedtitles, :only => [:index, :edit, :show, :update, :create, :new]
+  resources :noisbntitles
 
   resources :distributions
   resources :currencyrates

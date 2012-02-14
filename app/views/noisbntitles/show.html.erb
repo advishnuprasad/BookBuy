@@ -1,0 +1,18 @@
+<div class="span-24 last">
+  <table class="no-zebra">
+    <tr><td style='width:20%'><%= label_tag :title %></td><td><%= @noisbntitle.title %></td></tr>
+    <tr><td><%= label_tag :author %></td><td><%= @noisbntitle.author %></td></tr>
+    <tr><td><%= label_tag :language %></td><td><%= @noisbntitle.language %></td></tr>
+    <tr><td><%= label_tag :listprice %></td><td><%= @noisbntitle.currency %><%= @noisbntitle.listprice %></td></tr>
+    <tr><td><%= label_tag :category_id %></td><td><%= @noisbntitle.category_id %></td></tr>
+    <tr><td><%= label_tag :publisher_name %></td><td><%= @noisbntitle.publisher_name %></td></tr>
+    <tr><td><%= label_tag :publisher %></td><td><%= @noisbntitle.publisher_id %></td></tr>
+    <tr><td><%= label_tag :pub_year %></td><td><%= @noisbntitle.pub_year %></td></tr>
+    <tr><td><%= label_tag :format %></td><td><%= @noisbntitle.format %></td></tr>
+    <tr><td><%= label_tag :page_cnt %></td><td><%= @noisbntitle.page_cnt %></td></tr>
+    <tr><td><%= label_tag :dimensions %></td><td><%= @noisbntitle.dimensions %></td></tr>
+    <tr><td><%= label_tag :weight %></td><td><%= @noisbntitle.weight %></td></tr>
+    <tr><td>Title In Book Language</td><td><%= @noisbntitle.t_title %></td></tr>
+    <tr><td>Author In Book Language</td><td><%= @noisbntitle.t_author %></td></tr>
+  </table>
+</div>
