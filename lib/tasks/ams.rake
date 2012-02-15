@@ -31,7 +31,7 @@ namespace :enrich do
         et.web_scanned = 'Failed'
       end
       puts "saving #{et.isbn}"
-      et.save
+      et.save!
     end
   end
 end

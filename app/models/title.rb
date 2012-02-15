@@ -28,9 +28,19 @@ class Title < ActiveRecord::Base
   
   has_many :enrichedtitles
   has_many :procurementitems
+  has_many :noisbntitles
+  
   belongs_to :author, :foreign_key => :authorid
   belongs_to :category, :foreign_key => :category
   belongs_to :publisher, :foreign_key => :publisherid
   
+  scope :with_enrichedtitles, where('titleid in ( select distinct title_id from enrichedtitles )')
+  scope :with_noisbntitles, where('titleid in ( select distinct title_id from noisbntitles)')
+  
+#  scope :with_similarity, lambda { |title, similarity, score|
+#    return unless similarity == 'J'
+#    score ||= 80
+#    where("utl_match.jaro_winkler_similarity(title, 'Hello') > 50")
+#  }
 end
 
