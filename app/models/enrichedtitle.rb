@@ -52,7 +52,7 @@ class Enrichedtitle < ActiveRecord::Base
   before_validation :parse_isbn, :on => :create
 
   before_validation :download_remote_image, :if => :image_url_provided?
-  validates_attachment_size :cover, :less_than => 100.kilobytes, :message => 'file size maximum 100 KB allowed'
+  validates_attachment_size :cover, :less_than => 600.kilobytes, :message => 'file size maximum 100 KB allowed'
   validates_attachment_content_type :cover, :content_type => ['image/jpeg']
   
   scope :unscanned, where(:isbnvalid => nil)
