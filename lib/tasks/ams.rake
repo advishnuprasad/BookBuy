@@ -38,5 +38,22 @@ end
 
 namespace :create do
   desc "Create Title From Web"
-
+  task :titles => :environment do
+    conn = Enrichedtitle.connection
+    cur = conn.execute("select isbn from isbnsnotinet minus select isbn from enrichedtitles ")
+    while r = cur.fetch()
+      begin
+        et = Enrichedtitle.new_from_web(r[0])
+        unless et.web_scanned.nil?
+          et.currency = 'INR'
+          puts "saving #{r}"
+          et.save! if et.valid?
+        else
+          puts "skipping #{r}"
+        end
+      rescue
+        puts "failed for #{r}"
+      end
+    end
+  end
 end
