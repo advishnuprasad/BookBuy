@@ -46,8 +46,13 @@ namespace :create do
         et = Enrichedtitle.new_from_web(r[0])
         unless et.web_scanned.nil?
           et.currency = 'INR'
-          puts "saving #{r}"
-          et.save! if et.valid?
+          et.language = 'English' if et.language.nil?
+          if et.valid?
+            puts "saving #{r}"
+            et.save!
+          else
+            puts "errors while saving #{r} - #{et.errors}"
+          end
         else
           puts "skipping #{r}"
         end
