@@ -47,6 +47,7 @@ namespace :create do
         unless et.web_scanned.nil?
           et.currency = 'INR'
           et.language = 'English' if et.language.nil?
+          et.listprice = 0 if et.listprice.nil? # in case of out of stock
           if et.valid?
             puts "saving #{r}"
             et.save!
