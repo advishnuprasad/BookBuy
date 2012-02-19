@@ -99,6 +99,7 @@ module FlipkartInfo
   end
   
   def self.encode_string(untrusted_string)
+    return '.' if untrusted_string.nil?
     return untrusted_string if untrusted_string.valid_encoding?
     
     ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
