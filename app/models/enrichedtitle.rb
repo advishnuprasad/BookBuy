@@ -225,7 +225,8 @@ class Enrichedtitle < ActiveRecord::Base
   end  
   
   def parse_isbn
-    isbn = Isbnutil::Isbn.parse(self.isbn, nil, true)
+    # in case an isbn is found on the net, then don't force a check-digit validation
+    isbn = Isbnutil::Isbn.parse(self.isbn, nil, web_scanned.nil?)
     if isbn 
       self.isbnvalid = 'Y'
       self.isbn10 = isbn.asIsbn10.gsub(/-/,'')
