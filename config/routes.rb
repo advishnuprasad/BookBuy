@@ -4,6 +4,7 @@ BookBuy::Application.routes.draw do
   resources :enrichedtitles, :only => [:index, :edit, :show, :update, :create, :new]
   resources :noisbntitles
   resources :titles, :only => :index
+  resources :matchingtitles, :only => [:index, :edit, :show, :update]
 
   resources :distributions
   resources :currencyrates

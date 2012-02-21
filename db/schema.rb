@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120214122142) do
+ActiveRecord::Schema.define(:version => 20120221183522) do
 
   create_table "app_116_16_gt", :temporary => true, :id => false, :force => true do |t|
     t.integer "batch_no",                  :precision => 38, :scale => 0
@@ -431,6 +431,15 @@ ActiveRecord::Schema.define(:version => 20120214122142) do
     t.timestamp "created_at",  :limit => 6
     t.timestamp "updated_at",  :limit => 6
     t.string    "description", :limit => 1020,                                :null => false
+  end
+
+  create_table "matchingtitles", :force => true do |t|
+    t.integer  "enrichedtitle_id",               :precision => 38, :scale => 0
+    t.integer  "title_id",                       :precision => 38, :scale => 0
+    t.string   "status",           :limit => 10
+    t.integer  "updated_by",                     :precision => 38, :scale => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "newarrivals_expanded", :force => true do |t|

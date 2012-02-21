@@ -1,0 +1,31 @@
+<div class='span-24 last'>
+  
+  <%= form_tag(nil, :method => :get) do -%>
+    <%= select_tag 'search_type', options_from_collection_for_select(["Author", "Title", "Publisher"], "first", "to_s", @search_type) %>
+    <%= text_field_tag 'search_text', @search_text %><br/>
+    Similiarity 
+    <%= select_tag 'use_similarity', options_from_collection_for_select(["","Jaro"], "first", "to_s", @use_similarity) %>
+    <%= number_field_tag 'similarity_score', @similarity_score %>
+    <%= submit_tag 'Search' %>
+  <% end -%>
+    
+  <table>
+    <% @titles.each do |jbtitle| -%>
+      <tr>
+        <td><%= jbtitle.titleid %></td>
+        <td><%= jbtitle.titletype %></td>        
+        <td><%= jbtitle.title %></td>
+        <td><%= jbtitle.author.name unless jbtitle.author.nil? %></td>
+        <td><%= jbtitle.category.name unless jbtitle.category.nil? %></td>
+        <td><%= jbtitle.publisher.name unless jbtitle.publisher.nil? %></td>
+        <td><%= jbtitle.language %></td>
+        <td><%= jbtitle.enrichedtitles.count %></td>
+        <td><%= jbtitle.noisbntitles.count %></td>
+      </tr>
+    <% end -%>
+  </table>
+  
+  <%= will_paginate :prev_label => '<< Previous', :next_label => 'Next >>', :class => 'pagination' %>
+</div>
+
+

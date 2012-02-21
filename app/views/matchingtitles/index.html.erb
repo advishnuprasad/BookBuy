@@ -1,0 +1,50 @@
+<div class='span-24 last'>
+  <% if @matchingtitles %>
+    <div class='span-24 last'>
+      <% @matchingtitles.each do |matchingtitle| %>
+        <div class='span-24 last'>
+          <div class='span-6'>
+            <%= link_to matchingtitle.enrichedtitle.id, enrichedtitle_path(matchingtitle.enrichedtitle.id) %>
+            <br/>
+            <%= matchingtitle.enrichedtitle.title %>
+            <br/>
+            <%= matchingtitle.enrichedtitle.author %>
+            <br/>
+            <%= matchingtitle.enrichedtitle.imprint.publisher.name unless matchingtitle.enrichedtitle.imprint.publisher.nil? unless matchingtitle.enrichedtitle.imprint.nil? %>
+            <br/>
+            <%= matchingtitle.enrichedtitle.language %>
+          </div>
+          <div class='span-6'>
+            <%= image_tag("http://cdn2.justbooksclc.com/medium/#{matchingtitle.enrichedtitle.isbn}.jpg") %>
+          </div>
+          <div class='span-6'>
+            <%= matchingtitle.title.id %>
+            <br/>
+            <%= matchingtitle.title.title %>
+            <br/>
+            <%= matchingtitle.title.author.name unless matchingtitle.title.author.nil? %>
+            <br/>
+            <%= matchingtitle.title.publisher.name unless matchingtitle.title.publisher.nil? %>
+            <br/>
+            <%= matchingtitle.title.language %>
+          </div>
+          <div class='span-6 last'>
+            <%= image_tag("http://cdn2.justbooksclc.com/title/#{matchingtitle.title.id}.jpg") %>
+          </div>
+        </div>
+        <hr/>
+        <div class='span-6 prepend-9 last' id='flash_notice'></div>
+        <div class='span-6 prepend-8 last'>
+          <%= form_for(matchingtitle, :remote => true) do |f| %>
+            <%= f.label :status %><%= f.collection_select(:status, Matchingtitle::MATCH_STATUS, :to_s, :to_s, :prompt => true) %>
+            <%= f.submit 'Submit'%>                    
+          <% end %>
+        </end>
+      <% end %>
+    </div>
+    <div class='span-24 last'>
+      <br/>
+      <%= will_paginate %>
+    </div>
+  <% end %>
+</div>
