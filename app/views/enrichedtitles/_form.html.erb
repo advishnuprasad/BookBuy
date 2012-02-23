@@ -1,0 +1,115 @@
+<div class="span-24 last">
+  <div class='span-20'>
+    <%= form_for(@enrichedtitle, :html => { :multipart => true }) do |f| %>
+      <% if @enrichedtitle.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@enrichedtitle.errors.count, "error") %> prohibited this title from being saved:</h2>
+
+          <ul>
+          <% @enrichedtitle.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
+    
+
+      <table class='no-zebra'>
+        <tr>
+          <th style='width:15%'></th>
+          <th>AMS</th>
+          <th>Internet</th>
+        </tr>
+        <tr>
+          <th>Title Id</th>
+          <td><%= @enrichedtitle.title_id %></td>
+          <td></td>        
+        </tr>
+        <tr>
+          <th>ISBN</th>
+          <td><%= @enrichedtitle.isbn %><%= f.hidden_field :isbn %></td>
+          <td><%= @enrichedtitle.isbn %></td>
+        </tr>
+        <tr>
+          <th>Title</th>
+          <td><%= f.text_field :title, :size => 50 %></td>
+          <td><%= @enrichedtitle.web_title %><%= f.hidden_field :web_title %></td>
+        </tr>
+        <tr>
+          <th>Language</th>
+          <td><%= f.select :language, Language.all.collect {|p| [p.name,p.name] } %></td>
+          <td><%= @enrichedtitle.web_language %><%= f.hidden_field :web_language %></td>
+        </tr>
+        <tr>
+          <th>Author</th>
+          <td><%= f.text_field :author, :size => 50 %></td>
+          <td><%= @enrichedtitle.web_author %><%= f.hidden_field :web_author %></td>
+        </tr>
+        <tr>
+          <th>Category</th>
+          <td><%= f.select :category_id, Category.all.collect {|p| [p.division + '-' + p.name, p.id]} %></td>
+          <td><%= @enrichedtitle.web_category %><%= f.hidden_field :web_category %></td>
+        </tr>
+        <tr>
+          <th>Imprint</th>
+          <td><%= @enrichedtitle.imprint.try(:name) %></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th>Publisher</th>
+          <td><%= @enrichedtitle.imprint.try(:publisher).try(:name) || "?" %></td>
+          <td><%= @enrichedtitle.publisher_name %><%= f.hidden_field :publisher_name %></td>
+        </tr>
+        <tr>
+          <th>List Price</th>
+          <td><%= f.select :currency, Currency.all.collect {|p| [p.code,p.code] }, :prompt => '' %><%= f.number_field :listprice, :min => 1, :max => 100000 %></td>
+          <td><%= @enrichedtitle.web_listprice %><%= f.hidden_field :web_listprice %></td>
+        </tr>
+        <tr>
+          <th>Pub Year</th>
+          <td><%= f.number_field :pub_year, :min => 1900, :max => 2050 %></td>
+          <td><%= @enrichedtitle.pub_year %></td>
+        </tr>
+        <tr>
+          <th>Pages</th>
+          <td><%= f.number_field :page_cnt, :min => 1, :max => 10000 %></td>
+          <td><%= @enrichedtitle.page_cnt %></td>
+        </tr>
+        <tr>
+          <th>Format</th>
+          <td><%= f.select :format, Format.all.collect {|p| [p.name,p.name] } %></td>
+          <td><%= @enrichedtitle.format %></td>
+        </tr>
+        <tr>
+          <th>Image?</th>
+          <td>
+            <%= image_tag(@enrichedtitle.cover.url, :size => "75x100") %><br/>
+            <%= f.file_field :cover, :accept => 'image/jpeg' %>
+          </td>
+          <td>
+            <%= image_tag(@enrichedtitle.image_url, :size => "75x100") unless @enrichedtitle.image_url.blank? %></br>
+            Use Internet Image?<%= f.check_box :use_image_url %>
+            <%= f.hidden_field :image_url %>            
+          </td>
+        </tr>
+        <tr>
+          <th>Last Changed</th>
+          <td><%= @enrichedtitle.updated_at %></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th>User</th>
+          <td></td>
+          <td><%= @enrichedtitle.web_scanned %></td>
+        </tr>
+      </table>
+      
+      <div class="actions">
+        <%= f.submit %>
+      </div>
+    <% end %>      
+  </div>  
+  <div class="span-3 last">
+    <%= button_to :scan_internet, { :action => :scan_web, :id => @enrichedtitle.id } %><br/>
+  </div>    
+</div>

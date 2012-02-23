@@ -50,4 +50,12 @@ class EnrichedtitlesController < ApplicationController
       end
     end
   end  
+  
+  def scan_web
+    @enrichedtitle = Enrichedtitle.find(params[:id])
+    @enrichedtitle.scan_web
+    @enrichedtitle.web_scanned = 'ScanWeb'
+    flash[:notice] = "Scanned Web"
+    render :action => :edit
+  end
 end

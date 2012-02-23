@@ -1,48 +1,8 @@
 <div class="span-24 last">
-  <%= form_for(@enrichedtitle, :html => { :multipart => true }) do |f| %>
-    <div class="span-24 last">    
-      <% if @enrichedtitle.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@enrichedtitle.errors.count, "error") %> prohibited this title from being saved:</h2>
+  <%= render 'form' %>
+  
+  <div class="span-24 last">
+    <%= link_to 'Back', :back %>
+  </div>  
 
-          <ul>
-          <% @enrichedtitle.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-          <% end %>
-          </ul>
-        </div>
-      <% end %>
-    </div>
-
-    <div class="span-24 last">
-      <span>The following information is from the internet. Review this information before proceeding to create an entry for the ISBN</span>
-      <br/>
-      <br/>
-    </div>
-    <div class="span-10">
-      <table class="no-zebra">
-        <tr><td><%= f.label :isbn %></td><td><%= @enrichedtitle.isbn %><%= f.hidden_field :isbn %></td></tr>
-        <tr><td><%= f.label :title %></td><td><%= @enrichedtitle.title %><%= f.hidden_field :title %></td></tr>
-        <tr><td><%= f.label :author %></td><td><%= @enrichedtitle.author %><%= f.hidden_field :author %></td></tr>
-        <tr><td><%= f.label :language %></td><td><%= @enrichedtitle.language %><%= f.hidden_field :language %></td></tr>
-        <tr><td><%= f.label :publisher %></td><td><%= @enrichedtitle.publisher %></td></tr>
-        <tr><td><%= f.label :listprice %></td><td><%= @enrichedtitle.listprice %></td></tr>
-      </table>
-    </div>
-    <div class="span-10 last">
-      <%= image_tag(@enrichedtitle.image_url, :size => "75x100") unless @enrichedtitle.image_url.blank? %>
-      <%= f.hidden_field :image_url %>
-    </div>
-    <div class="span-24 last">
-      <%= field_set_tag 'Additional Required Information' do -%>
-        <%= f.label :category_id %> <%= f.select :category_id, Category.all.collect {|p| [p.division + '-' + p.name, p.id]}, :prompt => '' %><br/>
-        <%= f.label :language %> <%= f.select :language, Language.all.collect {|p| [p.name,p.name] }, :prompt => '' %><br/>
-        <%= f.label :listprice %> <%= f.select :currency, Currency.all.collect {|p| [p.code,p.code] }, :prompt => '' %><%= f.number_field :listprice, :min => 1, :max => 100000 %><br/>
-        <%= f.label :cover %>&nbsp;-&nbsp;Use Web Image<%= f.check_box :use_image_url %>&nbsp;or&nbsp;<%= f.text_field :image_url, :readonly => true, :hidden => true %><%= f.file_field :cover, :accept => 'image/jpeg' %>
-      <% end %>  
-      <div class="actions">
-        <%= f.submit %>
-      </div>
-    </div>
-  <% end %>
 </div>

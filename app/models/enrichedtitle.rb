@@ -49,6 +49,7 @@ class Enrichedtitle < ActiveRecord::Base
   validates :isbnvalid,   :inclusion => { :in => ['Y'], :message => 'ISBN Is Invalid' }, :on => :create
 
   before_create :create_legacy_title
+  after_update :update_legacy_title
   before_validation :parse_isbn, :on => :create
 
   before_validation :download_remote_image, :if => :image_url_provided?
@@ -165,49 +166,53 @@ class Enrichedtitle < ActiveRecord::Base
     end
     return false
   end
+  
+  def scan_web
+    finfo = FlipkartInfo.book_info(isbn)
+    unless finfo.nil?
+      self.web_title = finfo[:title]
+      self.web_author =  finfo[:authors]
+      self.web_listprice = finfo[:listprice]
+      self.web_language = finfo[:language]
+      self.web_category = finfo[:category].slice(0,200)
+      self.publisher_name = finfo[:publisher]
+
+      # virtual fields
+      self.publisher = finfo[:publisher]
+      self.pubdate = finfo[:pubdate]
+      self.image_url = finfo[:image]
+      
+      # fields that are common between internet and ours
+      self.format = finfo[:format]
+      self.page_cnt = finfo[:page_cnt]
+      self.dimensions = finfo[:dimensions]
+      self.weight = finfo[:weight]
+      self.pub_year = finfo[:pubdate]      
+    end
+  end
 
   def self.new_from_web(isbn)
     et = new
     et.isbn = isbn
-    finfo = FlipkartInfo.book_info(isbn)
-    unless finfo.nil?
-      et.title = finfo[:title]
-      et.author =  finfo[:authors]
-      et.publisher = finfo[:publisher]
-      et.pubdate = finfo[:pubdate]
-      et.page_cnt = finfo[:page_cnt]
-      et.language = finfo[:language]
-      et.listprice = finfo[:listprice].scan(/\d/).join('')
-      et.image_url = finfo[:image]
-      
-      et.author ||= '.'  # there are times when author is not set even in flip
-      
-      
-      # web related fields, these are set by default, and not allowed to change in the UI
-      et.web_title = finfo[:title]
-      et.web_author =  finfo[:authors]
-      et.web_listprice = finfo[:listprice]
-      et.web_language = finfo[:language]
-      et.web_category = finfo[:category].slice(0,200)
-
-      # new fields
-      et.format = finfo[:format]
-      et.page_cnt = finfo[:page_cnt]
-      et.dimensions = finfo[:dimensions]
-      et.weight = finfo[:weight]
-      et.pub_year = finfo[:pubdate]
-      et.publisher_name = finfo[:publisher]
+    et.scan_web
     
-      et.web_scanned = 'New'      
-      
-    end
-    et
+    # defaults, just to make data entry easier
+    et.title = et.web_title
+    et.author = et.web_author
+    et.listprice = et.web_listprice.scan(/\d/).join('')
+    et.author ||= '.'
+    
+    et.web_scanned = 'New'
+    
+    return et
   end
   
   private
   
   def image_url_provided?
-    !image_url.blank?
+    return false if image_url.blank? 
+    return false if use_image_url.blank?
+    return true if use_image_url == "1"
   end
   
   def download_remote_image
@@ -252,18 +257,42 @@ class Enrichedtitle < ActiveRecord::Base
                         :publisherid => publisher_id,
                         :isbn_10 => self.isbn10,
                         :isbn_13 => self.isbn,
-                        :category => self.category,  
+                        :category => self.jbcategory,  
                         :language => self.language,
                         :titletype => 'B',
                         :insertdate => Time.zone.now,
                         :userid => 'AMS',
                         :flag_isbn_image => flag_isbn_image,
                         :mrp => self.listprice,
+                        :yearofpublication => self.pub_year,
+                        :no_of_pages => self.page_cnt,
+                        :format => self.format,                                              
                         )
                           
     self.title_id = title.id
     title.save
 
+  end
+  
+  def update_legacy_title
+    attributes = {
+      :title => self.title,
+      :authorid => Author.find_or_create_by_firstname(self.author).id,
+      :publisherid => (self.imprint.publisher.id unless self.imprint.publisher.nil?),
+      :isbn_10 => self.isbn10,
+      :isbn_13 => self.isbn,
+      :category => self.jbcategory,
+      :language => self.language,
+      :titletype => 'B',
+      :insertdate => Time.zone.now,
+      :userid => 'AMS',
+      :flag_isbn_image => ('Y' unless cover.nil?),
+      :mrp => self.listprice,
+      :yearofpublication => self.pub_year,
+      :no_of_pages => self.page_cnt,
+      :format => self.format
+    }
+    self.jbtitle.update_attributes(attributes)
   end
 end
 

@@ -1,23 +1,9 @@
 <div class="span-24 last">
-
-  <div class="span-10">
-    ISBN: <%= @enrichedtitle.isbn %><br/>
-    Title: <%= @enrichedtitle.title %><br/>
-    Language: <%= @enrichedtitle.language %><br/>
-    Author: <%= @enrichedtitle.author %><br/>
-
-    <% unless @enrichedtitle.jbcategory.nil? -%>
-      Section: <%= @enrichedtitle.jbcategory.division %><br/>
-      Category: <%= @enrichedtitle.jbcategory.name %><br/>
-    <% end -%>
-  </div>
+  <%= render 'summary' %>
   
-  <div class="span-12 last">
-    <%= image_tag @enrichedtitle.cover.url, :size => "100X150" %>
-  </div>
 
   <div class="span-24 last">
-    <%= link_to 'Edit', edit_enrichedtitle_path(@enrichedtitle) %>    
+    <%= link_to 'Edit', edit_enrichedtitle_path(@enrichedtitle) %>
     <%= link_to 'Back', enrichedtitles_path %>
   </div>
 </div>
