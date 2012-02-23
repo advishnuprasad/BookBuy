@@ -63,3 +63,72 @@ namespace :create do
     end
   end
 end
+
+
+namespace :load do
+  desc "Loads Title From Web"
+  task :titles => :environment do
+    conn = Enrichedtitle.connection
+    columns = {
+      :title => 0,
+      :author => 1,
+      :isbn => 2,
+      :publisher => 3,
+      :format => 4,
+      :pages => 5,
+      :content_language => 6,
+      :dimensions => 7,
+      :category1 => 8,
+      :release_date => 9,
+      :weight => 10,
+      :pubyear => 11
+    }
+    cur = conn.execute("select title,author,isbn,publisher,format,pages,content_language,dimensions,category1,release_date,weight,pubyear from ISBNSFROMREADERWARE where isbn IN (select isbn from ISBNSFROMREADERWARE minus select isbn from enrichedtitles) order by isbn ")
+    while r = cur.fetch()
+      begin
+        attributes = {
+          :isbn => r[columns[:isbn]],
+
+          :title => r[columns[:title]],
+          :author =>  r[columns[:author]],
+          :publisher => r[columns[:publisher]],
+          :pubdate => r[columns[:release_date]],
+          :language => r[columns[:content_language]],
+          :listprice => 0,
+          :image_url => "https://s3.amazonaws.com/dev.justbooksclc.com/readerware/#{r[columns[:isbn]]}.jpg",
+
+          # web related fields, these are set by default, and not allowed to change in the UI
+          :web_title => r[columns[:title]],
+          :web_author =>  r[columns[:author]],
+          :web_listprice => 0,
+          :web_language => r[columns[:content_language]],
+          :web_category => r[columns[:category1]],
+
+          # new fields
+          :format => r[columns[:format]],
+          :page_cnt => r[columns[:pages]],
+          :dimensions => r[columns[:dimensions]],
+          :weight => r[columns[:weight]],
+          :pub_year => r[columns[:pubyear]],
+          :publisher_name => r[columns[:publisher]],
+
+          :web_scanned => 'Readerware'
+        }
+        
+        et = Enrichedtitle.new(attributes)
+        et.currency = 'INR'
+        et.language = 'English' if et.language.nil?
+        et.listprice = 0 if et.listprice.nil? # in case of out of stock
+        et.category.slice!(0,200) unless et.category.nil?
+        if et.valid?
+          puts "saving #{r}"
+          et.save!
+        else
+          puts "errors while saving #{r} - #{et.errors}"
+        end
+      rescue
+        puts "failed for #{r}"
+      end
+    end
+  end
+end
