@@ -49,7 +49,7 @@ class Enrichedtitle < ActiveRecord::Base
   validates :isbnvalid,   :inclusion => { :in => ['Y'], :message => 'ISBN Is Invalid' }, :on => :create
 
   before_create :create_legacy_title
-  after_update :update_legacy_title
+  before_update :update_legacy_title
   before_validation :parse_isbn, :on => :create
 
   before_validation :download_remote_image, :if => :image_url_provided?
@@ -242,36 +242,27 @@ class Enrichedtitle < ActiveRecord::Base
     else
       self.isbnvalid = 'N'
     end
-  end
+  end  
   
   def create_legacy_title
-    
-  flag_isbn_image = 'N'
-  publisher_id = 50
-  
-  flag_isbn_image = 'Y' unless self.cover_file_name.nil?
-  publisher_id = self.imprint.publisher.id unless self.imprint.publisher.nil?
-  
-  title = Title.create( :title => self.title,
-                        :author => Author.find_or_create_by_firstname(self.author),
-                        :publisherid => publisher_id,
-                        :isbn_10 => self.isbn10,
-                        :isbn_13 => self.isbn,
-                        :category => self.jbcategory,  
-                        :language => self.language,
-                        :titletype => 'B',
-                        :insertdate => Time.zone.now,
-                        :userid => 'AMS',
-                        :flag_isbn_image => flag_isbn_image,
-                        :mrp => self.listprice,
-                        :yearofpublication => self.pub_year,
-                        :no_of_pages => self.page_cnt,
-                        :format => self.format,                                              
-                        )
-                          
-    self.title_id = title.id
-    title.save
-
+    attributes = {
+      :title => self.title,
+      :authorid => Author.find_or_create_by_firstname(self.author).id,
+      :publisherid => (self.imprint.publisher.id unless self.imprint.publisher.nil?),
+      :isbn_10 => self.isbn10,
+      :isbn_13 => self.isbn,
+      :category => self.jbcategory,
+      :language => self.language,
+      :titletype => 'B',
+      :insertdate => Time.zone.now,
+      :userid => 'AMS',
+      :flag_isbn_image => ('Y' unless cover.nil?),
+      :mrp => self.listprice,
+      :yearofpublication => self.pub_year,
+      :no_of_pages => self.page_cnt,
+      :format => self.format
+    }
+    self.jbtitle = Title.create!(attributes)    
   end
   
   def update_legacy_title
@@ -292,7 +283,11 @@ class Enrichedtitle < ActiveRecord::Base
       :no_of_pages => self.page_cnt,
       :format => self.format
     }
-    self.jbtitle.update_attributes(attributes)
+    if self.jbtitle.nil?
+      self.jbtitle = Title.create!(attributes)
+    else
+      self.jbtitle.update_attributes!(attributes)
+    end
   end
 end
 

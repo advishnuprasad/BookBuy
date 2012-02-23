@@ -15,9 +15,9 @@
         <td><%= jbtitle.titleid %></td>
         <td><%= jbtitle.titletype %></td>        
         <td><%= jbtitle.title %></td>
-        <td><%= jbtitle.author.name unless jbtitle.author.nil? %></td>
-        <td><%= jbtitle.category.name unless jbtitle.category.nil? %></td>
-        <td><%= jbtitle.publisher.name unless jbtitle.publisher.nil? %></td>
+        <td><%= jbtitle.author.try(:name) %></td>
+        <td><%= jbtitle.category.try(:name)  %></td>
+        <td><%= jbtitle.publisher.try(:name) %></td>
         <td><%= jbtitle.language %></td>
         <td><%= jbtitle.enrichedtitles.count %></td>
         <td><%= jbtitle.noisbntitles.count %></td>

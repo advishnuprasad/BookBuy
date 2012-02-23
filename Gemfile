@@ -2,6 +2,9 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.3'
 
+#solr
+gem 'sunspot_rails', '~> 1.3.0'
+
 #Barcode printers/readers
 gem 'hoe', '2.8.0'
 gem 'barcode'
@@ -38,6 +41,7 @@ gem 'ruby-oci8'
 
 group :development do
   gem 'rspec-rails'
+  gem 'sunspot_solr'
 #  gem 'annotate-models'
 #  gem 'ruby-debug19'
 end
