@@ -48,8 +48,8 @@ class Enrichedtitle < ActiveRecord::Base
   validates :category_id, :presence => true, :on => :create, :unless => :web_scanned # new fields, existing data not set
   validates :isbnvalid,   :inclusion => { :in => ['Y'], :message => 'ISBN Is Invalid' }, :on => :create
 
-  before_create :create_legacy_title
-  before_update :update_legacy_title
+  before_create :create_legacy_title, :if => Proc.new {|a| a.isbnvalid == 'Y' }
+  before_update :update_legacy_title, :if => Proc.new {|a| a.isbnvalid == 'Y' }
   before_validation :parse_isbn, :on => :create
 
   before_validation :download_remote_image, :if => :image_url_provided?
