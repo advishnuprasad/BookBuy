@@ -43,6 +43,8 @@ class Enrichedtitle < ActiveRecord::Base
   validates :listprice,              :presence => true
   validates :currency,               :presence => true
   
+  validate :currency_is_valid_and_present
+  
   scope :unscanned, where(:isbnvalid => nil)
   scope :valid, where(:isbnvalid => 'Y')
   
@@ -52,6 +54,15 @@ class Enrichedtitle < ActiveRecord::Base
     }
     
   attr_accessible :category_id, :language
+  
+  def currency_is_valid_and_present
+    begin
+      curr = Currency.find_by_code!(currency)
+    rescue ActiveRecord::RecordNotFound
+      errors.add(:currency, " does not exist!")
+    end
+  end
+  
     
   def self.scan_in_procurement(procurement_id)
     Enrichedtitle.of_procurement(procurement_id).unscanned.limit(1000).each do |title|

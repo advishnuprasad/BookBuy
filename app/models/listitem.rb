@@ -37,6 +37,7 @@ class Listitem < ActiveRecord::Base
   validates :currency, :presence => true
   
   validate :list_is_valid_and_present
+  validate :currency_is_valid_and_present
   
   private
     def list_is_valid_and_present
@@ -44,6 +45,14 @@ class Listitem < ActiveRecord::Base
         list = List.find(list_id)
       rescue ActiveRecord::RecordNotFound
         errors.add(:list_id, " does not exist!")
+      end
+    end
+    
+    def currency_is_valid_and_present
+      begin
+        curr = Currency.find_by_code!(currency)
+      rescue ActiveRecord::RecordNotFound
+        errors.add(:currency, " does not exist!")
       end
     end
 end
