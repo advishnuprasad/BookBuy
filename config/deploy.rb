@@ -17,7 +17,7 @@ task :production do
 end
 
 task :staging do
-  set :branch, "production"   # Temporary; will be removed when production 
+  set :branch, "staging" 
   set :default_environment, { "PATH" => "/usr/local/ruby-1.9.2-p290/bin:$PATH", "LD_LIBRARY_PATH" => "/opt/oracle/instantclient_10_2", "TNS_ADMIN" => "/opt/oracle/network/admin" }
   set :user, 'ruby'
   set :deploy_to, "/usr/ruby/ams"
