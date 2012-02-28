@@ -14,7 +14,7 @@
     </tr>
     <tr>
       <th>ISBN</th>
-      <td><%= @enrichedtitle.isbn %></td>
+      <td><%= @enrichedtitle.isbn %> <%= "(Invalid)" unless @enrichedtitle.isbnvalid == 'Y' %></td>
       <td><%= @enrichedtitle.jbtitle.try(:isbn_13) %></td>
       <td><%= @enrichedtitle.isbn %></td>
     </tr>
