@@ -42,6 +42,7 @@ gem 'ruby-oci8'
 group :development do
   gem 'rspec-rails'
   gem 'sunspot_solr'
+  gem 'capistrano'
 #  gem 'annotate-models'
 #  gem 'ruby-debug19'
 end
