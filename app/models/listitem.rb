@@ -35,8 +35,17 @@ class Listitem < ActiveRecord::Base
   validates :quantity, :presence => true
   validates :listprice, :presence => true
   validates :currency, :presence => true
+  
+  validate :currency_is_valid_and_present
 
   attr_accessible :isbn, :quantity, :branch_id, :ibtr_id, :member_id, :card_id
   attr_accessor :ready_to_order
   
+  def currency_is_valid_and_present
+    begin
+      curr = Currency.find_by_code!(currency)
+    rescue ActiveRecord::RecordNotFound
+      errors.add(:currency, " does not exist!")
+    end
+  end
 end

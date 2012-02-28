@@ -47,7 +47,8 @@ class Enrichedtitle < ActiveRecord::Base
   validates :language,    :presence => true, :on => :create # new fields, existing data not set
   validates :category_id, :presence => true, :on => :create # new fields, existing data not set
   validates :isbnvalid,   :inclusion => { :in => ['Y'], :message => 'ISBN Is Invalid' }
-
+  validate :currency_is_valid_and_present
+  
   before_create :create_legacy_title
   before_validation :parse_isbn, :on => :create
 
@@ -67,8 +68,14 @@ class Enrichedtitle < ActiveRecord::Base
   attr_accessible :category_id, :language, :listprice, :currency
   attr_protected :cover_file_name, :cover_content_type, :conver_file_size, :conver_updated_at
   
-
-    
+  def currency_is_valid_and_present
+    begin
+      curr = Currency.find_by_code!(currency)
+    rescue ActiveRecord::RecordNotFound
+      errors.add(:currency, " does not exist!")
+    end
+  end
+      
   def self.scan_in_procurement(procurement_id)
     Enrichedtitle.of_procurement(procurement_id).unscanned.limit(1000).each do |title|
       if title.isbn.nil?
