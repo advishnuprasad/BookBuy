@@ -9,7 +9,7 @@ development:
 
 jbprod_development:
   adapter: oracle_enhanced
-  database: JEOS
+  database: XE
   username: jbprod
   password: jbprod
   cursor_sharing: similar
