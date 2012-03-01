@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120221183522) do
+ActiveRecord::Schema.define(:version => 20120228134820) do
 
   create_table "app_116_16_gt", :temporary => true, :id => false, :force => true do |t|
     t.integer "batch_no",                  :precision => 38, :scale => 0
@@ -257,6 +257,7 @@ ActiveRecord::Schema.define(:version => 20120221183522) do
     t.string    "web_language"
     t.string    "web_scanned"
     t.string    "web_category"
+    t.string    "review_file_name"
   end
 
   add_index "enrichedtitle_versions", ["enrichedtitle_id"], :name => "i_enr_ver_enr_id"
@@ -301,6 +302,7 @@ ActiveRecord::Schema.define(:version => 20120221183522) do
     t.string    "web_language"
     t.string    "web_scanned"
     t.string    "web_category"
+    t.string    "review_file_name"
   end
 
   add_index "enrichedtitles", ["isbn"], :name => "enrichedtitles_isbn", :unique => true
@@ -367,6 +369,23 @@ ActiveRecord::Schema.define(:version => 20120221183522) do
   end
 
   add_index "invoices", ["invoice_no", "po_id"], :name => "invoices_unq", :unique => true
+
+  create_table "isbnsfromreaderware", :id => false, :force => true do |t|
+    t.string "title"
+    t.string "author"
+    t.string "isbn"
+    t.string "publisher"
+    t.string "format"
+    t.string "pages"
+    t.string "content_language"
+    t.string "dimensions"
+    t.string "category1"
+    t.string "list_price"
+    t.string "sale_price"
+    t.string "release_date"
+    t.string "weight"
+    t.string "pubyear"
+  end
 
   create_table "languages", :force => true do |t|
     t.string   "name"

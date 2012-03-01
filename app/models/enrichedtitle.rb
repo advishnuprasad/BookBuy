@@ -37,6 +37,8 @@ class Enrichedtitle < ActiveRecord::Base
   has_attached_file :cover, :styles => {:thumb => "100x100>", :medium => "200x200>"}, 
   :path => ':style/:isbn.:extension', :default_url => "/images/missing_:style.jpg"
   
+  has_attached_file :review, :path => 'reviews/:isbn.html', :default_url => "/reviews/missing_review.html"
+  
   belongs_to :jbcategory, :foreign_key => 'category_id', :class_name => "Category"
   
   validates :title,       :presence => true
