@@ -35,9 +35,10 @@ class Enrichedtitle < ActiveRecord::Base
   belongs_to :jbtitle, :foreign_key => "title_id", :class_name => "Title"
   has_many :procurementitems
   has_attached_file :cover, :styles => {:thumb => "100x100>", :medium => "200x200>"}, 
-  :path => ':style/:isbn.:extension', :default_url => "/images/missing_:style.jpg"
+  :path => ':style/:isbn.:extension', :default_url => "/images/missing_:style.jpg",
+  :s3_headers => { 'Cache-Control' => 'max-age=315576000', 'Expires' => 10.years.from_now.httpdate }
   
-  has_attached_file :review, :path => 'reviews/:isbn.html', :default_url => "/reviews/missing_review.html"
+  has_attached_file :review, :path => 'reviews/:isbn.html', :default_url => "/reviews/missing_review.html"    
   
   belongs_to :jbcategory, :foreign_key => 'category_id', :class_name => "Category"
   
