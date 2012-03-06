@@ -158,7 +158,7 @@ namespace :modify do
               puts "errors while saving #{r[columns[:isbn]]} - #{et.errors}"
             end
           else
-            puts "skipping ISBN, no change in listprice & currency"
+            puts "skipping ISBN, no change in listprice & currency #{r[columns[:isbn]]}"
           end
         else
           puts "skipping ISBN as it is invalid - please fix the isbn first #{r[columns[:isbn]]}"
