@@ -132,3 +132,40 @@ namespace :load do
     end
   end
 end
+
+namespace :modify do
+  desc "Modify Enriched Titles with new rates"
+  task :listprice => :environment do
+    conn = Enrichedtitle.connection
+    columns = {
+      :isbn => 0,
+      :currency => 1,
+      :price => 2
+    }    
+    cur = conn.execute("select isbn,currency,price from et_upd_price")
+    while r = cur.fetch()
+      begin
+        et = Enrichedtitle.find_by_isbn(r[columns[:isbn]].to_s)
+        if et.valid?
+          # update only if something's changing, to avoid un-necessary versions
+          if et.currency != r[columns[:currency]] or et.listprice != r[columns[:price]]
+            et.currency = r[columns[:currency]]
+            et.listprice = r[columns[:price]]
+            if et.valid?
+              puts "saving #{r[columns[:isbn]]}"
+              et.save!
+            else
+              puts "errors while saving #{r[columns[:isbn]]} - #{et.errors}"
+            end
+          else
+            puts "skipping ISBN, no change in listprice & currency"
+          end
+        else
+          puts "skipping ISBN as it is invalid - please fix the isbn first #{r[columns[:isbn]]}"
+        end
+      rescue
+        puts "failed for #{r[columns[:isbn]]}"
+      end
+    end
+  end
+end
