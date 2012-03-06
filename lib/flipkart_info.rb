@@ -55,7 +55,7 @@ module FlipkartInfo
 
     image = nil
     image_tag = page.search("div#mprodimg-id img")
-    unless image_tag.nil?
+    unless image_tag.empty?
       image = image_tag.attr('src').text.encode('UTF-8')
     end
 
