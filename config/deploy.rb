@@ -36,6 +36,7 @@ namespace :deploy do
     run "cp #{deploy_to}/environment.rb #{release_path}/config/environment.rb"
     run "cp #{deploy_to}/aws-s3.yml #{release_path}/config/aws-s3.yml"
     run "cp #{deploy_to}/sunspot.yml #{release_path}/config/sunspot.yml"
+    run "cp #{deploy_to}/newrelic.yml #{release_path}/config/newrelic.yml"
   end
 
   task :start do ; end
