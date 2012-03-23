@@ -13,4 +13,9 @@ jbprod_development:
   username: jbprod
   password: jbprod
   cursor_sharing: similar
-  
+
+id_gen:
+  adapter: oracle_enhanced
+  database: XE
+  username: id_gen
+  password: id_gen
