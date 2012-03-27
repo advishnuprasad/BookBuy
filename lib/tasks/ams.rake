@@ -140,17 +140,20 @@ namespace :modify do
     columns = {
       :isbn => 0,
       :currency => 1,
-      :price => 2
+      :price => 2,
+      :category_id => 3,
+      :pub_year => 4
     }    
-    cur = conn.execute("select isbn,currency,price from et_upd_price")
+    cur = conn.execute("select isbn,currency,price,category_id,published_year from et_upd_price")
     while r = cur.fetch()
       begin
         et = Enrichedtitle.find_by_isbn(r[columns[:isbn]].to_s)
-        if et.valid?
-          # update only if something's changing, to avoid un-necessary versions
-          if et.currency != r[columns[:currency]] or et.listprice != r[columns[:price]]
-            et.currency = r[columns[:currency]]
-            et.listprice = r[columns[:price]]
+        if true #et.valid?
+          et.currency = r[columns[:currency]]
+          et.listprice = r[columns[:price]]          
+          et.category_id = r[columns[:category_id]] unless r[columns[:category_id]].nil?
+          et.pub_year = r[columns[:pub_year]] unless r[columns[:pub_year]].nil?
+          if et.changed?
             if et.valid?
               puts "saving #{r[columns[:isbn]]}"
               et.save!
@@ -158,7 +161,7 @@ namespace :modify do
               puts "errors while saving #{r[columns[:isbn]]} - #{et.errors}"
             end
           else
-            puts "skipping ISBN, no change in listprice & currency #{r[columns[:isbn]]}"
+            puts "nothing changed, skipped #{r[columns[:isbn]]}"
           end
         else
           puts "skipping ISBN as it is invalid - please fix the isbn first #{r[columns[:isbn]]}"
