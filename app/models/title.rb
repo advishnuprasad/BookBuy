@@ -40,6 +40,9 @@ class Title < ActiveRecord::Base
   belongs_to :category
   belongs_to :publisher, :foreign_key => :publisherid
   
+  has_many :titlebranches
+  has_many :branches, :through => :titlebranches
+  
   scope :with_enrichedtitles, where('titleid in ( select distinct title_id from enrichedtitles )')
   scope :with_noisbntitles, where('titleid in ( select distinct title_id from noisbntitles)')
   
@@ -58,13 +61,14 @@ class Title < ActiveRecord::Base
     integer :id, :stored => true
     integer :category_id, :references => Category, :stored => true
     boolean :book, :using => :book?
+    integer :branch_ids, :multiple => true, :references => Branch, :stored => true
   end
   
-  def self.search(option, category_id, keyword, page, per_page, onlybooks = true)
+  def self.search(option, category_id, branch_ids, keyword, page, per_page, onlybooks = true)
     search = Sunspot.new_search(Title) do
       paginate(:page => page, :per_page => per_page)
       order_by(:times_rented, :desc)
-      facet(:category_id)
+      facet(:category_id, :branch_ids)
     end
 
     if option == 'All'
@@ -94,6 +98,12 @@ class Title < ActiveRecord::Base
     if category_id
       search.build do
         with(:category_id).equal_to(category_id)
+      end
+    end
+    
+    if branch_ids
+      search.build do
+        with(:branch_ids, branch_ids)
       end
     end
     

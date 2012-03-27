@@ -24,6 +24,9 @@ class Branch < ActiveRecord::Base
   has_many   :distributions
   has_many   :procurementitems, :through => :distributions
   
+  has_many :titlebranches
+  has_many :titles, :through => :titlebranches
+  
   scope :parent_branches, where(:category => 'P')
   
   def isEventBranch
