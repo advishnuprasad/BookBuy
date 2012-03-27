@@ -33,7 +33,8 @@ class Book < ActiveRecord::Base
   end
   
   def origlocation_category 
-    originallocation.category
+    return originallocation.category unless originallocation.nil?
+    return nil
   end
   
   def self.search(keyword, location, origlocation, available=nil)
