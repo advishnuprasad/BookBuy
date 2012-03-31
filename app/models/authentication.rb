@@ -12,7 +12,7 @@
 #
 
 class Authentication < ActiveRecord::Base
-  establish_connection(Settings.global_db)
+  establish_connection(AMSSettings.global_db)
   
   belongs_to :user
 end

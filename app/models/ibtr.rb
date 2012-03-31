@@ -1,7 +1,7 @@
 class Ibtr < ActiveResource::Base
-  self.site = Settings.ibtr_url
-  self.user = Settings.ibtr_user
-  self.password = Settings.ibtr_password
+  self.site = AMSSettings.ibtr_url
+  self.user = AMSSettings.ibtr_user
+  self.password = AMSSettings.ibtr_password
   
   attr_accessor :enrichedtitle, :title, :isbn
   
