@@ -4,6 +4,7 @@ gem 'rails', '3.0.3'
 
 #solr
 gem 'sunspot_rails', '1.2.1'
+gem 'sunspot-rails-http-basic-auth', '0.0.2'
 
 #Barcode printers/readers
 gem 'hoe', '2.8.0'

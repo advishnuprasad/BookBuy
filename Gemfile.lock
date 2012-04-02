@@ -217,6 +217,8 @@ GEM
       escape (= 0.0.4)
       pr_geohash (~> 1.0)
       rsolr (= 0.12.1)
+    sunspot-rails-http-basic-auth (0.0.2)
+      sunspot_rails (~> 1.2.1)
     sunspot_rails (1.2.1)
       nokogiri
       sunspot (= 1.2.1)
@@ -274,6 +276,7 @@ DEPENDENCIES
   rufus-scheduler
   settingslogic (= 2.0.6)
   spork (= 0.9.0.rc7)
+  sunspot-rails-http-basic-auth (= 0.0.2)
   sunspot_rails (= 1.2.1)
   sunspot_solr
   webrat (= 0.7.1)
