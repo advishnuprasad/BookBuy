@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 gem 'rails', '3.0.3'
 
 #solr
-gem 'sunspot_rails', '~> 1.3.0'
+gem 'sunspot_rails', '1.2.1'
 
 #Barcode printers/readers
 gem 'hoe', '2.8.0'
