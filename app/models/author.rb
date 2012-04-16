@@ -22,7 +22,7 @@ class Author < ActiveRecord::Base
     v = v + self.firstname unless self.firstname.nil?
     v = v + ' ' + self.middlename unless self.middlename.nil?
     v = v + ' ' + self.lastname unless self.lastname.nil?
-    v.squeeze.strip
+    v.squeeze(" ").strip
   end
   
 end
