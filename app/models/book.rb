@@ -18,6 +18,7 @@ class Book < ActiveRecord::Base
     integer :origlocation, :references => Branch, :stored => true
     string :origlocation_type, :using => :origlocation_category, :stored => true
     boolean :available, :using => :available?, :stored => true
+    integer :city_id, :stored => true
   end
   
   def title_type
@@ -37,9 +38,13 @@ class Book < ActiveRecord::Base
     return nil
   end
   
-  def self.search(keyword, location, origlocation, available=nil)
+  def city_id
+    originallocation.city_id
+  end
+  
+  def self.search(keyword, location, origlocation, available=nil, city_id=nil)
     search = Sunspot.new_search(Book) do
-      facet(:location, :origlocation, :available)
+      facet(:location, :origlocation, :available, :city_id)
     end
 
     search.build do
@@ -61,6 +66,12 @@ class Book < ActiveRecord::Base
     if available
       search.build do
         with :available, available
+      end
+    end
+    
+    if city_id
+      search.build do
+        with :city_id, city_id
       end
     end
     
