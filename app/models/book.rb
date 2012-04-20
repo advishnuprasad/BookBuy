@@ -44,6 +44,7 @@ class Book < ActiveRecord::Base
   
   def self.search(keyword, location, origlocation, available=nil, city_id=nil)
     search = Sunspot.new_search(Book) do
+      paginate(:page => 1, :per_page => 500)
       facet(:location, :origlocation, :available, :city_id)
     end
 
