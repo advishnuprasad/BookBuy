@@ -39,7 +39,8 @@ class Book < ActiveRecord::Base
   end
   
   def city_id
-    originallocation.city_id
+    return originallocation.city_id unless originallocation.nil?
+    return nil
   end
   
   def self.search(keyword, location, origlocation, available=nil, city_id=nil)
