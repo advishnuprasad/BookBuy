@@ -30,7 +30,7 @@ class Book < ActiveRecord::Base
   end
   
   def available?
-    status == 'A'
+    status == 'A' and origlocation == location
   end
   
   def origlocation_category 
