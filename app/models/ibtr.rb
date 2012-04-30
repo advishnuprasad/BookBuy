@@ -25,7 +25,7 @@ class Ibtr < ActiveResource::Base
     
     Date.strptime(created_at,'%Y-%m-%d') rescue return []
     
-    ibtrs = Ibtr.find(:all, :from => :search, :params => {:per_page => 200, :updated_at => created_at, :Assigned => :Assigned, :branchVal => 951, :searchBy => "respondent_id" })
+    ibtrs = Ibtr.find(:all, :from => :search, :params => {:per_page => 200, :created_at => created_at, :Assigned => :Assigned, :branchVal => 951, :searchBy => "respondent_id" })
     enrichedtitles = Enrichedtitle.valid.find_all_by_title_id( ibtrs.collect { |ibtr| ibtr.title_id }.uniq )    
     titles = Title.find_all_by_titleid( ibtrs.collect { |ibtr| ibtr.title_id }.uniq )
     listitems = Listitem.find_all_by_ibtr_id( ibtrs.collect {|ibtr| ibtr.id}.uniq )
