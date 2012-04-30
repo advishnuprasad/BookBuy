@@ -20,12 +20,12 @@ class Ibtr < ActiveResource::Base
     end
   end
   
-  def self.pending_procurements(updated_at)
-    updated_at ||= Time.zone.today
+  def self.pending_procurements(created_at)
+    created_at ||= Time.zone.today
     
-    Date.strptime(updated_at,'%Y-%m-%d') rescue return []
+    Date.strptime(created_at,'%Y-%m-%d') rescue return []
     
-    ibtrs = Ibtr.find(:all, :from => :search, :params => {:per_page => 200, :updated_at => updated_at, :Assigned => :Assigned, :branchVal => 951, :searchBy => "respondent_id" })
+    ibtrs = Ibtr.find(:all, :from => :search, :params => {:per_page => 200, :updated_at => created_at, :Assigned => :Assigned, :branchVal => 951, :searchBy => "respondent_id" })
     enrichedtitles = Enrichedtitle.valid.find_all_by_title_id( ibtrs.collect { |ibtr| ibtr.title_id }.uniq )    
     titles = Title.find_all_by_titleid( ibtrs.collect { |ibtr| ibtr.title_id }.uniq )
     listitems = Listitem.find_all_by_ibtr_id( ibtrs.collect {|ibtr| ibtr.id}.uniq )
